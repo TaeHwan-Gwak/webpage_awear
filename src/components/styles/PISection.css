@@ -1,0 +1,70 @@
+.card {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 44px;
+  align-items: center;
+  padding: 48px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, var(--surface) 0%, var(--surface-2) 100%);
+}
+
+.portrait {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border);
+  background: var(--surface-2);
+}
+
+.ph-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+h2 {
+  margin-top: 10px;
+  font-size: 1.5rem;
+  color: var(--text);
+}
+
+.role {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.bio {
+  margin-top: 18px;
+  max-width: 60ch;
+  font-size: 0.96rem;
+}
+
+.mail {
+  display: inline-block;
+  margin-top: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--cyan);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.mail:hover {
+  border-color: var(--cyan);
+}
+
+@media (max-width: 640px) {
+  .card {
+    grid-template-columns: 1fr;
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .portrait {
+    margin: 0 auto;
+  }
+}
