@@ -12,27 +12,4 @@
 
 <script setup lang="ts"></script>
 
-<style scoped>
-.signal-divider {
-  width: 100%;
-  line-height: 0;
-}
-
-.track {
-  stroke: var(--border);
-  stroke-width: 1;
-}
-
-.trace {
-  fill: none;
-  stroke: var(--cyan);
-  stroke-width: 1.4;
-  opacity: 0.55;
-}
-
-svg {
-  width: 100%;
-  height: 24px;
-  display: block;
-}
-</style>
+<style src="./styles/SignalDivider.css" scoped></style>
