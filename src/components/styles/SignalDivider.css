@@ -10,7 +10,7 @@
 
 .trace {
   fill: none;
-  stroke: var(--cyan);
+  stroke: var(--orange);
   stroke-width: 1.4;
   opacity: 0.55;
 }

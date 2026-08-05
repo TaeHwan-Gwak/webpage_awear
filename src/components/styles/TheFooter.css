@@ -1,13 +1,44 @@
 .footer {
   border-top: 1px solid var(--border-soft);
-  padding: 40px 32px 28px;
+}
+
+.sponsors {
+  padding-top: 64px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.logos {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.logo-placeholder {
+  width: 96px;
+  height: 48px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ph-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-faint);
 }
 
 .footer-inner {
   max-width: var(--page-max);
   margin: 0 auto;
+  padding: 32px 32px 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
   gap: 12px;
   font-size: 0.85rem;
@@ -25,12 +56,42 @@
 }
 
 .right a:hover {
-  color: var(--cyan);
+  color: var(--orange-deep);
+}
+
+.social {
+  display: flex;
+  gap: 12px;
+}
+
+.social a {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.social a:hover {
+  border-color: var(--orange);
+  color: var(--orange-deep);
+}
+
+.social svg {
+  width: 15px;
+  height: 15px;
+  stroke: currentColor;
+  fill: none;
 }
 
 .legal {
   max-width: var(--page-max);
   margin: 24px auto 0;
+  padding: 0 32px 28px;
   font-size: 0.78rem;
   color: var(--text-faint);
   font-family: var(--font-mono);
@@ -39,5 +100,6 @@
 @media (max-width: 640px) {
   .footer-inner {
     flex-direction: column;
+    align-items: flex-start;
   }
 }

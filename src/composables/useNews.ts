@@ -6,6 +6,7 @@ export interface NewsItem {
   id: string
   date: string
   desc: string
+  tag?: string
 }
 
 /**

@@ -1,0 +1,116 @@
+.pub-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 24px;
+  padding: 24px 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.pub-item:last-child {
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.year {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--orange-deep);
+  padding-top: 2px;
+}
+
+.theme-tag {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(255, 90, 31, 0.1);
+  color: var(--orange-deep);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  margin-bottom: 8px;
+}
+
+h3 {
+  font-size: 1.02rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.authors {
+  margin-top: 8px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.venue {
+  margin-top: 4px;
+  font-size: 0.84rem;
+  font-family: var(--font-mono);
+  color: var(--text-faint);
+}
+
+/* ---- hover summary card ---- */
+.summary-card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% - 4px);
+  z-index: 20;
+  padding: 20px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  box-shadow: 0 16px 40px rgba(32, 24, 16, 0.14);
+}
+
+.summary-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--orange-deep);
+}
+
+.summary-card h4 {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.summary-desc {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.summary-points {
+  margin-top: 12px;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.summary-points li {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  list-style: disc;
+}
+
+.pop-enter-active,
+.pop-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.pop-enter-from,
+.pop-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+@media (max-width: 560px) {
+  .pub-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}

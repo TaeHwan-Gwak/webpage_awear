@@ -1,0 +1,47 @@
+.member-card {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.member-card:hover {
+  border-color: var(--orange);
+  transform: translateY(-2px);
+}
+
+.avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border);
+  background: var(--surface-2);
+}
+
+.ph-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-faint);
+}
+
+h3 {
+  margin-top: 18px;
+  font-size: 1.02rem;
+  color: var(--text);
+}
+
+.role {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.note {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}

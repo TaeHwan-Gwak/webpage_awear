@@ -1,4 +1,4 @@
-.card {
+.pi-feature .card {
   display: grid;
   grid-template-columns: 160px 1fr;
   gap: 44px;
@@ -6,10 +6,10 @@
   padding: 48px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: linear-gradient(160deg, var(--surface) 0%, var(--surface-2) 100%);
+  background: var(--surface);
 }
 
-.portrait {
+.pi-feature .portrait {
   width: 120px;
   height: 120px;
   border-radius: 50%;
@@ -20,51 +20,72 @@
   background: var(--surface-2);
 }
 
-.ph-label {
+.pi-feature .ph-label {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   color: var(--text-faint);
 }
 
-h2 {
+.pi-feature h2 {
   margin-top: 10px;
   font-size: 1.5rem;
   color: var(--text);
 }
 
-.role {
+.pi-feature .role {
   margin-top: 6px;
   font-size: 0.9rem;
   color: var(--text-muted);
 }
 
-.bio {
+.pi-feature .bio {
   margin-top: 18px;
   max-width: 60ch;
   font-size: 0.96rem;
 }
 
-.mail {
+.pi-feature .mail {
   display: inline-block;
   margin-top: 20px;
   font-family: var(--font-mono);
   font-size: 0.88rem;
-  color: var(--cyan);
+  color: var(--orange-deep);
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease;
 }
 
-.mail:hover {
-  border-color: var(--cyan);
+.pi-feature .mail:hover {
+  border-color: var(--orange-deep);
 }
 
-@media (max-width: 640px) {
-  .card {
+.group-title {
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+.group .grid {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 860px) {
+  .pi-feature .card {
     grid-template-columns: 1fr;
     padding: 32px 24px;
     text-align: center;
   }
-  .portrait {
+  .pi-feature .portrait {
     margin: 0 auto;
+  }
+  .group .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .group .grid {
+    grid-template-columns: 1fr;
   }
 }

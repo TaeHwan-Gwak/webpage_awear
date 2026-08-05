@@ -1,0 +1,27 @@
+.status {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+.timeline {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  max-width: 820px;
+}
+
+.skeleton-entry {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 20px;
+  padding: 22px 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+@media (max-width: 640px) {
+  .skeleton-entry {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
