@@ -1,6 +1,6 @@
 <template>
   <main class="publications-page">
-    <PageHeader eyebrow="Publications" title="[]" description="[]" />
+    <PageHeader eyebrow="Publications" title="페이지 제목" description="페이지 설명" />
 
     <section class="filters section">
       <div class="chip-row">
@@ -45,11 +45,11 @@ import PageHeader from '../components/PageHeader.vue'
 import PublicationItem from '../components/PublicationItem.vue'
 
 const publications = Array.from({ length: 6 }, () => ({
-  year: '[]',
-  title: '[]',
-  authors: '[]',
-  venue: '[]',
-  theme: '[]',
+  year: '연도',
+  title: '논문 제목',
+  authors: '저자',
+  venue: '게재 학회·저널',
+  theme: '연구 분야',
 }))
 
 // 테마 칩은 논문 목록에 실제로 등장하는 theme 값만 자동으로 모아서 보여줍니다.

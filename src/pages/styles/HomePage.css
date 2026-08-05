@@ -1,4 +1,3 @@
-/* ============ Hero (photo-first, Stanford-style) ============ */
 .hero {
   position: relative;
   margin-top: 0;
@@ -69,7 +68,6 @@
   }
 }
 
-/* ============ Shared section header ============ */
 .head {
   max-width: 620px;
 }
@@ -79,7 +77,6 @@
   font-size: clamp(1.6rem, 3vw, 2.1rem);
 }
 
-/* ============ Mission ============ */
 .mission h2 {
   margin-top: 18px;
   font-size: clamp(1.4rem, 2.6vw, 1.9rem);
@@ -89,7 +86,6 @@
   max-width: 46ch;
 }
 
-/* ============ Research Themes (chip grid) ============ */
 .chip-grid {
   margin-top: 32px;
   display: flex;
@@ -128,7 +124,6 @@
   color: var(--text-faint);
 }
 
-/* ============ Gallery (Stanford "Glimpses" style) ============ */
 .gallery-grid {
   margin-top: 28px;
   display: grid;
@@ -164,7 +159,6 @@
   }
 }
 
-/* ============ Media (KIXLAB-style video showcase) ============ */
 .media-grid {
   margin-top: 28px;
   display: grid;
@@ -215,7 +209,6 @@
   }
 }
 
-/* ============ News ============ */
 .news .status {
   margin-top: 24px;
   font-family: var(--font-mono);
@@ -244,7 +237,6 @@
   }
 }
 
-/* ============ Shared: "더 보기" links ============ */
 .more-link {
   display: inline-block;
   margin-top: 32px;
@@ -263,7 +255,6 @@
   margin-top: 28px;
 }
 
-/* ============ Principal Investigator ============ */
 .pi .card {
   display: grid;
   grid-template-columns: 160px 1fr;
@@ -335,7 +326,6 @@
   }
 }
 
-/* ============ Join (simplified, no glow) ============ */
 .join .panel {
   border: 1px solid var(--border);
   border-radius: 20px;

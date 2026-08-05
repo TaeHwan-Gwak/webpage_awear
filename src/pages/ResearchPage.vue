@@ -1,6 +1,6 @@
 <template>
   <main class="research-page">
-    <PageHeader eyebrow="Research" title="[]" description="[]" />
+    <PageHeader eyebrow="Research" title="페이지 제목" description="페이지 설명" />
 
     <SignalDivider />
 
@@ -30,10 +30,10 @@ import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 
 const topics = [
-  { id: 'topic-1', title: '[]', desc: '[]' },
-  { id: 'topic-2', title: '[]', desc: '[]' },
-  { id: 'topic-3', title: '[]', desc: '[]' },
-  { id: 'topic-4', title: '[]', desc: '[]' },
+  { id: 'topic-1', title: '연구 주제명', desc: '설명' },
+  { id: 'topic-2', title: '연구 주제명', desc: '설명' },
+  { id: 'topic-3', title: '연구 주제명', desc: '설명' },
+  { id: 'topic-4', title: '연구 주제명', desc: '설명' },
 ]
 </script>
 

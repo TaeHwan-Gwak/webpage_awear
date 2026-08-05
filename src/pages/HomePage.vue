@@ -6,13 +6,13 @@
         <span class="ph-label">이미지</span>
       </div>
       <div class="hero-caption">
-        <p class="location">[]</p>
+        <p class="location">위치 캡션</p>
       </div>
 
       <div class="hero-text section">
         <p class="eyebrow">GIST · AI-based WEArable Robotics Lab</p>
-        <h1>[]</h1>
-        <p class="lede">[]</p>
+        <h1>헤드라인</h1>
+        <p class="lede">소개 문구</p>
         <router-link class="more-link" to="/research">연구 분야 보기 →</router-link>
       </div>
     </section>
@@ -22,14 +22,14 @@
     <!-- Mission -->
     <section id="mission" class="mission section">
       <p class="eyebrow">Mission</p>
-      <h2>[]</h2>
+      <h2>미션 문구</h2>
     </section>
 
     <!-- Research Themes: KIXLAB-style tag chips -->
     <section id="research" class="themes section">
       <header class="head">
         <p class="eyebrow">Research Themes</p>
-        <h2>[]</h2>
+        <h2>섹션 제목</h2>
       </header>
 
       <div class="chip-grid">
@@ -64,15 +64,15 @@
     <section class="media section">
       <header class="head">
         <p class="eyebrow">Media</p>
-        <h2>[]</h2>
+        <h2>섹션 제목</h2>
       </header>
       <div class="media-grid">
         <a v-for="i in 3" :key="i" href="#" class="media-item">
           <div class="thumb" aria-hidden="true">
             <span class="play" aria-hidden="true">▶</span>
           </div>
-          <p class="media-title">[]</p>
-          <p class="media-date">[]</p>
+          <p class="media-title">영상 제목</p>
+          <p class="media-date">날짜</p>
         </a>
       </div>
     </section>
@@ -81,7 +81,7 @@
     <section id="news" class="news section">
       <header class="head">
         <p class="eyebrow">News</p>
-        <h2>[]</h2>
+        <h2>섹션 제목</h2>
       </header>
 
       <p v-if="newsError" class="status">최신 소식을 불러오지 못해 이전 내용을 보여드리고 있어요.</p>
@@ -116,10 +116,10 @@
 
         <div class="body">
           <p class="eyebrow">Principal Investigator</p>
-          <h2>[]</h2>
-          <p class="role">[]</p>
-          <p class="bio">[]</p>
-          <a class="mail" href="mailto:example@gist.ac.kr">[]</a>
+          <h2>이름</h2>
+          <p class="role">소속·직함</p>
+          <p class="bio">소개</p>
+          <a class="mail" href="mailto:example@gist.ac.kr">이메일</a>
           <router-link class="more-link" to="/member">연구실 구성원 보기 →</router-link>
         </div>
       </div>
@@ -129,9 +129,9 @@
     <section id="join" class="join section">
       <div class="panel">
         <p class="eyebrow">Join Us</p>
-        <h2>[]</h2>
-        <p class="desc">[]</p>
-        <a class="btn" href="mailto:example@gist.ac.kr">[]</a>
+        <h2>제목</h2>
+        <p class="desc">설명</p>
+        <a class="btn" href="mailto:example@gist.ac.kr">버튼 문구</a>
       </div>
     </section>
   </main>
@@ -146,17 +146,17 @@ import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
 
 // ---- Research themes (KIXLAB-style tag chips, link to /research#id) ----
 const themes = [
-  { id: 'topic-1', icon: '🦾', title: '[]', count: '[]' },
-  { id: 'topic-2', icon: '🧠', title: '[]', count: '[]' },
-  { id: 'topic-3', icon: '🤖', title: '[]', count: '[]' },
-  { id: 'topic-4', icon: '🏃', title: '[]', count: '[]' },
+  { id: 'topic-1', icon: '🦾', title: '테마 이름', count: '논문 수' },
+  { id: 'topic-2', icon: '🧠', title: '테마 이름', count: '논문 수' },
+  { id: 'topic-3', icon: '🤖', title: '테마 이름', count: '논문 수' },
+  { id: 'topic-4', icon: '🏃', title: '테마 이름', count: '논문 수' },
 ]
 
 // ---- News (Firestore, with skeleton while loading + static fallback) ----
 const fallbackNews: NewsItemType[] = [
-  { id: 'seed-1', date: '[]', desc: '[]', tag: '[]' },
-  { id: 'seed-2', date: '[]', desc: '[]', tag: '[]' },
-  { id: 'seed-3', date: '[]', desc: '[]', tag: '[]' },
+  { id: 'seed-1', date: '날짜', desc: '소식 내용', tag: '태그' },
+  { id: 'seed-2', date: '날짜', desc: '소식 내용', tag: '태그' },
+  { id: 'seed-3', date: '날짜', desc: '소식 내용', tag: '태그' },
 ]
 
 const { news, loading: newsLoading, error: newsError } = useNews()

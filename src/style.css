@@ -1,5 +1,4 @@
 :root {
-  /* ---- color tokens ---- */
   --bg: #ffffff;
   --surface: #fbf8f5;
   --surface-2: #f3ede6;
@@ -16,12 +15,10 @@
 
   --ok: #2f9e57;
 
-  /* ---- type tokens ---- */
   --font-display: "Space Grotesk", "Pretendard", sans-serif;
   --font-body: "Inter", "Pretendard", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
-  /* ---- layout tokens ---- */
   --page-max: 1200px;
   --radius: 14px;
   --radius-sm: 8px;
@@ -89,7 +86,6 @@ img, svg {
   color: var(--text);
 }
 
-/* focus visibility */
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--orange);

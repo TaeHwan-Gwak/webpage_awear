@@ -11,12 +11,12 @@
     <transition name="pop">
       <div v-if="showSummary" class="summary-card">
         <p class="summary-eyebrow">Summary</p>
-        <h4>[]</h4>
-        <p class="summary-desc">[]</p>
+        <h4>논문 제목</h4>
+        <p class="summary-desc">요약 설명</p>
         <ul class="summary-points">
-          <li>[]</li>
-          <li>[]</li>
-          <li>[]</li>
+          <li>핵심 내용</li>
+          <li>핵심 내용</li>
+          <li>핵심 내용</li>
         </ul>
       </div>
     </transition>
