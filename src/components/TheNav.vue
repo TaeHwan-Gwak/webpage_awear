@@ -2,13 +2,7 @@
   <header class="nav" :class="{ scrolled }">
     <div class="nav-inner">
       <router-link to="/" class="brand">
-        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
-          <path d="M4 24 L11 8 L16 20 L21 8 L28 24" />
-        </svg>
-        <span class="brand-text">
-          <strong>AWEAR</strong>
-          <em>Lab</em>
-        </span>
+        <img src="/logo.webp" alt="AWEAR Lab - AI-based WEArable Robotics Lab" class="logo" />
       </router-link>
 
       <nav class="links" aria-label="주요 메뉴">

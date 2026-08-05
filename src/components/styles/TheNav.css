@@ -24,36 +24,12 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
   margin-right: auto;
 }
 
-.mark {
-  width: 24px;
-  height: 24px;
-}
-
-.mark path {
-  fill: none;
-  stroke: var(--orange);
-  stroke-width: 2.4;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-}
-
-.brand-text {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  color: var(--text);
-}
-
-.brand-text em {
-  font-style: normal;
-  color: var(--text-muted);
-  font-size: 0.85rem;
+.logo {
+  height: 32px;
+  width: auto;
 }
 
 .links {

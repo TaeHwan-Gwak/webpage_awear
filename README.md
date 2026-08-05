@@ -1,12 +1,7 @@
 # AWEAR Lab Frontend
 
-GIST AWEAR Lab(AI-based WEArable Robotics Laboratory) 웹사이트 개편 프론트엔드.
+GIST AWEAR Lab
 Vue 3 + Vite + TypeScript + Vue Router로 작성되었으며, 백엔드는 Firebase(Firestore + Storage)를 사용합니다.
-
-디자인은 두 곳을 참고했습니다.
-
-- **Stanford Biomechatronics Lab** (biomechatronics.stanford.edu) — 사진 중심 히어로, "Glimpses of our Research" 갤러리
-- **KIXLAB @ KAIST** (kixlab.org) — 태그 붙은 뉴스 피드, 연구 테마 칩, 미디어(영상) 섹션
 
 ## 시작하기
 
@@ -51,11 +46,9 @@ Home의 "Research Themes" 칩(`#topic-1` ~ `#topic-4`)은 `/research` 페이지�
 ## 논문 필터 & 호버 요약
 
 - `PublicationsPage.vue`의 테마 칩은 실제로 동작하는 **클라이언트 사이드 필터**입니다. 논문 배열의
-  `theme` 값을 기준으로 자동 생성되고, 클릭하면 해당 테마만 걸러서 보여줍니다. 별도 서버 호출 없이
-  Vue의 `computed`만으로 구현했어요.
+  `theme` 값을 기준으로 자동 생성되고, 클릭하면 해당 테마만. 별도 서버 호출 없이 Vue의 `computed`만으로 구현
 - `PublicationItem.vue`에 마우스를 2초 이상 올리면 `.summary-card`가 펼쳐집니다. 지금은 내용이
-  전부 `[]`로 비어있고 **기능만** 구현되어 있어요. 실제 요약 텍스트는 `summary` 같은 prop을 추가해서
-  나중에 채우면 됩니다.
+  전부 `[]`로 비어있고 **기능만** 구현. 실제 요약 텍스트는 `summary` 같은 prop을 추가해서 나중에
 
 ## 색상 테마
 
@@ -73,19 +66,9 @@ Home의 "Research Themes" 칩(`#topic-1` ~ `#topic-4`)은 `/research` 페이지�
 
 ## 로고/이미지 (webp)
 
-`TheNav.vue`의 마크와 `public/favicon.svg`는 지금 임시 오렌지 추상 아이콘입니다. 실제 로고나 사진을
-받으면 `public/` 아래에 `.webp`로 저장해서 각 `ph-label`(placeholder) 자리에 `<img>`로 교체하면 됩니다.
-
 ```bash
 npx @squoosh/cli --webp auto 원본파일.png -d public/
 ```
-
-## Firebase 연동
-
-1. [Firebase 콘솔](https://console.firebase.google.com)에서 프로젝트 생성
-2. Firestore 데이터베이스 생성 시 **Standard 에디션**, Native 모드 선택 (기본값)
-3. 웹 앱 등록 후 나온 설정값을 `.env.local`에 채워 넣기 (`.env.example` 참고)
-4. `src/firebase.ts`가 값이 채워지면 자동으로 Firebase에 연결하고, 비어 있으면 정적 데이터로 동작
 
 ### 데이터 모델 예시 (News)
 
