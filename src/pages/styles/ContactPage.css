@@ -52,3 +52,46 @@ dd a:hover {
     grid-template-columns: 1fr;
   }
 }
+
+ /* apply */
+
+.apply .panel {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 64px 56px;
+  background: var(--surface);
+  max-width: 640px;
+}
+
+.apply h2 {
+  margin-top: 14px;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  color: var(--text);
+}
+
+.apply .desc {
+  margin-top: 18px;
+  font-size: 0.98rem;
+}
+
+.apply .btn {
+  display: inline-block;
+  margin-top: 32px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  border: 1px solid var(--orange);
+  color: var(--orange-deep);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.18s ease;
+}
+
+.apply .btn:hover {
+  background: rgba(255, 90, 31, 0.08);
+}
+
+@media (max-width: 640px) {
+  .apply .panel {
+    padding: 40px 24px;
+  }
+}

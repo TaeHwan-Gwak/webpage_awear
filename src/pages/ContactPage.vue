@@ -2,6 +2,15 @@
   <main class="contact-page">
     <PageHeader eyebrow="Contact" title="페이지 제목" description="페이지 설명" />
 
+    <section class="apply section">
+      <div class="panel">
+        <p class="eyebrow">Apply</p>
+        <h2>제목</h2>
+        <p class="desc">설명</p>
+        <a class="btn" href="mailto:example@gist.ac.kr">버튼 문구</a>
+      </div>
+    </section>
+
     <section class="content section">
       <div class="info">
         <dl>

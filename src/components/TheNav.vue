@@ -9,8 +9,6 @@
         <router-link v-for="item in items" :key="item.to" :to="item.to">{{ item.label }}</router-link>
       </nav>
 
-      <router-link class="cta" to="/internship">인턴 지원</router-link>
-
       <button class="burger" :aria-expanded="open" aria-label="메뉴 열기" @click="open = !open">
         <span /><span /><span />
       </button>
@@ -19,7 +17,6 @@
     <transition name="drop">
       <nav v-if="open" class="mobile-links" aria-label="주요 메뉴 (모바일)">
         <router-link v-for="item in items" :key="item.to" :to="item.to" @click="open = false">{{ item.label }}</router-link>
-        <router-link class="cta" to="/internship" @click="open = false">인턴 지원</router-link>
       </nav>
     </transition>
   </header>
@@ -35,7 +32,6 @@ const items = [
   { label: 'Research', to: '/research' },
   { label: 'Publications', to: '/publications' },
   { label: 'Member', to: '/member' },
-  { label: 'Internship', to: '/internship' },
   { label: 'News', to: '/news' },
   { label: 'Contact', to: '/contact' },
 ]
