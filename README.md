@@ -96,24 +96,14 @@ news/{자동 ID}
   tag: string    예) "publication", "award" (선택)
 ```
 
-## Home 페이지 스크롤 스냅
+## Home 페이지 히어로 캐러셀
 
-`HomePage.vue`는 일반적인 자유 스크롤 대신, 섹션 단위로 딱딱 맞춰 넘어가는 스크롤 스냅으로
-되어 있습니다 (`pages/styles/HomePage.css`의 `.snap-page`).
+`HomePage.vue`의 히어로 사진 자리는 `HeroCarousel.vue`로 되어 있습니다.
 
-- `<main class="snap-page">`가 `height: 100svh; overflow-y: auto; scroll-snap-type: y mandatory;`로
-  자체 스크롤 영역이 됩니다 — `html`/`body` 전체에 적용하지 않아서 다른 페이지(Research, Publications
-  등 목록형 페이지)는 영향받지 않습니다
-- 각 `<section>`은 `min-height: 100svh`로 최소 한 화면을 채우고, `scroll-snap-align: start`로 섹션
-  시작 지점에 맞춰 멈춥니다. 내용이 한 화면보다 길면(Gallery, News 등) `min-height`는 최솟값이라 그
-  이상으로 자연스럽게 늘어납니다
-- `scroll-padding-top: 76px`로 상단 고정 nav에 가려지지 않게 오프셋을 줬습니다
-- 다 스크롤한 뒤에는(마지막 섹션 이후) 바깥 문서 스크롤로 자연스럽게 이어져 Footer가 나옵니다
-- `prefers-reduced-motion`인 경우 스냅을 끕니다
-
-다른 페이지에도 이 효과를 적용하고 싶으면 같은 페이지의 `<main>`에 `snap-page` 클래스를 추가하고
-직속 `<section>`들에 맞춰 CSS를 조정하면 됩니다. 다만 Publications/Member/News처럼 리스트가 긴
-페이지는 스냅이 오히려 불편할 수 있어서 지금은 Home에만 적용했습니다.
+- 5초마다 자동으로 다음 이미지로 크로스페이드 전환, 하단 점(dot) 클릭으로 수동 선택도 가능
+- 지금은 picsum.photos(무료 placeholder 이미지 서비스)의 예시 사진 3장이 들어가 있습니다 —
+  `HomePage.vue`의 `heroImages` 배열을 실제 `.webp` 경로로 교체하면 됩니다
+- 이미지 로드가 실패하면 자동으로 회색 placeholder로 대체됩니다 (`@error` 핸들링)
 
 ## Kakao 지도 연동 (Contact 페이지)
 
@@ -127,6 +117,34 @@ news/{자동 ID}
 
 지도 SDK 자체(마커 표시 등 기본 기능)는 무료입니다. 네이버 지도 API는 2025년에 무료 이용량 제공이
 종료돼서 카카오맵으로 선택했어요.
+
+## 관리자 페이지 (/admin)
+
+공개 네비게이션에는 링크가 없고, URL(`/admin`)로만 접근합니다. 비밀번호 입력 후에만 들어갈 수 있어요.
+
+- `/admin/login` — 비밀번호 입력 화면 (공개, 인증 불필요)
+- `/admin` 및 하위 경로 — `router/index.ts`의 `beforeEach` 가드가 `sessionStorage`를 확인해서,
+  로그인 안 된 상태면 `/admin/login`으로 돌려보냅니다 (로그인 후 원래 가려던 경로로 복귀)
+- 비밀번호는 `.env.local`의 `VITE_ADMIN_PASSWORD`에 설정
+- `App.vue`에서 경로가 `/admin`으로 시작하면 공개 사이트의 `TheNav`/`TheFooter`를 숨깁니다
+
+**⚠️ 지금 구현은 진짜 보안이 아닙니다.** 비밀번호가 빌드된 JS 안에 그대로 들어있어서, 개발자 도구로
+값을 알아내거나 우회하는 게 어렵지 않아요. 실제로 배포해서 운영진 데이터를 다룰 때는
+`useAdminAuth.ts`를 Firebase Authentication(이메일/비밀번호 로그인) 기반으로 바꾸고, Firestore
+보안 규칙에서 로그인한 사용자만 쓰기 가능하도록 서버 쪽에서 실제로 검증하도록 교체하세요.
+
+### 관리자 하위 페이지 추가하기
+
+`router/index.ts`의 `/admin` 항목 `children` 배열에 추가하면 자동으로 비밀번호 보호가 적용됩니다.
+
+```ts
+children: [
+  { path: '', name: 'admin-dashboard', component: () => import('../pages/admin/AdminDashboardPage.vue') },
+  { path: 'news', name: 'admin-news', component: () => import('../pages/admin/AdminNewsPage.vue') }, // 예시
+],
+```
+
+페이지 파일은 `src/pages/admin/`에, 스타일은 같은 폴더의 `styles/`에 두는 기존 규칙을 그대로 따르면 됩니다.
 
 ## 다음 단계
 

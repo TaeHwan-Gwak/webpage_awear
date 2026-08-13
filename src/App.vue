@@ -1,10 +1,15 @@
 <template>
-  <TheNav />
+  <TheNav v-if="!isAdminRoute" />
   <router-view />
-  <TheFooter />
+  <TheFooter v-if="!isAdminRoute" />
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import TheNav from './components/TheNav.vue'
 import TheFooter from './components/TheFooter.vue'
+
+const route = useRoute()
+const isAdminRoute = computed(() => route.path.startsWith('/admin'))
 </script>

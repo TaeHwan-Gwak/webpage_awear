@@ -1,0 +1,40 @@
+.admin-shell {
+  min-height: 100vh;
+  background: var(--surface);
+}
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  color: var(--text);
+}
+
+.logout {
+  padding: 7px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  background: var(--bg);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.logout:hover {
+  border-color: var(--orange);
+  color: var(--orange-deep);
+}
+
+.admin-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 28px;
+}

@@ -2,8 +2,7 @@
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(10px);
+  background: var(--bg);
   border-bottom: 1px solid var(--border-soft);
 }
 
@@ -97,7 +96,7 @@
     flex-direction: column;
     gap: 2px;
     padding: 8px 20px 20px;
-    background: rgba(255, 255, 255, 0.96);
+    background: var(--bg);
     border-bottom: 1px solid var(--border);
   }
   .mobile-links a {

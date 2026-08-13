@@ -1,0 +1,74 @@
+.admin-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--surface);
+}
+
+.panel {
+  width: 100%;
+  max-width: 340px;
+  padding: 40px 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+h1 {
+  margin-top: 8px;
+  font-size: 1.6rem;
+  color: var(--text);
+}
+
+.field {
+  display: block;
+  margin-top: 28px;
+}
+
+.field span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+
+.field input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.96rem;
+  color: var(--text);
+  background: var(--bg);
+}
+
+.field input:focus {
+  outline: 2px solid var(--orange);
+  outline-offset: 1px;
+  border-color: var(--orange);
+}
+
+.error {
+  margin-top: 12px;
+  font-size: 0.84rem;
+  color: var(--orange-deep);
+}
+
+.btn {
+  width: 100%;
+  margin-top: 24px;
+  padding: 12px;
+  border: none;
+  border-radius: 999px;
+  background: var(--orange);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.18s ease;
+}
+
+.btn:hover {
+  background: var(--orange-deep);
+}
