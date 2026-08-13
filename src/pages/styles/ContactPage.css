@@ -31,20 +31,18 @@ dd a:hover {
   color: var(--orange-deep);
 }
 
-.map-placeholder {
-  min-height: 320px;
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.directions {
+  display: inline-block;
+  margin-top: 24px;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  color: var(--orange-deep);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
 }
 
-.ph-label {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--text-faint);
+.directions:hover {
+  border-color: var(--orange-deep);
 }
 
 @media (max-width: 860px) {
@@ -53,7 +51,43 @@ dd a:hover {
   }
 }
 
- /* apply */
+#internship {
+  scroll-margin-top: 100px;
+}
+
+.fields h2,
+.qualify h2 {
+  margin-top: 14px;
+  font-size: 1.3rem;
+  color: var(--text);
+  max-width: 620px;
+}
+
+.field-list {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 640px;
+}
+
+.field-list li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 0.98rem;
+  color: var(--text-muted);
+}
+
+.field-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orange);
+}
 
 .apply .panel {
   border: 1px solid var(--border);

@@ -10,6 +10,7 @@ const routes = [
     component: () => import('../pages/PublicationsPage.vue'),
   },
   { path: '/member', name: 'member', component: () => import('../pages/MemberPage.vue') },
+  { path: '/internship', redirect: '/contact#internship' },
   { path: '/news', name: 'news', component: () => import('../pages/NewsPage.vue') },
   { path: '/contact', name: 'contact', component: () => import('../pages/ContactPage.vue') },
 ]

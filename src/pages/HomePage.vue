@@ -2,11 +2,8 @@
   <main>
     <!-- Hero: photo-first, like Stanford Biomechatronics -->
     <section id="top" class="hero">
-      <div class="hero-photo" aria-hidden="true">
-        <span class="ph-label">이미지</span>
-      </div>
-      <div class="hero-caption">
-        <p class="location">위치 캡션</p>
+      <div class="hero-photo">
+        <HeroCarousel :images="heroImages" />
       </div>
 
       <div class="hero-text section">
@@ -142,7 +139,15 @@ import { computed } from 'vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import NewsItem from '../components/NewsItem.vue'
+import HeroCarousel from '../components/HeroCarousel.vue'
 import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
+
+// 실제 연구실 사진으로 교체하기 전까지 쓰는 예시 이미지입니다 (picsum.photos, 저작권 문제 없는 placeholder 서비스).
+const heroImages = [
+  'https://picsum.photos/seed/awear-lab-1/1600/900',
+  'https://picsum.photos/seed/awear-lab-2/1600/900',
+  'https://picsum.photos/seed/awear-lab-3/1600/900',
+]
 
 // ---- Research themes (KIXLAB-style tag chips, link to /research#id) ----
 const themes = [

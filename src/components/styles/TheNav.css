@@ -2,14 +2,9 @@
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 50;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.25s ease, background 0.25s ease;
-}
-
-.nav.scrolled {
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(10px);
-  border-bottom-color: var(--border);
+  border-bottom: 1px solid var(--border-soft);
 }
 
 .nav-inner {
