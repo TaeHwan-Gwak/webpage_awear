@@ -24,11 +24,6 @@ function loadKakaoMapsScript(appKey: string): Promise<void> {
   return scriptPromise
 }
 
-/**
- * Loads the Kakao Maps SDK and renders a map centered on `address`
- * (geocoded at runtime — no hardcoded lat/lng). Falls back gracefully
- * with an `error` code if VITE_KAKAO_MAP_KEY isn't set yet.
- */
 export function useKakaoMap(containerRef: Ref<HTMLElement | null>, address: string) {
   const ready = ref(false)
   const error = ref<string | null>(null)

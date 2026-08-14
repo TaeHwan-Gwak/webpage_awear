@@ -52,7 +52,6 @@ const publications = Array.from({ length: 6 }, () => ({
   theme: '연구 분야',
 }))
 
-// 테마 칩은 논문 목록에 실제로 등장하는 theme 값만 자동으로 모아서 보여줍니다.
 const themes = computed(() => Array.from(new Set(publications.map((p) => p.theme))))
 
 const activeTheme = ref<string | null>(null)

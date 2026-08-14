@@ -1,6 +1,5 @@
 <template>
   <main>
-    <!-- Hero: photo-first, like Stanford Biomechatronics -->
     <section id="top" class="hero">
       <div class="hero-photo">
         <HeroCarousel :images="heroImages" />
@@ -16,13 +15,11 @@
 
     <SignalDivider />
 
-    <!-- Mission -->
     <section id="mission" class="mission section">
       <p class="eyebrow">Mission</p>
       <h2>미션 문구</h2>
     </section>
 
-    <!-- Research Themes: KIXLAB-style tag chips -->
     <section id="research" class="themes section">
       <header class="head">
         <p class="eyebrow">Research Themes</p>
@@ -43,7 +40,6 @@
       </div>
     </section>
 
-    <!-- Glimpses of our Research: Stanford-style photo gallery -->
     <section class="gallery section">
       <header class="head">
         <p class="eyebrow">Glimpses of our Research</p>
@@ -57,7 +53,6 @@
 
     <SignalDivider />
 
-    <!-- Media: KIXLAB-style video showcase -->
     <section class="media section">
       <header class="head">
         <p class="eyebrow">Media</p>
@@ -74,7 +69,6 @@
       </div>
     </section>
 
-    <!-- News -->
     <section id="news" class="news section">
       <header class="head">
         <p class="eyebrow">News</p>
@@ -104,7 +98,6 @@
       <router-link class="more-link" to="/news">소식 전체 보기 →</router-link>
     </section>
 
-    <!-- Principal Investigator -->
     <section id="pi" class="pi section">
       <div class="card">
         <div class="portrait" aria-hidden="true">
@@ -122,7 +115,6 @@
       </div>
     </section>
 
-    <!-- Join -->
     <section id="join" class="join section">
       <div class="panel">
         <p class="eyebrow">Join Us</p>
@@ -142,14 +134,12 @@ import NewsItem from '../components/NewsItem.vue'
 import HeroCarousel from '../components/HeroCarousel.vue'
 import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
 
-// 실제 연구실 사진으로 교체하기 전까지 쓰는 예시 이미지입니다 (picsum.photos, 저작권 문제 없는 placeholder 서비스).
 const heroImages = [
   'https://picsum.photos/seed/awear-lab-1/1600/900',
   'https://picsum.photos/seed/awear-lab-2/1600/900',
   'https://picsum.photos/seed/awear-lab-3/1600/900',
 ]
 
-// ---- Research themes (KIXLAB-style tag chips, link to /research#id) ----
 const themes = [
   { id: 'topic-1', icon: '🦾', title: '테마 이름', count: '논문 수' },
   { id: 'topic-2', icon: '🧠', title: '테마 이름', count: '논문 수' },
@@ -157,7 +147,6 @@ const themes = [
   { id: 'topic-4', icon: '🏃', title: '테마 이름', count: '논문 수' },
 ]
 
-// ---- News (Firestore, with skeleton while loading + static fallback) ----
 const fallbackNews: NewsItemType[] = [
   { id: 'seed-1', date: '날짜', desc: '소식 내용', tag: '태그' },
   { id: 'seed-2', date: '날짜', desc: '소식 내용', tag: '태그' },

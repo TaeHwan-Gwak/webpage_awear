@@ -15,7 +15,6 @@ const routes = [
   { path: '/news', name: 'news', component: () => import('../pages/NewsPage.vue') },
   { path: '/contact', name: 'contact', component: () => import('../pages/ContactPage.vue') },
 
-  // /admin — nav에 링크는 없고 URL로만 접근. 로그인 페이지만 공개, 나머지는 전부 비밀번호 확인 후 접근.
   {
     path: '/admin/login',
     name: 'admin-login',
@@ -26,8 +25,6 @@ const routes = [
     component: () => import('../pages/admin/AdminLayout.vue'),
     meta: { requiresAdminAuth: true },
     children: [
-      // /admin 기본 화면. 이후 /admin/news, /admin/publications 등은
-      // 여기 children 배열에 항목만 추가하면 됩니다.
       { path: '', name: 'admin-dashboard', component: () => import('../pages/admin/AdminDashboardPage.vue') },
     ],
   },

@@ -34,7 +34,6 @@ defineProps<{
   theme?: string
 }>()
 
-// 2초 이상 마우스를 올리고 있으면 요약 카드를 보여줍니다.
 const HOVER_DELAY = 2000
 
 const showSummary = ref(false)

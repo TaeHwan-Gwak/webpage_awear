@@ -9,12 +9,6 @@ export interface NewsItem {
   tag?: string
 }
 
-/**
- * Loads up to `max` news items from the Firestore "news" collection,
- * ordered by the `date` field (string, sortable e.g. "2026-04").
- * Returns an empty array if Firebase isn't configured yet or the
- * collection is empty — callers should fall back to static content.
- */
 export function useNews(max = 5) {
   const news = ref<NewsItem[]>([])
   const loading = ref(true)

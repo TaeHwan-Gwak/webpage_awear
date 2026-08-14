@@ -11,8 +11,6 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 }
 
-// Firebase is optional at dev time: until .env has real project values,
-// the site should keep working and simply fall back to static content.
 const isConfigured = Object.values(firebaseConfig).every(Boolean)
 
 export let app: FirebaseApp | undefined
