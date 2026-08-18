@@ -55,8 +55,6 @@ const publications = Array.from({ length: 6 }, () => ({
   theme: '연구 분야',
 }))
 
-const themes = computed(() => Array.from(new Set(publications.map((p) => p.theme))))
-
 const activeTheme = ref<string | null>(null)
 
 const filteredPublications = computed(() =>

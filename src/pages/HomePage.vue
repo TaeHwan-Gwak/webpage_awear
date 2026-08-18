@@ -86,7 +86,7 @@
           <h2>이름</h2>
           <p class="role">소속·직함</p>
           <p class="bio">소개</p>
-          <a class="mail" href="mailto:example@gist.ac.kr">이메일</a>
+          <span class="mail">이메일</span>
           <router-link class="more-link" to="/member">연구실 구성원 보기 →</router-link>
         </div>
       </div>

@@ -124,24 +124,21 @@ button:focus-visible {
   }
 }
 
-/* 1. 전체 화면 텍스트 선택 및 드래그 방지 */
 *,
 *::before,
 *::after {
-  -webkit-user-select: none; /* Safari / iOS */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* IE / Edge */
-  user-select: none;         /* Standard */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-/* 2. 이미지 및 링크 드래그 고스트 방지 */
 img,
 a {
   -webkit-user-drag: none;
   user-drag: none;
 }
 
-/* 3. 예외 처리: 검색창이나 입력 폼에서는 텍스트 선택 허용 */
 input,
 textarea {
   -webkit-user-select: text;

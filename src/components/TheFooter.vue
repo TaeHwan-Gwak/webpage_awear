@@ -8,9 +8,9 @@
       </div>
 
       <div class="right">
-        <a href="mailto:example@gist.ac.kr">이메일</a>
+        <span>jkangrobot@gist.ac.kr</span>
         <span class="divider">·</span>
-        <span>주소</span>
+        <span>광주광역시 북구 첨단과기로 123 다산빌딩</span>
       </div>
 
       <div class="social">

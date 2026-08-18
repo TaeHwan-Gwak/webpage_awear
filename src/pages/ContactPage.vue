@@ -7,7 +7,7 @@
         <dl>
           <div class="row">
             <dt>Email</dt>
-            <dd><a href="mailto:jkangrobot@gist.ac.kr">jkangrobot@gist.ac.kr</a></dd>
+            <dd>jkangrobot@gist.ac.kr</dd>
           </div>
           <div class="row">
             <dt>Address</dt>
@@ -27,12 +27,11 @@
         </a>
       </div>
 
-      <GoogleMap address="광주광역시 북구 첨단과기로 123 다산빌딩" />
+      <GoogleMap />
     </section>
 
     <SignalDivider />
 
-    <!-- 좌우 2열 배치를 위한 래퍼 컨테이너 -->
     <div class="join-grid section">
       <section id="internship" class="fields">
         <p class="eyebrow">Research Fields</p>

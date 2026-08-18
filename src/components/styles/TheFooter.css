@@ -25,10 +25,6 @@
   color: var(--text-faint);
 }
 
-.right a:hover {
-  color: var(--orange-deep);
-}
-
 .social {
   display: flex;
   gap: 12px;
