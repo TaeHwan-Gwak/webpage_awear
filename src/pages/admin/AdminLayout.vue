@@ -19,7 +19,7 @@ const router = useRouter()
 
 function onLogout() {
   logoutAdmin()
-  router.replace('/admin/login')
+  router.replace('/')
 }
 </script>
 
