@@ -6,15 +6,26 @@
       </router-link>
 
       <nav class="links" aria-label="주요 메뉴">
-        <div v-for="item in items" :key="item.to" class="nav-item">
-          <router-link :to="item.to">{{ item.label }}</router-link>
+        <div
+          v-for="item in items"
+          :key="item.to"
+          class="nav-item"
+          @mouseenter="openDropdown(item.to)"
+          @mouseleave="closeDropdown"
+        >
+          <router-link :to="item.to" @click="closeDropdown">{{ item.label }}</router-link>
 
-          <div v-if="item.children" class="dropdown">
+          <div
+            v-if="item.children"
+            class="dropdown"
+            :class="{ 'is-open': activeDropdown === item.to }"
+          >
             <router-link
               v-for="child in item.children"
               :key="child.to"
               :to="child.to"
               class="dropdown-item"
+              @click="onSubItemClick"
             >
               {{ child.label }}
             </router-link>
@@ -52,6 +63,22 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const open = ref(false)
+
+const activeDropdown = ref<string | null>(null)
+
+const openDropdown = (key: string) => {
+  activeDropdown.value = key
+}
+
+const closeDropdown = () => {
+  activeDropdown.value = null
+}
+
+const onSubItemClick = (e: MouseEvent) => {
+  closeDropdown()
+  const target = e.currentTarget as HTMLElement | null
+  target?.blur()
+}
 
 const items = [
   {
