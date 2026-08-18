@@ -67,20 +67,15 @@
           </li>
         </template>
         <template v-else>
-          <NewsItem
-            v-for="item in displayNews"
-            :key="item.id ?? item.date"
-            :date="item.date"
-            :desc="item.desc"
-            :tag="item.tag"
-          />
+          <NewsItem v-for="item in displayNews" :key="item.id ?? item.date" :date="item.date" :desc="item.desc"
+            :tag="item.tag" />
         </template>
       </ol>
 
       <router-link class="more-link" to="/news">소식 전체 보기 →</router-link>
     </section>
 
-    <section id="pi" class="pi section">
+    <!-- <section id="pi" class="pi section">
       <div class="card">
         <div class="portrait" aria-hidden="true">
           <span class="ph-label">이미지</span>
@@ -95,16 +90,21 @@
           <router-link class="more-link" to="/member">연구실 구성원 보기 →</router-link>
         </div>
       </div>
-    </section>
+    </section> -->
 
-    <section id="join" class="join section">
+    <!-- <section id="join" class="join section">
       <div class="panel">
-        <p class="eyebrow">Join Us</p>
-        <h2>제목</h2>
-        <p class="desc">설명</p>
-        <a class="btn" href="mailto:example@gist.ac.kr">버튼 문구</a>
+        <p class="eyebrow">How to Apply</p>
+        <h2>Join Us</h2>
+        <p class="desc">
+          간단한 자기소개 및 경력사항과 함께 학점(만점 기준 표기 필수)을 기재하여<br />
+          아래 이메일로 지원 및 문의 바랍니다.
+        </p>
+        <a class="btn" href="mailto:jkangrobot@gist.ac.kr?subject=[AWEAR Lab 지원] OOO 지원서">
+          이메일로 지원하기 →
+        </a>
       </div>
-    </section>
+    </section> -->
   </main>
 </template>
 

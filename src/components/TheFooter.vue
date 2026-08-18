@@ -14,8 +14,11 @@
       </div>
 
       <div class="social">
-        <a href="#" aria-label="X 프로필로 이동">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <a href="#" aria-label="맨 위로 이동">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
         </a>
       </div>
     </div>
