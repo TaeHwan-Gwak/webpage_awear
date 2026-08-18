@@ -15,11 +15,11 @@
         <div class="figure" aria-hidden="true">
           <span class="ph-label">이미지</span>
         </div>
-        <div class="body">
+        <div class="heading">
           <p class="index">{{ String(i + 1).padStart(2, '0') }}</p>
           <h2>{{ topic.title }}</h2>
-          <p class="desc">{{ topic.desc }}</p>
         </div>
+        <p class="desc">{{ topic.desc }}</p>
       </article>
     </section>
   </main>
@@ -30,10 +30,9 @@ import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 
 const topics = [
-  { id: 'topic-1', title: '연구 주제명', desc: '설명' },
-  { id: 'topic-2', title: '연구 주제명', desc: '설명' },
-  { id: 'topic-3', title: '연구 주제명', desc: '설명' },
-  { id: 'topic-4', title: '연구 주제명', desc: '설명' },
+  { id: 'topic-1', title: 'BCI / 뉴럴인터페이스', desc: '설명' },
+  { id: 'topic-2', title: '로봇 및 의수', desc: '설명' },
+  { id: 'topic-3', title: 'AI 및 비전', desc: '설명' },
 ]
 </script>
 

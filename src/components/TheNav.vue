@@ -6,7 +6,20 @@
       </router-link>
 
       <nav class="links" aria-label="주요 메뉴">
-        <router-link v-for="item in items" :key="item.to" :to="item.to">{{ item.label }}</router-link>
+        <div v-for="item in items" :key="item.to" class="nav-item">
+          <router-link :to="item.to">{{ item.label }}</router-link>
+
+          <div v-if="item.children" class="dropdown">
+            <router-link
+              v-for="child in item.children"
+              :key="child.to"
+              :to="child.to"
+              class="dropdown-item"
+            >
+              {{ child.label }}
+            </router-link>
+          </div>
+        </div>
       </nav>
 
       <button class="burger" :aria-expanded="open" aria-label="메뉴 열기" @click="open = !open">
@@ -16,7 +29,18 @@
 
     <transition name="drop">
       <nav v-if="open" class="mobile-links" aria-label="주요 메뉴 (모바일)">
-        <router-link v-for="item in items" :key="item.to" :to="item.to" @click="open = false">{{ item.label }}</router-link>
+        <template v-for="item in items" :key="item.to">
+          <router-link :to="item.to" @click="open = false">{{ item.label }}</router-link>
+          <router-link
+            v-for="child in item.children"
+            :key="child.to"
+            :to="child.to"
+            class="mobile-sub"
+            @click="open = false"
+          >
+            {{ child.label }}
+          </router-link>
+        </template>
       </nav>
     </transition>
   </header>
@@ -30,7 +54,15 @@ const route = useRoute()
 const open = ref(false)
 
 const items = [
-  { label: 'Research', to: '/research' },
+  {
+    label: 'Research',
+    to: '/research',
+    children: [
+      { label: 'BCI / 뉴럴인터페이스', to: '/research#topic-1' },
+      { label: '로봇 및 의수', to: '/research#topic-2' },
+      { label: 'AI 및 비전', to: '/research#topic-3' },
+    ],
+  },
   { label: 'Publications', to: '/publications' },
   { label: 'Member', to: '/member' },
   { label: 'News', to: '/news' },
