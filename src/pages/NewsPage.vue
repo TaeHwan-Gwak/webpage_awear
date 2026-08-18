@@ -2,6 +2,8 @@
   <main class="news-page">
     <PageHeader eyebrow="News" title="페이지 제목" description="페이지 설명" />
 
+    <SignalDivider />
+
     <section class="list section">
       <p v-if="error" class="status">최신 소식을 불러오지 못해 이전 내용을 보여드리고 있어요.</p>
 
@@ -32,6 +34,7 @@ import PageHeader from '../components/PageHeader.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import NewsItem from '../components/NewsItem.vue'
 import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
+import SignalDivider from '../components/SignalDivider.vue'
 
 const fallbackNews: NewsItemType[] = Array.from({ length: 6 }, (_, i) => ({
   id: 'seed-' + i,

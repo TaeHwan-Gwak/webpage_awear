@@ -2,7 +2,9 @@
   <main class="publications-page">
     <PageHeader eyebrow="Publications" title="페이지 제목" description="페이지 설명" />
 
-    <section class="filters section">
+    <SignalDivider />
+
+    <!-- <section class="filters section">
       <div class="chip-row">
         <button
           class="chip"
@@ -21,7 +23,7 @@
           {{ theme }}
         </button>
       </div>
-    </section>
+    </section> -->
 
     <section class="list section">
       <ul>
@@ -43,6 +45,7 @@
 import { ref, computed } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import PublicationItem from '../components/PublicationItem.vue'
+import SignalDivider from '../components/SignalDivider.vue'
 
 const publications = Array.from({ length: 6 }, () => ({
   year: '연도',
