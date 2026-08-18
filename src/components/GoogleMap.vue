@@ -6,13 +6,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 
 const props = defineProps<{
   address: string
 }>()
 
-const mapEl = ref<HTMLElement | null>(null)
 </script>
 
 <style src="./styles/GoogleMap.css" scoped></style>
