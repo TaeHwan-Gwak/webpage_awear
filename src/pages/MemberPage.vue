@@ -22,21 +22,7 @@
     <section class="group section">
       <h2 class="group-title">그룹명</h2>
       <div class="grid">
-        <MemberCard v-for="i in 4" :key="'grad-' + i" name="이름" role="역할" />
-      </div>
-    </section>
-
-    <section class="group section">
-      <h2 class="group-title">그룹명</h2>
-      <div class="grid">
-        <MemberCard v-for="i in 3" :key="'ug-' + i" name="이름" role="역할" />
-      </div>
-    </section>
-
-    <section class="group section">
-      <h2 class="group-title">그룹명</h2>
-      <div class="grid">
-        <MemberCard v-for="i in 3" :key="'alumni-' + i" name="이름" role="역할" note="비고" />
+        <MemberCard v-for="i in 5" :key="'grad-' + i" name="이름" role="역할" />
       </div>
     </section>
   </main>
