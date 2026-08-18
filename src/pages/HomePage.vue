@@ -9,7 +9,6 @@
         <p class="eyebrow">AI-based WEArable Robotics Lab</p>
         <h1>헤드라인</h1>
         <p class="lede">소개 문구</p>
-        <router-link class="more-link" to="/research">연구 분야 보기 →</router-link>
       </div>
     </section>
 
@@ -24,6 +23,7 @@
       <header class="head">
         <p class="eyebrow">Research Themes</p>
         <h2>섹션 제목</h2>
+        <router-link class="more-link" to="/research">연구 분야 보기 →</router-link>
       </header>
 
       <!-- <div class="chip-grid">
