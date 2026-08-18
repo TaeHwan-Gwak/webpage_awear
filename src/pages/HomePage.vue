@@ -6,7 +6,7 @@
       </div>
 
       <div class="hero-text section">
-        <p class="eyebrow">GIST · AI-based WEArable Robotics Lab</p>
+        <p class="eyebrow">AI-based WEArable Robotics Lab</p>
         <h1>헤드라인</h1>
         <p class="lede">소개 문구</p>
         <router-link class="more-link" to="/research">연구 분야 보기 →</router-link>
@@ -15,10 +15,10 @@
 
     <SignalDivider />
 
-    <section id="mission" class="mission section">
+    <!-- <section id="mission" class="mission section">
       <p class="eyebrow">Mission</p>
       <h2>미션 문구</h2>
-    </section>
+    </section> -->
 
     <section id="research" class="themes section">
       <header class="head">
@@ -26,7 +26,7 @@
         <h2>섹션 제목</h2>
       </header>
 
-      <div class="chip-grid">
+      <!-- <div class="chip-grid">
         <router-link
           v-for="theme in themes"
           :key="theme.id"
@@ -37,7 +37,7 @@
           <span class="chip-title">{{ theme.title }}</span>
           <span class="chip-count">{{ theme.count }}</span>
         </router-link>
-      </div>
+      </div> -->
     </section>
 
     <section class="gallery section">
@@ -48,24 +48,6 @@
         <div v-for="i in 8" :key="i" class="gallery-item" aria-hidden="true">
           <span class="ph-label">이미지</span>
         </div>
-      </div>
-    </section>
-
-    <SignalDivider />
-
-    <section class="media section">
-      <header class="head">
-        <p class="eyebrow">Media</p>
-        <h2>섹션 제목</h2>
-      </header>
-      <div class="media-grid">
-        <a v-for="i in 3" :key="i" href="#" class="media-item">
-          <div class="thumb" aria-hidden="true">
-            <span class="play" aria-hidden="true">▶</span>
-          </div>
-          <p class="media-title">영상 제목</p>
-          <p class="media-date">날짜</p>
-        </a>
       </div>
     </section>
 
@@ -140,12 +122,11 @@ const heroImages = [
   'https://picsum.photos/seed/awear-lab-3/1600/900',
 ]
 
-const themes = [
-  { id: 'topic-1', icon: '🦾', title: '테마 이름', count: '논문 수' },
-  { id: 'topic-2', icon: '🧠', title: '테마 이름', count: '논문 수' },
-  { id: 'topic-3', icon: '🤖', title: '테마 이름', count: '논문 수' },
-  { id: 'topic-4', icon: '🏃', title: '테마 이름', count: '논문 수' },
-]
+// const themes = [
+//   { id: 'topic-1', icon: '🦾', title: '테마 이름', count: '논문 수' },
+//   { id: 'topic-2', icon: '🧠', title: '테마 이름', count: '논문 수' },
+//   { id: 'topic-3', icon: '🤖', title: '테마 이름', count: '논문 수' },
+// ]
 
 const fallbackNews: NewsItemType[] = [
   { id: 'seed-1', date: '날짜', desc: '소식 내용', tag: '태그' },
