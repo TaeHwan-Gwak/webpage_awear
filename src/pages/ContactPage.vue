@@ -19,17 +19,13 @@
           </div>
         </dl>
 
-        <a
-          class="directions"
-          href="https://map.kakao.com/?q=광주광역시 북구 첨단과기로 123 다산빌딩"
-          target="_blank"
-          rel="noopener"
-        >
-          카카오맵에서 길찾기 →
+        <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=광주광역시+북구+첨단과기로+123+다산빌딩"
+          target="_blank" rel="noopener noreferrer">
+          Google 지도에서 길찾기 →
         </a>
       </div>
 
-      <KakaoMap address="광주광역시 북구 첨단과기로 123 다산빌딩" />
+      <GoogleMap address="광주광역시 북구 첨단과기로 123 다산빌딩" />
     </section>
 
     <SignalDivider />
@@ -63,7 +59,7 @@
 <script setup lang="ts">
 import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
-import KakaoMap from '../components/KakaoMap.vue'
+import GoogleMap from '../components/GoogleMap.vue'
 </script>
 
 <style src="./styles/ContactPage.css" scoped></style>
