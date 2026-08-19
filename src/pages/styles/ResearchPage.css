@@ -11,88 +11,79 @@
   row-gap: 12px;
   align-items: center;
   scroll-margin-top: 100px;
-}
 
-.topic .figure {
-  grid-column: 1;
-  grid-row: 1 / 3;
-}
+  .figure {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    aspect-ratio: 4 / 3;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.topic .heading {
-  grid-column: 2;
-  grid-row: 1;
-}
+    .ph-label {
+      font-family: var(--font-mono);
+      font-size: 12.48px;
+      color: var(--text-faint);
+    }
+  }
 
-.topic .desc {
-  grid-column: 2;
-  grid-row: 2;
-}
+  .heading {
+    grid-column: 2;
+    grid-row: 1;
 
-.topic.reverse .figure {
-  grid-column: 2;
-}
+    .index {
+      font-family: var(--font-mono);
+      font-size: 13.6px;
+      color: var(--orange-deep);
+    }
 
-.topic.reverse .heading,
-.topic.reverse .desc {
-  grid-column: 1;
-}
+    h2 {
+      margin-top: 10px;
+      font-size: 24px;
+      color: var(--text);
+    }
+  }
 
-.figure {
-  aspect-ratio: 4 / 3;
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .desc {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 15.68px;
+    max-width: 46ch;
+  }
 
-.ph-label {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--text-faint);
-}
+  &.reverse {
+    .figure {
+      grid-column: 2;
+    }
 
-.index {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--orange-deep);
-}
+    .heading,
+    .desc {
+      grid-column: 1;
+    }
+  }
 
-h2 {
-  margin-top: 10px;
-  font-size: 1.5rem;
-  color: var(--text);
-}
-
-.desc {
-  font-size: 0.98rem;
-  max-width: 46ch;
-}
-
-@media (max-width: 780px) {
-  .topic {
+  @media (max-width: 780px) {
     grid-template-columns: 1fr;
-  }
 
-  .topic .figure,
-  .topic.reverse .figure {
-    grid-column: 1;
-    grid-row: auto;
-    order: 2;
-  }
+    .figure {
+      grid-column: 1;
+      grid-row: auto;
+      order: 2;
+    }
 
-  .topic .heading,
-  .topic.reverse .heading {
-    grid-column: 1;
-    grid-row: auto;
-    order: 1;
-  }
+    .heading {
+      grid-column: 1;
+      grid-row: auto;
+      order: 1;
+    }
 
-  .topic .desc,
-  .topic.reverse .desc {
-    grid-column: 1;
-    grid-row: auto;
-    order: 3;
+    .desc {
+      grid-column: 1;
+      grid-row: auto;
+      order: 3;
+    }
   }
 }

@@ -3,39 +3,39 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
-}
 
-.avatar {
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed var(--border);
-  background: var(--surface-2);
-}
+  .avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--border);
+    background: var(--surface-2);
+  }
 
-.ph-label {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--text-faint);
-}
+  .ph-label {
+    font-family: var(--font-mono);
+    font-size: 10.88px;
+    color: var(--text-faint);
+  }
 
-h3 {
-  margin-top: 18px;
-  font-size: 1.02rem;
-  color: var(--text);
-}
+  h3 {
+    margin-top: 18px;
+    font-size: 16.32px;
+    color: var(--text);
+  }
 
-.role {
-  margin-top: 4px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
+  .role {
+    margin-top: 4px;
+    font-size: 13.6px;
+    color: var(--text-muted);
+  }
 
-.note {
-  margin-top: 10px;
-  font-size: 0.8rem;
-  color: var(--text-faint);
+  .note {
+    margin-top: 10px;
+    font-size: 12.8px;
+    color: var(--text-faint);
+  }
 }

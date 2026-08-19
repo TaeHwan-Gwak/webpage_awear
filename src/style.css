@@ -97,7 +97,7 @@ button:focus-visible {
 
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 12.48px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--orange-deep);

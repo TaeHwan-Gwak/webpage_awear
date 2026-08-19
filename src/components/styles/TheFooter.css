@@ -1,71 +1,69 @@
 .footer {
   border-top: 1px solid var(--border-soft);
-}
 
-.footer-inner {
-  max-width: var(--page-max);
-  margin: 0 auto;
-  padding: 64px 32px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.brand {
-  color: var(--text);
-  font-family: var(--font-display);
-}
-
-.divider {
-  margin: 0 8px;
-  color: var(--text-faint);
-}
-
-.social {
-  display: flex;
-  gap: 12px;
-}
-
-.social a {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-  transition: border-color 0.2s ease, color 0.2s ease;
-}
-
-.social a:hover {
-  border-color: var(--orange);
-  color: var(--orange-deep);
-}
-
-.social svg {
-  width: 15px;
-  height: 15px;
-  stroke: currentColor;
-  fill: none;
-}
-
-.legal {
-  max-width: var(--page-max);
-  margin: 24px auto 0;
-  padding: 0 32px 28px;
-  font-size: 0.78rem;
-  color: var(--text-faint);
-  font-family: var(--font-mono);
-}
-
-@media (max-width: 640px) {
   .footer-inner {
-    flex-direction: column;
-    align-items: flex-start;
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 64px 32px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13.6px;
+    color: var(--text-muted);
+
+    .brand {
+      color: var(--text);
+      font-family: var(--font-display);
+    }
+
+    .divider {
+      margin: 0 8px;
+      color: var(--text-faint);
+    }
+
+    .social {
+      display: flex;
+      gap: 12px;
+
+      a {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        transition: border-color 0.2s ease, color 0.2s ease;
+
+        &:hover {
+          border-color: var(--orange);
+          color: var(--orange-deep);
+        }
+      }
+
+      svg {
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+        fill: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .legal {
+    max-width: var(--page-max);
+    margin: 24px auto 0;
+    padding: 0 32px 28px;
+    font-size: 12.48px;
+    color: var(--text-faint);
+    font-family: var(--font-mono);
   }
 }

@@ -4,170 +4,176 @@
   z-index: 50;
   background: var(--bg);
   border-bottom: 1px solid var(--border-soft);
-}
 
-.nav-inner {
-  max-width: var(--page-max);
-  margin: 0 auto;
-  padding: 18px 32px;
-  display: flex;
-  align-items: center;
-  gap: 32px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  margin-right: auto;
-}
-
-.logo {
-  height: 32px;
-  width: auto;
-}
-
-.links {
-  display: flex;
-  gap: 28px;
-}
-
-.nav-item {
-  position: relative;
-  padding-bottom: 18px;
-  margin-bottom: -18px;
-}
-
-.nav-item > a {
-  font-size: 0.92rem;
-  color: var(--text-muted);
-  transition: color 0.2s ease;
-}
-
-.nav-item > a:hover {
-  color: var(--text);
-}
-
-.nav-item > a.router-link-active {
-  color: var(--orange-deep);
-  font-weight: 500;
-}
-
-.dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 190px;
-  padding: 8px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  box-shadow: 0 16px 34px rgba(32, 24, 16, 0.12);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-6px);
-  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
-}
-
-.dropdown.is-open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.dropdown-item {
-  display: block;
-  padding: 9px 12px;
-  border-radius: var(--radius-sm);
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  white-space: nowrap;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-.dropdown-item:hover {
-  background: var(--surface);
-  color: var(--orange-deep);
-}
-
-.cta {
-  border: 1px solid var(--border);
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: 0.88rem;
-  color: var(--text);
-  white-space: nowrap;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-
-.cta:hover {
-  border-color: var(--orange);
-  background: rgba(255, 90, 31, 0.08);
-}
-
-.burger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  padding: 6px;
-}
-
-.burger span {
-  width: 20px;
-  height: 2px;
-  background: var(--text);
-  border-radius: 2px;
-}
-
-.mobile-links {
-  display: none;
-}
-
-@media (max-width: 860px) {
-  .links {
-    display: none;
-  }
-  .cta {
-    display: none;
-  }
-  .burger {
+  .nav-inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 18px 32px;
     display: flex;
+    align-items: center;
+    gap: 32px;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      margin-right: auto;
+
+      .logo {
+        height: 32px;
+        width: auto;
+      }
+    }
+
+    .links {
+      display: flex;
+      gap: 28px;
+
+      @media (max-width: 860px) {
+        display: none;
+      }
+
+      .nav-item {
+        position: relative;
+        padding-bottom: 18px;
+        margin-bottom: -18px;
+
+        > a {
+          font-size: 14.72px;
+          color: var(--text-muted);
+          transition: color 0.2s ease;
+
+          &:hover {
+            color: var(--text);
+          }
+
+          &.router-link-active {
+            color: var(--orange-deep);
+            font-weight: 500;
+          }
+        }
+
+        .dropdown {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          min-width: 190px;
+          padding: 8px;
+          background: var(--bg);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-sm);
+          box-shadow: 0 16px 34px rgba(32, 24, 16, 0.12);
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-6px);
+          transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+
+          &.is-open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+          }
+
+          .dropdown-item {
+            display: block;
+            padding: 9px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 14.08px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            transition: background 0.15s ease, color 0.15s ease;
+
+            &:hover {
+              background: var(--surface);
+              color: var(--orange-deep);
+            }
+          }
+        }
+      }
+    }
+
+    .cta {
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 14.08px;
+      color: var(--text);
+      white-space: nowrap;
+      transition: border-color 0.2s ease, background 0.2s ease;
+
+      &:hover {
+        border-color: var(--orange);
+        background: rgba(255, 90, 31, 0.08);
+      }
+
+      @media (max-width: 860px) {
+        display: none;
+      }
+    }
+
+    .burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      padding: 6px;
+
+      span {
+        width: 20px;
+        height: 2px;
+        background: var(--text);
+        border-radius: 2px;
+      }
+
+      @media (max-width: 860px) {
+        display: flex;
+      }
+    }
   }
+
   .mobile-links {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 8px 20px 20px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-  }
-  .mobile-links a {
-    padding: 12px 4px;
-    border-bottom: 1px solid var(--border-soft);
-    color: var(--text-muted);
-  }
-  .mobile-links a.router-link-active {
-    color: var(--orange-deep);
-  }
-  .mobile-links .mobile-sub {
-    padding-left: 20px;
-    font-size: 0.9rem;
-    color: var(--text-faint);
-  }
-  .mobile-links .cta {
-    display: block;
-    text-align: center;
-    margin-top: 12px;
-    color: var(--orange-deep);
-  }
-}
+    display: none;
 
-.drop-enter-active,
-.drop-leave-active {
-  transition: opacity 0.18s ease;
-}
-.drop-enter-from,
-.drop-leave-to {
-  opacity: 0;
+    @media (max-width: 860px) {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 8px 20px 20px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    a {
+      padding: 12px 4px;
+      border-bottom: 1px solid var(--border-soft);
+      color: var(--text-muted);
+
+      &.router-link-active {
+        color: var(--orange-deep);
+      }
+    }
+
+    .mobile-sub {
+      padding-left: 20px;
+      font-size: 14.4px;
+      color: var(--text-faint);
+    }
+
+    .cta {
+      display: block;
+      text-align: center;
+      margin-top: 12px;
+      color: var(--orange-deep);
+    }
+  }
+
+  .drop-enter-active,
+  .drop-leave-active {
+    transition: opacity 0.18s ease;
+  }
+
+  .drop-enter-from,
+  .drop-leave-to {
+    opacity: 0;
+  }
 }

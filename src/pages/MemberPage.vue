@@ -11,18 +11,24 @@
         </div>
         <div class="body">
           <p class="eyebrow">Principal Investigator</p>
-          <h2>이름</h2>
-          <p class="role">소속·직함</p>
-          <p class="bio">소개</p>
-          <span class="mail">이메일</span>
+          <h2>{{ pi.name }}</h2>
+          <p class="role">{{ pi.role }}</p>
+          <p class="bio">{{ pi.bio }}</p>
+          <a class="mail" :href="`mailto:${pi.email}`">{{ pi.email }}</a>
         </div>
       </div>
     </section>
 
     <section class="group section">
-      <h2 class="group-title">그룹명</h2>
+      <h2 class="group-title">{{ groupTitle }}</h2>
       <div class="grid">
-        <MemberCard v-for="i in 5" :key="'grad-' + i" name="이름" role="역할" />
+        <MemberCard
+          v-for="member in members"
+          :key="member.id"
+          :name="member.name"
+          :role="member.role"
+          :note="member.note"
+        />
       </div>
     </section>
   </main>
@@ -32,6 +38,9 @@
 import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import MemberCard from '../components/MemberCard.vue'
+import membersData from '../data/members.json'
+
+const { pi, groupTitle, members } = membersData
 </script>
 
 <style src="./styles/MemberPage.css" scoped></style>

@@ -4,9 +4,9 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-}
 
-.google-map iframe {
-  display: block;
-  border: 0;
+  iframe {
+    display: block;
+    border: 0;
+  }
 }
