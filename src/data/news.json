@@ -1,0 +1,137 @@
+[
+  {
+    "id": "n1",
+    "date": "2026.06",
+    "tag": "Press",
+    "desc": "GIST, 일어나기 등 일상 동작만으로 근감소증 추적 AI 기술 개발",
+    "link": "https://n.news.naver.com/article/030/0003435675?sid=102"
+  },
+  {
+    "id": "n2",
+    "date": "2026.05",
+    "tag": "General",
+    "desc": "Souvik Poddar가 SUNY Buffalo에서 박사 학위 논문 심사를 성공적으로 통과했습니다. 축하합니다!",
+    "link": ""
+  },
+  {
+    "id": "n3",
+    "date": "2026.04",
+    "tag": "General",
+    "desc": "AWEAR Lab이 GIST InnoCORE 극한환경 자율 모빌리티 Physical AI 연구단에 참여합니다.",
+    "link": ""
+  },
+  {
+    "id": "n4",
+    "date": "2026.03",
+    "tag": "Publication",
+    "desc": "AI 기반 일상동작 근감소증(sarcopenia) 모니터링 기술에 대한 논문이 J. NeuroEng. Rehabil.(JCR 상위 2%)에 게재되었습니다.",
+    "link": ""
+  },
+  {
+    "id": "n5",
+    "date": "2026.03",
+    "tag": "Grant",
+    "desc": "AWEAR Lab이 BrainJoystick 기반 뇌-기계 인터페이스(BCI) 기술 개발에 대한 한국연구재단 우수 신진 과제를 수주하여 연구를 수행합니다.",
+    "link": ""
+  },
+  {
+    "id": "n6",
+    "date": "2026.03",
+    "tag": "Press",
+    "desc": "GIST-뉴욕주립대, 뇌성마비환자 보행 개선 로봇 재활기술 개발",
+    "link": "https://www.irobotnews.com/news/articleView.html?idxno=45239"
+  },
+  {
+    "id": "n7",
+    "date": "2026.02",
+    "tag": "Press",
+    "desc": "로봇, '맞춤형 의수 설계' 맡는다…손목 동작 정밀 구현",
+    "link": "https://v.daum.net/v/Q8SX1H6bWK?f=p"
+  },
+  {
+    "id": "n8",
+    "date": "2026.02",
+    "tag": "General",
+    "desc": "정성훈학생, 안인균학생, 최유진학생이 2026 로봇학회에서 발표했습니다.",
+    "link": "",
+    "image": "https://static.wixstatic.com/media/d17a04_1cc96ce503e04b43a7a34d6260472b42~mv2.png"
+  },
+  {
+    "id": "n9",
+    "date": "2025.10",
+    "tag": "General",
+    "desc": "김기현학생이 IROS 2025에서 'Subject-independent sEMG-based prosthetic control using MAMBA2 with domain adaptation'라는 주제로 발표했습니다.",
+    "link": "",
+    "image": "https://static.wixstatic.com/media/d17a04_37f07810548e44039d0fb10671a6e608~mv2.jpg"
+  },
+  {
+    "id": "n10",
+    "date": "2025.06",
+    "tag": "Award",
+    "desc": "강지연 교수는 IEEE TNSRE 저널의(JCR 상위 2%) Associate Editor로 참여하게 되었습니다.",
+    "link": ""
+  },
+  {
+    "id": "n11",
+    "date": "2025.06",
+    "tag": "Grant",
+    "desc": "AWEAR Lab이 국립재활원으로부터 필라테스 침상 재활로봇 연구에 대한 과제를 수주하여 주관 기관으로 연구를 수행합니다.",
+    "link": ""
+  },
+  {
+    "id": "n12",
+    "date": "2025.04",
+    "tag": "Press",
+    "desc": "[로봇신문] '젊은 로봇 공학자' (79) 광주과학기술원 강지연 교수",
+    "link": "http://m.irobotnews.com/news/articleView.html?idxno=38246"
+  },
+  {
+    "id": "n13",
+    "date": "2024.05",
+    "tag": "Press",
+    "desc": "\"로봇과 함께 수전증 치료 훈련을\"…GIST, 맞춤형 로봇 재활 시스템 개발",
+    "link": "http://www.itdaily.kr/news/articleView.html?idxno=223206"
+  },
+  {
+    "id": "n14",
+    "date": "2024.04",
+    "tag": "Grant",
+    "desc": "AWEAR Lab이 한국연구재단으로부터 퇴행성 뇌질환 환자의 운동능 회복을 위한 뇌-기계 인터페이스에 대한 과제를 수주하여 주관 기관으로 연구를 수행합니다.",
+    "link": ""
+  },
+  {
+    "id": "n15",
+    "date": "2024.04",
+    "tag": "Grant",
+    "desc": "AWEAR Lab이 보건복지부 장애인·노인 자립생활을 위한 보조기기 실용화 연구개발사업에 대한 과제를 공동 기관으로 연구를 수행합니다.",
+    "link": ""
+  },
+  {
+    "id": "n16",
+    "date": "2023.09",
+    "tag": "Grant",
+    "desc": "AWEAR Lab이 국가과학기술연구회로부터 선행융합연구사업 과제를 수주하여 공동으로 연구를 수행합니다.",
+    "link": ""
+  },
+  {
+    "id": "n17",
+    "date": "2023.06",
+    "tag": "Award",
+    "desc": "제어·로봇·시스템 학회에서 강지연 교수가 우수신진연구자상을 수상하였습니다.",
+    "link": ""
+  },
+  {
+    "id": "n18",
+    "date": "2023.06",
+    "tag": "Grant",
+    "desc": "AWEAR Lab이 로봇 의수 에뮬레이터에 대한 한국연구재단 과제를 수주하여 연구를 수행합니다.",
+    "link": ""
+  },
+  {
+    "id": "n19",
+    "date": "2023.01",
+    "tag": "General",
+    "desc": "AWEAR Lab이 미국 SUNY Buffalo에서 광주과기원으로 이전하여 새롭게 시작하였습니다.",
+    "link": ""
+  }
+]

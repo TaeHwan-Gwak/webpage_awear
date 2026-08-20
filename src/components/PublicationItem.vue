@@ -2,8 +2,14 @@
   <li class="pub-item" @mouseenter="onEnter" @mouseleave="onLeave">
     <span class="year">{{ year }}</span>
     <div class="body">
+      <div v-if="images && images.length" class="thumbs">
+        <img v-for="(src, i) in images" :key="i" :src="src" alt="" loading="lazy" />
+      </div>
       <span v-if="theme" class="theme-tag">{{ theme }}</span>
-      <h3>{{ title }}</h3>
+      <h3>
+        <a v-if="link" :href="link" target="_blank" rel="noopener">{{ title }}</a>
+        <template v-else>{{ title }}</template>
+      </h3>
       <p class="authors">{{ authors }}</p>
       <p class="venue">{{ venue }}</p>
     </div>
@@ -32,6 +38,8 @@ defineProps<{
   authors: string
   venue: string
   theme?: string
+  link?: string
+  images?: string[]
 }>()
 
 const HOVER_DELAY = 2000

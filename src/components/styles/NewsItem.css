@@ -16,6 +16,12 @@
     gap: 6px;
   }
 
+  .idx {
+    font-family: var(--font-mono);
+    font-size: 11.2px;
+    color: var(--text-faint);
+  }
+
   .tag {
     display: inline-block;
     width: fit-content;
@@ -39,6 +45,28 @@
     color: var(--text);
     max-width: 62ch;
     line-height: 1.7;
+
+    .link {
+      margin-left: 4px;
+      color: var(--orange-deep);
+      font-family: var(--font-mono);
+      font-size: 13.44px;
+
+      &:hover {
+        border-bottom: 1px solid var(--orange-deep);
+      }
+    }
+  }
+
+  .body {
+    .photo {
+      display: block;
+      max-width: 220px;
+      height: auto;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
   }
 
   @media (max-width: 640px) {

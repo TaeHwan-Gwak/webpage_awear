@@ -4,61 +4,45 @@
 
     <SignalDivider />
 
-    <!-- <section class="filters section">
+    <section class="filters section">
       <div class="chip-row">
-        <button
-          class="chip"
-          :class="{ active: activeTheme === null }"
-          @click="activeTheme = null"
-        >
+        <button class="chip" :class="{ active: selectedYear === 'all' }" @click="selectedYear = 'all'">
           전체
         </button>
-        <button
-          v-for="theme in themes"
-          :key="theme"
-          class="chip"
-          :class="{ active: activeTheme === theme }"
-          @click="activeTheme = theme"
-        >
-          {{ theme }}
+        <button v-for="y in years" :key="y" class="chip" :class="{ active: selectedYear === y }"
+          @click="selectedYear = y">
+          {{ y }}
         </button>
       </div>
-    </section> -->
+    </section>
 
     <section class="list section">
       <ul>
-        <PublicationItem
-          v-for="(pub, i) in filteredPublications"
-          :key="i"
-          :year="pub.year"
-          :title="pub.title"
-          :authors="pub.authors"
-          :venue="pub.venue"
-          :theme="pub.theme"
-        />
+        <PublicationItem v-for="(pub, i) in filteredPublications" :key="i" :year="pub.year" :title="pub.title"
+          :authors="pub.authors" :venue="pub.venue" :link="pub.link" :images="pub.images" />
       </ul>
+      <p v-if="!filteredPublications.length" class="empty">해당 연도의 논문이 없습니다.</p>
     </section>
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+// TODO: img path
+import { computed, ref } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import PublicationItem from '../components/PublicationItem.vue'
 import SignalDivider from '../components/SignalDivider.vue'
+import publicationsData from '../data/publications.json'
 
-const publications = Array.from({ length: 6 }, () => ({
-  year: '연도',
-  title: '논문 제목',
-  authors: '저자',
-  venue: '게재 학회·저널',
-  theme: '연구 분야',
-}))
+const publications = publicationsData
+const selectedYear = ref('all')
 
-const activeTheme = ref<string | null>(null)
+const years = computed(() => Array.from(new Set(publications.map((p) => p.year))))
 
 const filteredPublications = computed(() =>
-  activeTheme.value ? publications.filter((p) => p.theme === activeTheme.value) : publications
+  selectedYear.value === 'all'
+    ? publications
+    : publications.filter((p) => p.year === selectedYear.value)
 )
 </script>
 
