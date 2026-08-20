@@ -27,9 +27,16 @@
           </li>
         </template>
         <template v-else>
-          <NewsItem v-for="(item, i) in pagedNews" :key="item.id ?? item.date"
-            :index="(currentPage - 1) * pageSize + i + 1" :date="item.date" :desc="item.desc" :tag="item.tag"
-            :link="item.link" :image="item.image" />
+          <NewsItem
+            v-for="(item, i) in pagedNews"
+            :key="item.id ?? item.date"
+            :index="displayNews.length - ((currentPage - 1) * pageSize + i)"
+            :date="item.date"
+            :desc="item.desc"
+            :tag="item.tag"
+            :link="item.link"
+            :image="item.image"
+          />
         </template>
       </ol>
 
@@ -37,11 +44,22 @@
         <button type="button" class="page-btn" :disabled="currentPage === 1" @click="currentPage--">
           이전
         </button>
-        <button v-for="p in totalPages" :key="p" type="button" class="page-btn" :class="{ active: p === currentPage }"
-          @click="currentPage = p">
+        <button
+          v-for="p in totalPages"
+          :key="p"
+          type="button"
+          class="page-btn"
+          :class="{ active: p === currentPage }"
+          @click="currentPage = p"
+        >
           {{ p }}
         </button>
-        <button type="button" class="page-btn" :disabled="currentPage === totalPages" @click="currentPage++">
+        <button
+          type="button"
+          class="page-btn"
+          :disabled="currentPage === totalPages"
+          @click="currentPage++"
+        >
           다음
         </button>
       </nav>
@@ -50,7 +68,6 @@
 </template>
 
 <script setup lang="ts">
-// TODO: img path
 import { computed, ref, watch } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
@@ -60,7 +77,9 @@ import SignalDivider from '../components/SignalDivider.vue'
 import newsData from '../data/news.json'
 
 const { news, loading, error } = useNews(200)
-const displayNews = computed(() => (news.value.length ? news.value : newsData))
+const displayNews = computed(() =>
+  news.value.length ? news.value : [...newsData].reverse()
+)
 
 const pageSize = ref(10)
 const currentPage = ref(1)

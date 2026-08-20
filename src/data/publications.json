@@ -1,106 +1,361 @@
 [
   {
-    "year": "2026",
-    "title": "Study on acute in-patient stroke survivor's interest level on use of a novel robotic ADL trainer for upper limb rehabilitation",
-    "authors": "Arjun Singh, Jihnhee Yu, Amit Kandel, and Jiyeon Kang",
-    "venue": "Submitted",
-    "link": ""
+    "year": "2011-2017",
+    "title": "Minimum heat loss control of fluid-powered systems",
+    "authors": "Jiyeon Kang and Frank C. Park",
+    "venue": "International Conference on Control, Automation and Systems (ICCAS), 2011, pp. 1383–1387.",
+    "link": "https://ieeexplore.ieee.org/abstract/document/6106142"
   },
   {
-    "year": "2026",
-    "title": "Comparison of physiological response of the upper limb on body-powered and myoelectric prostheses",
-    "authors": "Rishi Adusumilli, Mohamed Sulaiman, and Jiyeon Kang",
-    "venue": "Submitted",
-    "link": ""
-  },
-  {
-    "year": "2026",
-    "title": "A personalized enhanced feedforward force control detecting cyclic disturbance for gait rehabilitation robot",
-    "authors": "Jin-Woo Lee*, Sahil Kapahi*, Souvik Poddar, and Jiyeon Kang",
-    "venue": "Submitted",
-    "link": ""
-  },
-  {
-    "year": "2026",
-    "title": "User-centered design of multi-DoF prosthetic wrist controllers: performance and preference in daily living tasks",
-    "authors": "Deepti Bharadwaj, Ingyun Ahn, Saurabh S. Deshmukh, and Jiyeon Kang",
-    "venue": "Healthc. Technol. Lett., in press.",
-    "link": ""
-  },
-  {
-    "year": "2026",
-    "title": "Assist–resist-as-needed robotic control for cable-driven bedside training",
-    "authors": "Jin-Woo Lee, Seonghun Jeong, and Jiyeon Kang",
-    "venue": "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2026.",
-    "link": ""
-  },
-  {
-    "year": "2026",
-    "title": "An exploratory multimodal characterization of tDCS-induced gait adaptation in Parkinson's disease",
-    "authors": "Youngkee Kim, Heegyu Kim, Yousong Shin, Kyungmin Kwon, Hyo Jin Park, Sung Chan Jun, Seong-Min Choi, and Jiyeon Kang",
-    "venue": "IEEE International Conference on Systems, Man, and Cybernetics (SMC), 2026.",
-    "link": ""
-  },
-  {
-    "year": "2026",
-    "title": "Exercise-induced mitigation of cortical slowing and stabilization of beta-burst dynamics in a Parkinson's disease mouse model",
-    "authors": "Jinwoo Ahn, Daeun Roh, Daeyeon Kim, Doeun Kim, Yunjong Lee, Euiheon Chung, and Jiyeon Kang",
-    "venue": "Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC), 2026.",
-    "link": ""
-  },
-  {
-    "year": "2026",
-    "title": "Joint torque estimation from daily living motion for passive sarcopenia monitoring in older adults",
-    "authors": "Jaebeom Jo, Kihyun Kim, Min-gu Kang, Kanghyun Ryu, Junhyoung Ha, and Jiyeon Kang",
-    "venue": "J. NeuroEng. Rehabil. 23 (2026) 161.",
-    "link": "https://link.springer.com/article/10.1186/s12984-026-01962-3",
+    "year": "2011-2017",
+    "title": "On the comfortableness of muscle power assistive robotic system",
+    "authors": "Jiyeon Kang, Keehoon Kim, Sin Jung Kim, and Sang Rok Oh",
+    "venue": "IEEE Ras & Embs International Conference on Biomedical Robotics and Biomechatronics (BioRoB), 2012, pp. 1759–1764.",
+    "link": "https://ieeexplore.ieee.org/document/6290665",
     "images": [
-      "https://static.wixstatic.com/media/d17a04_da8e1962c07c4f6fa6f79159391b758b~mv2.png"
+      "https://static.wixstatic.com/media/d17a04_db614c2fd615423fad8b8a0d1fa12960~mv2.png"
     ]
   },
   {
-    "year": "2026",
-    "title": "A robotic emulator for user-driven design of multi-DOF transradial prostheses",
-    "authors": "Souvik Poddar, Eleonora Botta, Deanna Gates, and Jiyeon Kang",
-    "venue": "IEEE Robot. Autom. Lett. 11 (2026) 4689–4696.",
-    "link": "https://ieeexplore.ieee.org/document/11395581",
+    "year": "2011-2017",
+    "title": "Case studies of a robot enhanced walker for training of children with cerebral palsy",
+    "authors": "Sunil K. Agrawal, Jiyeon Kang, Xi Chen, Mi Jung Kim, Youngmyung Lee, Sang Won Kong, and Gyung-Jin Park",
+    "venue": "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2013, pp. 4243–4248.",
+    "link": "https://ieeexplore.ieee.org/document/6696964",
     "images": [
-      "https://static.wixstatic.com/media/d17a04_fd31248a64694a28ada77a63d315b95b~mv2.png",
-      "https://static.wixstatic.com/media/d17a04_f3a51b46f04843b6aec6175b19a09e8e~mv2.png"
+      "https://static.wixstatic.com/media/d17a04_ced35342dd344963aaabeb1949cbe030~mv2.png"
     ]
   },
   {
-    "year": "2026",
-    "title": "Improving foot rocker via robot-resisted gait training with self-awareness biofeedback in adults with cerebral palsy",
-    "authors": "Souvik Poddar, Jaehyeong Park, Eleonora M. Botta, Lora Cavuoto, Jeanne Langan, and Jiyeon Kang",
-    "venue": "IEEE Trans. Neural Syst. Rehabil. Eng. 34 (2026) 46–56.",
-    "link": "https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=11265784"
-  },
-  {
-    "year": "2025",
-    "title": "Subject-independent sEMG-based prosthetic control using MAMBA2 with domain adaptation",
-    "authors": "Kihyun Kim and Jiyeon Kang",
-    "venue": "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2025, pp. 16673–16679.",
-    "link": "https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=11247077",
+    "year": "2011-2017",
+    "title": "A chase-game to teach children on a robot to follow moving objects",
+    "authors": "Jiyeon Kang, Samuel Logan, James C. Galloway, and Sunil K. Agrawal",
+    "venue": "IEEE International Conference on Robotics and Automation (ICRA), 2014, pp. 234–239.",
+    "link": "https://ieeexplore.ieee.org/document/6906615",
     "images": [
-      "https://static.wixstatic.com/media/d17a04_f4de51bfa0a140cbba00e9577e925890~mv2.png",
-      "https://static.wixstatic.com/media/d17a04_20c6ae1f146a45c9aaf60b6c78a97d8f~mv2.png",
-      "https://static.wixstatic.com/media/d17a04_4c199ab0b21e4ffdb92c0f806e196c3e~mv2.png"
+      "https://static.wixstatic.com/media/d17a04_37fc6c40ed73435dbf7b7d445bb4e354~mv2.png"
     ]
   },
   {
-    "year": "2025",
-    "title": "The effects of treadmill exercise on brain signals in Parkinson's disease animal models",
-    "authors": "Jinwoo Ahn, Daeum Roh, Yunjong Lee, Euiheon Chung, and Jiyeon Kang",
-    "venue": "Brain Engineering Society of Korea (BESK), 2025.",
-    "link": ""
+    "year": "2011-2017",
+    "title": "A novel assist-as-needed control method to guide pelvic trajectory for gait rehabilitation",
+    "authors": "Jiyeon Kang, Vineet Vashista, and Sunil K. Agrawal",
+    "venue": "IEEE International Conference on Rehabilitation Robotics (ICoRR), 2015, pp. 630–635.",
+    "link": "https://ieeexplore.ieee.org/document/7281271",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_0abf34a2f4a84eb18d980422af9f03d7~mv2.png"
+    ]
   },
   {
-    "year": "2025",
-    "title": "Reinforcement-learning-driven automatic scaling in OpenSim for enhanced human motion analysis",
-    "authors": "Jaebeom Jo and Jiyeon Kang",
-    "venue": "Institute of Control, Robotics and Systems (ICROS), (2025) 620–621.",
-    "link": "https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12313421"
+    "year": "2011-2017",
+    "title": "Robot-enhanced mobility training of children with cerebral palsy: short-term and long-term pilot studies",
+    "authors": "Sunil K. Agrawal, Jiyeon Kang, Xi Chen, Mi Jung Kim, Youngmyung Lee, Sang Won Kong, Hyungpil Cho, and Gyung-Jin Park",
+    "venue": "IEEE Syst. J. 10 (2016) 1098–1106.",
+    "link": "https://ieeexplore.ieee.org/document/6980080",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_45ed2bed794c47e88af70f435a20b9e0~mv2.png"
+    ]
+  },
+  {
+    "year": "2011-2017",
+    "title": "A single session of perturbation-based gait training with the A-TPAD improves dynamic stability in healthy young subjects",
+    "authors": "Dario Martelli, Jiyeon Kang, and Sunil K. Agrawal",
+    "venue": "IEEE-RAS-EMBS International Conference on Rehabilitation Robotics (ICoRR), 2017, pp. 479–484.",
+    "link": "https://ieeexplore.ieee.org/document/8009294",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_bc1caf0203db4b669b8a9bcc3adaf919~mv2.png"
+    ]
+  },
+  {
+    "year": "2011-2017",
+    "title": "Design and preliminary evaluation of a multi-robotic system with pelvic and hip assistance for pediatric gait rehabilitation",
+    "authors": "Evelyn J. Park, Jiyeon Kang, Hao Su, Paul Stegall, Daniel L. Miranda, Wen-Hao Hsu, Mustafa Karabas, Nathan Phipps, Sunil K. Agrawal, Eugene C. Goldfield, and Conor J. Walsh",
+    "venue": "IEEE-RAS-EMBS International Conference on Rehabilitation Robotics (ICoRR), 2017, pp. 332–339.",
+    "link": "https://ieeexplore.ieee.org/document/8009269",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_9468ae1bba06422d8b0596281e2856d7~mv2.png"
+    ]
+  },
+  {
+    "year": "2011-2017",
+    "title": "Enhancing seated stability using trunk support trainer (TruST)",
+    "authors": "Moiz Khan, Victor Santamaria, Jiyeon Kang, Brian Bradley, Joseph P. Dutkowsky, Andrew M. Gordon, and Sunil K. Agrawal",
+    "venue": "IEEE Robot. Autom. Lett. 2 (2017) 1609–1616.",
+    "link": "https://ieeexplore.ieee.org/document/7872386",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_9e7ca13400694efa93b01cf9c6f34c45~mv2.png"
+    ]
+  },
+  {
+    "year": "2011-2017",
+    "title": "Adaptation of stability during perturbed walking in Parkinson's disease",
+    "authors": "Dario Martelli, Lan Luo, Jiyeon Kang, Un J. Kang, Stanley Fahn, and Sunil K. Agrawal",
+    "venue": "Sci. Rep. 7 (2017) 17875.",
+    "link": "https://www.nature.com/articles/s41598-017-18075-6",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_fa61fb70aa544a579cfbbfbbf9b453ae~mv2.png"
+    ]
+  },
+  {
+    "year": "2011-2017",
+    "title": "On the adaptation of pelvic motion by applying 3-dimensional guidance forces using TPAD",
+    "authors": "Jiyeon Kang, Vineet Vashista, and Sunil K. Agrawal",
+    "venue": "IEEE Trans. Neural Syst. Rehabil. Eng. 25 (2017) 1558–1567.",
+    "link": "https://ieeexplore.ieee.org/document/7874098",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_abe3ea9c9cbf4738a806dcf29e881823~mv2.png"
+    ]
+  },
+  {
+    "year": "2011-2017",
+    "title": "Robot-driven downward pelvic pull to improve crouch gait in children with cerebral palsy",
+    "authors": "Jiyeon Kang, Dario Martelli, Vineet Vashista, Isis Martinez-Hernandez, Heakyung Kim, and Sunil K. Agrawal",
+    "venue": "Science Robotics 2 (2017) eaan2634.",
+    "link": "https://www.science.org/doi/pdf/10.1126/scirobotics.aan2634",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_ebc07baed9f341978256330f8d447b5e~mv2.png"
+    ]
+  },
+  {
+    "year": "2018",
+    "title": "A perturbation-based gait training with multidirectional waist-pulls generalizes to split-belt treadmill slips",
+    "authors": "Dario Martelli, Jiyeon Kang, and Sunil K. Agrawal",
+    "venue": "IEEE Ras & Embs International Conference on Biomedical Robotics and Biomechatronics (BioRoB), 2018, 7–12.",
+    "link": "https://ieeexplore.ieee.org/document/8487618",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_1115fcb9020b4404aba33d286426cd0a~mv2.png"
+    ]
+  },
+  {
+    "year": "2018",
+    "title": "Chapter 9. Robot enhanced walkers for training of children with cerebral palsy: pilot studies",
+    "authors": "Jiyeon Kang and Sunil K. Agrawal",
+    "venue": "The Encyclopedia of Medical Robotics (World Scientific, Singapore), 2018, 217–240.",
+    "link": "https://www.worldscientific.com/doi/10.1142/9789813232327_0009",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_9f4f95c7206b4b4ba5a36448160d61ca~mv2.png"
+    ]
+  },
+  {
+    "year": "2019",
+    "title": "Effects of repeated waist-pull perturbations on gait stability in subjects with cerebellar ataxia",
+    "authors": "Federica Aprigliano, Dario Martelli, Jiyeon Kang, Sheng-Han Kuo, Un J. Kang, Vito Monaco, Silvestro Micera, and Sunil K. Agrawal",
+    "venue": "J. Neuroeng. Rehabil. 16 (2019).",
+    "link": "https://jneuroengrehab.biomedcentral.com/articles/10.1186/s12984-019-0522-z",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_88b5ffc610ec4e798787d7258e65149e~mv2.png"
+    ]
+  },
+  {
+    "year": "2019",
+    "title": "Walking with a weighted pelvic belt or with an equivalent pure downward force on the pelvis: are these different?",
+    "authors": "Keya Ghonasg, Jiyeon Kang, and Sunil K. Agrawal",
+    "venue": "IEEE Robot. Autom. Lett. 4 (2019) 309–314.",
+    "link": "https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8594654",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_fd2f51b820b84dd898aedc306414f1b9~mv2.png"
+    ]
+  },
+  {
+    "year": "2019",
+    "title": "Simulating hemiparetic gait in healthy subjects using TPAD with a closed-loop controller",
+    "authors": "Jiyeon Kang, Keya Ghonasgi, Conor J. Walsh, and Sunil K. Agrawal",
+    "venue": "IEEE Trans. Neural Syst. Rehabil. Eng. 27 (2019) 974–983.",
+    "link": "https://ieeexplore.ieee.org/document/8675306",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_2c3285d5dc904ba5ad9a54294bf6fa4a~mv2.png"
+    ]
+  },
+  {
+    "year": "2019",
+    "title": "A haptic object to quantify the effect of feedback modality on prosthetic grasping",
+    "authors": "Jiyeon Kang, Michael A. Gonzalez, R. Brent Gillespie, and Deanna H. Gates",
+    "venue": "IEEE Robot. Autom. Lett. 4 (2019) 1101–1108.",
+    "link": "https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8620518",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_6661e32b66694b199d60c1af7a0c6c4a~mv2.png"
+    ]
+  },
+  {
+    "year": "2020",
+    "title": "Challenges and opportunities for statistical monitoring of gait cycle acceleration observed from IMU Data for fatigue detection",
+    "authors": "Saeb R. Lamooki, Jiyeon Kang, Lora A. Cavuoto, Fadel M. Megahed, and L. Allison Jones-Farmer",
+    "venue": "IEEE Ras & Embs International Conference on Biomedical Robotics and Biomechatronics (BioRoB), 2020, 593–598.",
+    "link": "https://ieeexplore.ieee.org/document/9224360",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_fad90bcc27f74313a5ac18897e2e33e3~mv2.png"
+    ]
+  },
+  {
+    "year": "2020",
+    "title": "Spherical parallel instrument for daily living emulation (SPINDLE) to restore motor function of stroke survivor",
+    "authors": "Peidong He, Boxin Xu, and Jiyeon Kang",
+    "venue": "IEEE Ras & Embs International Conference on Biomedical Robotics and Biomechatronics (BioRoB), 2020, 364–369.",
+    "link": "https://ieeexplore.ieee.org/abstract/document/9224451",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_d19bccba59f94e9c8eafd085589c31a2~mv2.png"
+    ]
+  },
+  {
+    "year": "2020",
+    "title": "Promoting functional and independent sitting in children with cerebral palsy using the robotic trunk support trainer",
+    "authors": "Victor Santamaria, Moiz Khan, Tatiana Luna, Jiyeon Kang, Joseph Dutkowsky, Andrew M Gordon, and Sunil K. Agrawal",
+    "venue": "IEEE Trans. Neural Syst. Rehabil. Eng. 28 (2020) 2995–3004.",
+    "link": "https://ieeexplore.ieee.org/document/9233922",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_053c71648dc345ba84e7b92c0de82dcb~mv2.png"
+    ]
+  },
+  {
+    "year": "2021",
+    "title": "A novel 3-RRR Spherical Parallel Instrument for Daily Living Emulation (SPINDLE) for functional rehabilitation of patients with stroke",
+    "authors": "Peidong He, Nikhil Tej Kantu, Boxin Xu, Chinmay P. Swami, Ghazala T. Saleem, and Jiyeon Kang",
+    "venue": "Int. J. Adv. Robot. Syst. 18 (2021).",
+    "link": "",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_102cd31cd86e45249ffa320125f1741a~mv2.png"
+    ]
+  },
+  {
+    "year": "2021",
+    "title": "Personalized and nonparametric framework for detecting changes in gait cycles",
+    "authors": "Saeb R. Lamooki, Jiyeon Kang, Lora A. Cavuoto, Fadel M. Megahed, and L. Allison Jones-Farmer",
+    "venue": "IEEE Sens. J. 21 (2021) 19236–19246.",
+    "link": "https://ieeexplore.ieee.org/document/9461172",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_84f1d9277d054682830833c17746cecb~mv2.png"
+    ]
+  },
+  {
+    "year": "2021",
+    "title": "A novel framework for designing a multi-DoF prosthetic wrist control using machine learning",
+    "authors": "Chinmay P. Swami, Nicholas Lenhard, and Jiyeon Kang",
+    "venue": "Sci. Rep. 11 (2021) 15050.",
+    "link": "https://www.nature.com/articles/s41598-021-94449-1",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_0448fce82d0542aea69e79e97f60940a~mv2.png"
+    ]
+  },
+  {
+    "year": "2021",
+    "title": "Acute effects of a perturbation-based balance training on cognitive performance in healthy older adults: A pilot study",
+    "authors": "Dario Martelli, Jiyeon Kang, Federica Aprigliano, Ursula M. Staudinger, and Sunil K. Agrawal",
+    "venue": "Front. Sports Act. Living 3 (2021) 688519.",
+    "link": "https://www.frontiersin.org/articles/10.3389/fspor.2021.688519/full",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_3450cfea5b3b46d28fe7a3b014576646~mv2.png"
+    ]
+  },
+  {
+    "year": "2021",
+    "title": "Getting a grip on the impact of incidental feedback from body-powered and myoelectric prostheses",
+    "authors": "Michael Gonzalez, Christina Lee, Jiyeon Kang, R. Brent Gillespie, and Deanna H. Gates",
+    "venue": "IEEE Trans. Neural Syst. Rehabil. Eng. 29 (2021) 1905–1912.",
+    "link": "https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9536663",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_1d98a3d8534a4fb18e15e664214a9f0d~mv2.png"
+    ]
+  },
+  {
+    "year": "2021",
+    "title": "A cable-actuated prosthetic emulator for transradial amputees",
+    "authors": "Souvik Poddar, David Cummiskey, and Jiyeon Kang",
+    "venue": "International Conference of the IEEE Engineering in Medicine & Biology Society (EMBC), 2021, 4529–4532.",
+    "link": "",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_70b3ebb8aafd472097477325cde315af~mv2.png"
+    ]
+  },
+  {
+    "year": "2022",
+    "title": "A data analytic end-to-end framework for the automated quantification of ergonomics risk factors across multiple tasks using a single wearable sensor",
+    "authors": "Saeb R. Lamooki, Sahand Hajifar, Jiyeon Kang, Hongyue Sun, Fadel M. Megahed, and Lora A Cavuoto",
+    "venue": "Appl. Ergon. 102 (2022) 103732.",
+    "link": "https://www.sciencedirect.com/science/article/pii/S0003687022000552",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_697e9afef12d4b7bb36892a164a629b0~mv2.png"
+    ]
+  },
+  {
+    "year": "2022",
+    "title": "Adjustments in shoulder and back kinematics in repetitive palletizing task",
+    "authors": "Saeb R. Lamooki, Lora A. Cavuoto, and Jiyeon Kang",
+    "venue": "Sensors, 22 (2022) 5655.",
+    "link": "https://www.awearlab.com/_files/ugd/d17a04_f0ac26c3d3014ba8baa9154126bf4e71.pdf",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_226a3f7a0c784334818105e4739289ed~mv2.png"
+    ]
+  },
+  {
+    "year": "2022",
+    "title": "Temporal and spatial goal-directed reaching in upper limb prosthesis users",
+    "authors": "Christina Lee, Michael A. Gonzalez, Jiyeon Kang, and Deanna H. Gates",
+    "venue": "Exp. Brain Res. 204 (2022) 3011–3021.",
+    "link": "https://link.springer.com/article/10.1007/s00221-022-06476-7",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_f0d65fcd5c2e41c2a169386e6c371ca8~mv2.png"
+    ]
+  },
+  {
+    "year": "2022",
+    "title": "CNN-based controller for multi-DoF prosthetic wrist using sEMG data during activities of daily living",
+    "authors": "Mohamed Fazil, Zixia Meng, and Jiyeon Kang",
+    "venue": "IEEE Ras & Embs International Conference on Biomedical Robotics and Biomechatronics (BioRoB), 2022.",
+    "link": "https://ieeexplore.ieee.org/document/9925506",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_7aa8e91b6f594a3ea99916065830da0a~mv2.png"
+    ]
+  },
+  {
+    "year": "2022",
+    "title": "A lightweight transradial prosthetic emulator for optimizing prosthetic wrist design",
+    "authors": "Souvik Poddar and Jiyeon Kang",
+    "venue": "IEEE Ras & Embs International Conference on Biomedical Robotics and Biomechatronics (BioRoB), 2022.",
+    "link": "https://ieeexplore.ieee.org/document/9925286",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_0f2c62e16cad494dbbe2f86e05b9749e~mv2.png"
+    ]
+  },
+  {
+    "year": "2023",
+    "title": "A transradial prosthesis with a high-functional wrist for various daily living task",
+    "authors": "Michael Kim and Jiyeon Kang",
+    "venue": "International Conference on Ubiquitous Robots (UR), 2023, 127–132.",
+    "link": "https://www.awearlab.com/_files/ugd/d17a04_be3432188af348fc800d7984d257fa91.pdf",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_9885ccc7c50d4569926946131caca3fb~mv2.png"
+    ]
+  },
+  {
+    "year": "2023",
+    "title": "Continuous joint velocity estimation using CNN-based deep learning for multi-DoF prosthetic wrist for activities of daily living",
+    "authors": "Zixia Meng and Jiyeon Kang",
+    "venue": "Front. Neurorobot., 17 (2023) 1185052.",
+    "link": "https://www.awearlab.com/_files/ugd/d17a04_7dab5de0bd8a4616800087b836ddcdb5.pdf",
+    "images": [
+      "https://static.wixstatic.com/media/d17a04_bd176b383cdc43ba851681e781e9a21c~mv2.png"
+    ]
+  },
+  {
+    "year": "2024",
+    "title": "Adaptive resistance in robotic rehabilitation for enhanced upper limb function in stroke patients",
+    "authors": "Euiseo Yoon, Joon-Ho Shin, and Jiyeon Kang",
+    "venue": "Institute of Control, Robotics and Systems (ICROS), (2024) 927–928.",
+    "link": "https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11909164"
+  },
+  {
+    "year": "2024",
+    "title": "Prediction of ground reaction forces and joint torque through squatting motion with deep learning algorithm",
+    "authors": "Jaebeom Jo, Junhyoung Ha, and Jiyeon Kang",
+    "venue": "Institute of Control, Robotics and Systems (ICROS), (2024) 123–124.",
+    "link": "https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11908800"
+  },
+  {
+    "year": "2024",
+    "title": "Development of a framework for estimating sarcopenia using vision-based pose estimation techniques and deep learning models for motion analysis",
+    "authors": "Kihyun Kim, Jaebeom Jo, and Jiyeon Kang",
+    "venue": "Institute of Control, Robotics and Systems (ICROS), (2024) 752–753.",
+    "link": "https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11909090"
   },
   {
     "year": "2024",
@@ -116,361 +371,106 @@
     ]
   },
   {
-    "year": "2024",
-    "title": "Development of a framework for estimating sarcopenia using vision-based pose estimation techniques and deep learning models for motion analysis",
-    "authors": "Kihyun Kim, Jaebeom Jo, and Jiyeon Kang",
-    "venue": "Institute of Control, Robotics and Systems (ICROS), (2024) 752–753.",
-    "link": "https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11909090"
+    "year": "2025",
+    "title": "Reinforcement-learning-driven automatic scaling in OpenSim for enhanced human motion analysis",
+    "authors": "Jaebeom Jo and Jiyeon Kang",
+    "venue": "Institute of Control, Robotics and Systems (ICROS), (2025) 620–621.",
+    "link": "https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12313421"
   },
   {
-    "year": "2024",
-    "title": "Prediction of ground reaction forces and joint torque through squatting motion with deep learning algorithm",
-    "authors": "Jaebeom Jo, Junhyoung Ha, and Jiyeon Kang",
-    "venue": "Institute of Control, Robotics and Systems (ICROS), (2024) 123–124.",
-    "link": "https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11908800"
+    "year": "2025",
+    "title": "The effects of treadmill exercise on brain signals in Parkinson's disease animal models",
+    "authors": "Jinwoo Ahn, Daeum Roh, Yunjong Lee, Euiheon Chung, and Jiyeon Kang",
+    "venue": "Brain Engineering Society of Korea (BESK), 2025.",
+    "link": ""
   },
   {
-    "year": "2024",
-    "title": "Adaptive resistance in robotic rehabilitation for enhanced upper limb function in stroke patients",
-    "authors": "Euiseo Yoon, Joon-Ho Shin, and Jiyeon Kang",
-    "venue": "Institute of Control, Robotics and Systems (ICROS), (2024) 927–928.",
-    "link": "https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11909164"
-  },
-  {
-    "year": "2023",
-    "title": "Continuous joint velocity estimation using CNN-based deep learning for multi-DoF prosthetic wrist for activities of daily living",
-    "authors": "Zixia Meng and Jiyeon Kang",
-    "venue": "Front. Neurorobot., 17 (2023) 1185052.",
-    "link": "https://www.awearlab.com/_files/ugd/d17a04_7dab5de0bd8a4616800087b836ddcdb5.pdf",
+    "year": "2025",
+    "title": "Subject-independent sEMG-based prosthetic control using MAMBA2 with domain adaptation",
+    "authors": "Kihyun Kim and Jiyeon Kang",
+    "venue": "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2025, pp. 16673–16679.",
+    "link": "https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=11247077",
     "images": [
-      "https://static.wixstatic.com/media/d17a04_bd176b383cdc43ba851681e781e9a21c~mv2.png"
+      "https://static.wixstatic.com/media/d17a04_f4de51bfa0a140cbba00e9577e925890~mv2.png",
+      "https://static.wixstatic.com/media/d17a04_20c6ae1f146a45c9aaf60b6c78a97d8f~mv2.png",
+      "https://static.wixstatic.com/media/d17a04_4c199ab0b21e4ffdb92c0f806e196c3e~mv2.png"
     ]
   },
   {
-    "year": "2023",
-    "title": "A transradial prosthesis with a high-functional wrist for various daily living task",
-    "authors": "Michael Kim and Jiyeon Kang",
-    "venue": "International Conference on Ubiquitous Robots (UR), 2023, 127–132.",
-    "link": "https://www.awearlab.com/_files/ugd/d17a04_be3432188af348fc800d7984d257fa91.pdf",
+    "year": "2026",
+    "title": "Improving foot rocker via robot-resisted gait training with self-awareness biofeedback in adults with cerebral palsy",
+    "authors": "Souvik Poddar, Jaehyeong Park, Eleonora M. Botta, Lora Cavuoto, Jeanne Langan, and Jiyeon Kang",
+    "venue": "IEEE Trans. Neural Syst. Rehabil. Eng. 34 (2026) 46–56.",
+    "link": "https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=11265784"
+  },
+  {
+    "year": "2026",
+    "title": "A robotic emulator for user-driven design of multi-DOF transradial prostheses",
+    "authors": "Souvik Poddar, Eleonora Botta, Deanna Gates, and Jiyeon Kang",
+    "venue": "IEEE Robot. Autom. Lett. 11 (2026) 4689–4696.",
+    "link": "https://ieeexplore.ieee.org/document/11395581",
     "images": [
-      "https://static.wixstatic.com/media/d17a04_9885ccc7c50d4569926946131caca3fb~mv2.png"
+      "https://static.wixstatic.com/media/d17a04_fd31248a64694a28ada77a63d315b95b~mv2.png",
+      "https://static.wixstatic.com/media/d17a04_f3a51b46f04843b6aec6175b19a09e8e~mv2.png"
     ]
   },
   {
-    "year": "2022",
-    "title": "A lightweight transradial prosthetic emulator for optimizing prosthetic wrist design",
-    "authors": "Souvik Poddar and Jiyeon Kang",
-    "venue": "IEEE Ras & Embs International Conference on Biomedical Robotics and Biomechatronics (BioRoB), 2022.",
-    "link": "https://ieeexplore.ieee.org/document/9925286",
+    "year": "2026",
+    "title": "Joint torque estimation from daily living motion for passive sarcopenia monitoring in older adults",
+    "authors": "Jaebeom Jo, Kihyun Kim, Min-gu Kang, Kanghyun Ryu, Junhyoung Ha, and Jiyeon Kang",
+    "venue": "J. NeuroEng. Rehabil. 23 (2026) 161.",
+    "link": "https://link.springer.com/article/10.1186/s12984-026-01962-3",
     "images": [
-      "https://static.wixstatic.com/media/d17a04_0f2c62e16cad494dbbe2f86e05b9749e~mv2.png"
+      "https://static.wixstatic.com/media/d17a04_da8e1962c07c4f6fa6f79159391b758b~mv2.png"
     ]
   },
   {
-    "year": "2022",
-    "title": "CNN-based controller for multi-DoF prosthetic wrist using sEMG data during activities of daily living",
-    "authors": "Mohamed Fazil, Zixia Meng, and Jiyeon Kang",
-    "venue": "IEEE Ras & Embs International Conference on Biomedical Robotics and Biomechatronics (BioRoB), 2022.",
-    "link": "https://ieeexplore.ieee.org/document/9925506",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_7aa8e91b6f594a3ea99916065830da0a~mv2.png"
-    ]
+    "year": "2026",
+    "title": "Exercise-induced mitigation of cortical slowing and stabilization of beta-burst dynamics in a Parkinson's disease mouse model",
+    "authors": "Jinwoo Ahn, Daeun Roh, Daeyeon Kim, Doeun Kim, Yunjong Lee, Euiheon Chung, and Jiyeon Kang",
+    "venue": "Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC), 2026.",
+    "link": ""
   },
   {
-    "year": "2022",
-    "title": "Temporal and spatial goal-directed reaching in upper limb prosthesis users",
-    "authors": "Christina Lee, Michael A. Gonzalez, Jiyeon Kang, and Deanna H. Gates",
-    "venue": "Exp. Brain Res. 204 (2022) 3011–3021.",
-    "link": "https://link.springer.com/article/10.1007/s00221-022-06476-7",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_f0d65fcd5c2e41c2a169386e6c371ca8~mv2.png"
-    ]
+    "year": "2026",
+    "title": "An exploratory multimodal characterization of tDCS-induced gait adaptation in Parkinson's disease",
+    "authors": "Youngkee Kim, Heegyu Kim, Yousong Shin, Kyungmin Kwon, Hyo Jin Park, Sung Chan Jun, Seong-Min Choi, and Jiyeon Kang",
+    "venue": "IEEE International Conference on Systems, Man, and Cybernetics (SMC), 2026.",
+    "link": ""
   },
   {
-    "year": "2022",
-    "title": "Adjustments in shoulder and back kinematics in repetitive palletizing task",
-    "authors": "Saeb R. Lamooki, Lora A. Cavuoto, and Jiyeon Kang",
-    "venue": "Sensors, 22 (2022) 5655.",
-    "link": "https://www.awearlab.com/_files/ugd/d17a04_f0ac26c3d3014ba8baa9154126bf4e71.pdf",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_226a3f7a0c784334818105e4739289ed~mv2.png"
-    ]
+    "year": "2026",
+    "title": "Assist–resist-as-needed robotic control for cable-driven bedside training",
+    "authors": "Jin-Woo Lee, Seonghun Jeong, and Jiyeon Kang",
+    "venue": "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2026.",
+    "link": ""
   },
   {
-    "year": "2022",
-    "title": "A data analytic end-to-end framework for the automated quantification of ergonomics risk factors across multiple tasks using a single wearable sensor",
-    "authors": "Saeb R. Lamooki, Sahand Hajifar, Jiyeon Kang, Hongyue Sun, Fadel M. Megahed, and Lora A Cavuoto",
-    "venue": "Appl. Ergon. 102 (2022) 103732.",
-    "link": "https://www.sciencedirect.com/science/article/pii/S0003687022000552",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_697e9afef12d4b7bb36892a164a629b0~mv2.png"
-    ]
+    "year": "2026",
+    "title": "User-centered design of multi-DoF prosthetic wrist controllers: performance and preference in daily living tasks",
+    "authors": "Deepti Bharadwaj, Ingyun Ahn, Saurabh S. Deshmukh, and Jiyeon Kang",
+    "venue": "Healthc. Technol. Lett., in press.",
+    "link": ""
   },
   {
-    "year": "2021",
-    "title": "A cable-actuated prosthetic emulator for transradial amputees",
-    "authors": "Souvik Poddar, David Cummiskey, and Jiyeon Kang",
-    "venue": "International Conference of the IEEE Engineering in Medicine & Biology Society (EMBC), 2021, 4529–4532.",
-    "link": "",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_70b3ebb8aafd472097477325cde315af~mv2.png"
-    ]
+    "year": "2026",
+    "title": "A personalized enhanced feedforward force control detecting cyclic disturbance for gait rehabilitation robot",
+    "authors": "Jin-Woo Lee*, Sahil Kapahi*, Souvik Poddar, and Jiyeon Kang",
+    "venue": "Submitted",
+    "link": ""
   },
   {
-    "year": "2021",
-    "title": "Getting a grip on the impact of incidental feedback from body-powered and myoelectric prostheses",
-    "authors": "Michael Gonzalez, Christina Lee, Jiyeon Kang, R. Brent Gillespie, and Deanna H. Gates",
-    "venue": "IEEE Trans. Neural Syst. Rehabil. Eng. 29 (2021) 1905–1912.",
-    "link": "https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9536663",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_1d98a3d8534a4fb18e15e664214a9f0d~mv2.png"
-    ]
+    "year": "2026",
+    "title": "Comparison of physiological response of the upper limb on body-powered and myoelectric prostheses",
+    "authors": "Rishi Adusumilli, Mohamed Sulaiman, and Jiyeon Kang",
+    "venue": "Submitted",
+    "link": ""
   },
   {
-    "year": "2021",
-    "title": "Acute effects of a perturbation-based balance training on cognitive performance in healthy older adults: A pilot study",
-    "authors": "Dario Martelli, Jiyeon Kang, Federica Aprigliano, Ursula M. Staudinger, and Sunil K. Agrawal",
-    "venue": "Front. Sports Act. Living 3 (2021) 688519.",
-    "link": "https://www.frontiersin.org/articles/10.3389/fspor.2021.688519/full",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_3450cfea5b3b46d28fe7a3b014576646~mv2.png"
-    ]
-  },
-  {
-    "year": "2021",
-    "title": "A novel framework for designing a multi-DoF prosthetic wrist control using machine learning",
-    "authors": "Chinmay P. Swami, Nicholas Lenhard, and Jiyeon Kang",
-    "venue": "Sci. Rep. 11 (2021) 15050.",
-    "link": "https://www.nature.com/articles/s41598-021-94449-1",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_0448fce82d0542aea69e79e97f60940a~mv2.png"
-    ]
-  },
-  {
-    "year": "2021",
-    "title": "Personalized and nonparametric framework for detecting changes in gait cycles",
-    "authors": "Saeb R. Lamooki, Jiyeon Kang, Lora A. Cavuoto, Fadel M. Megahed, and L. Allison Jones-Farmer",
-    "venue": "IEEE Sens. J. 21 (2021) 19236–19246.",
-    "link": "https://ieeexplore.ieee.org/document/9461172",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_84f1d9277d054682830833c17746cecb~mv2.png"
-    ]
-  },
-  {
-    "year": "2021",
-    "title": "A novel 3-RRR Spherical Parallel Instrument for Daily Living Emulation (SPINDLE) for functional rehabilitation of patients with stroke",
-    "authors": "Peidong He, Nikhil Tej Kantu, Boxin Xu, Chinmay P. Swami, Ghazala T. Saleem, and Jiyeon Kang",
-    "venue": "Int. J. Adv. Robot. Syst. 18 (2021).",
-    "link": "",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_102cd31cd86e45249ffa320125f1741a~mv2.png"
-    ]
-  },
-  {
-    "year": "2020",
-    "title": "Promoting functional and independent sitting in children with cerebral palsy using the robotic trunk support trainer",
-    "authors": "Victor Santamaria, Moiz Khan, Tatiana Luna, Jiyeon Kang, Joseph Dutkowsky, Andrew M Gordon, and Sunil K. Agrawal",
-    "venue": "IEEE Trans. Neural Syst. Rehabil. Eng. 28 (2020) 2995–3004.",
-    "link": "https://ieeexplore.ieee.org/document/9233922",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_053c71648dc345ba84e7b92c0de82dcb~mv2.png"
-    ]
-  },
-  {
-    "year": "2020",
-    "title": "Spherical parallel instrument for daily living emulation (SPINDLE) to restore motor function of stroke survivor",
-    "authors": "Peidong He, Boxin Xu, and Jiyeon Kang",
-    "venue": "IEEE Ras & Embs International Conference on Biomedical Robotics and Biomechatronics (BioRoB), 2020, 364–369.",
-    "link": "https://ieeexplore.ieee.org/abstract/document/9224451",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_d19bccba59f94e9c8eafd085589c31a2~mv2.png"
-    ]
-  },
-  {
-    "year": "2020",
-    "title": "Challenges and opportunities for statistical monitoring of gait cycle acceleration observed from IMU Data for fatigue detection",
-    "authors": "Saeb R. Lamooki, Jiyeon Kang, Lora A. Cavuoto, Fadel M. Megahed, and L. Allison Jones-Farmer",
-    "venue": "IEEE Ras & Embs International Conference on Biomedical Robotics and Biomechatronics (BioRoB), 2020, 593–598.",
-    "link": "https://ieeexplore.ieee.org/document/9224360",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_fad90bcc27f74313a5ac18897e2e33e3~mv2.png"
-    ]
-  },
-  {
-    "year": "2019",
-    "title": "A haptic object to quantify the effect of feedback modality on prosthetic grasping",
-    "authors": "Jiyeon Kang, Michael A. Gonzalez, R. Brent Gillespie, and Deanna H. Gates",
-    "venue": "IEEE Robot. Autom. Lett. 4 (2019) 1101–1108.",
-    "link": "https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8620518",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_6661e32b66694b199d60c1af7a0c6c4a~mv2.png"
-    ]
-  },
-  {
-    "year": "2019",
-    "title": "Simulating hemiparetic gait in healthy subjects using TPAD with a closed-loop controller",
-    "authors": "Jiyeon Kang, Keya Ghonasgi, Conor J. Walsh, and Sunil K. Agrawal",
-    "venue": "IEEE Trans. Neural Syst. Rehabil. Eng. 27 (2019) 974–983.",
-    "link": "https://ieeexplore.ieee.org/document/8675306",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_2c3285d5dc904ba5ad9a54294bf6fa4a~mv2.png"
-    ]
-  },
-  {
-    "year": "2019",
-    "title": "Walking with a weighted pelvic belt or with an equivalent pure downward force on the pelvis: are these different?",
-    "authors": "Keya Ghonasg, Jiyeon Kang, and Sunil K. Agrawal",
-    "venue": "IEEE Robot. Autom. Lett. 4 (2019) 309–314.",
-    "link": "https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8594654",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_fd2f51b820b84dd898aedc306414f1b9~mv2.png"
-    ]
-  },
-  {
-    "year": "2019",
-    "title": "Effects of repeated waist-pull perturbations on gait stability in subjects with cerebellar ataxia",
-    "authors": "Federica Aprigliano, Dario Martelli, Jiyeon Kang, Sheng-Han Kuo, Un J. Kang, Vito Monaco, Silvestro Micera, and Sunil K. Agrawal",
-    "venue": "J. Neuroeng. Rehabil. 16 (2019).",
-    "link": "https://jneuroengrehab.biomedcentral.com/articles/10.1186/s12984-019-0522-z",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_88b5ffc610ec4e798787d7258e65149e~mv2.png"
-    ]
-  },
-  {
-    "year": "2018",
-    "title": "Chapter 9. Robot enhanced walkers for training of children with cerebral palsy: pilot studies",
-    "authors": "Jiyeon Kang and Sunil K. Agrawal",
-    "venue": "The Encyclopedia of Medical Robotics (World Scientific, Singapore), 2018, 217–240.",
-    "link": "https://www.worldscientific.com/doi/10.1142/9789813232327_0009",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_9f4f95c7206b4b4ba5a36448160d61ca~mv2.png"
-    ]
-  },
-  {
-    "year": "2018",
-    "title": "A perturbation-based gait training with multidirectional waist-pulls generalizes to split-belt treadmill slips",
-    "authors": "Dario Martelli, Jiyeon Kang, and Sunil K. Agrawal",
-    "venue": "IEEE Ras & Embs International Conference on Biomedical Robotics and Biomechatronics (BioRoB), 2018, 7–12.",
-    "link": "https://ieeexplore.ieee.org/document/8487618",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_1115fcb9020b4404aba33d286426cd0a~mv2.png"
-    ]
-  },
-  {
-    "year": "2011-2017",
-    "title": "Robot-driven downward pelvic pull to improve crouch gait in children with cerebral palsy",
-    "authors": "Jiyeon Kang, Dario Martelli, Vineet Vashista, Isis Martinez-Hernandez, Heakyung Kim, and Sunil K. Agrawal",
-    "venue": "Science Robotics 2 (2017) eaan2634.",
-    "link": "https://www.science.org/doi/pdf/10.1126/scirobotics.aan2634",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_ebc07baed9f341978256330f8d447b5e~mv2.png"
-    ]
-  },
-  {
-    "year": "2011-2017",
-    "title": "On the adaptation of pelvic motion by applying 3-dimensional guidance forces using TPAD",
-    "authors": "Jiyeon Kang, Vineet Vashista, and Sunil K. Agrawal",
-    "venue": "IEEE Trans. Neural Syst. Rehabil. Eng. 25 (2017) 1558–1567.",
-    "link": "https://ieeexplore.ieee.org/document/7874098",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_abe3ea9c9cbf4738a806dcf29e881823~mv2.png"
-    ]
-  },
-  {
-    "year": "2011-2017",
-    "title": "Adaptation of stability during perturbed walking in Parkinson's disease",
-    "authors": "Dario Martelli, Lan Luo, Jiyeon Kang, Un J. Kang, Stanley Fahn, and Sunil K. Agrawal",
-    "venue": "Sci. Rep. 7 (2017) 17875.",
-    "link": "https://www.nature.com/articles/s41598-017-18075-6",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_fa61fb70aa544a579cfbbfbbf9b453ae~mv2.png"
-    ]
-  },
-  {
-    "year": "2011-2017",
-    "title": "Enhancing seated stability using trunk support trainer (TruST)",
-    "authors": "Moiz Khan, Victor Santamaria, Jiyeon Kang, Brian Bradley, Joseph P. Dutkowsky, Andrew M. Gordon, and Sunil K. Agrawal",
-    "venue": "IEEE Robot. Autom. Lett. 2 (2017) 1609–1616.",
-    "link": "https://ieeexplore.ieee.org/document/7872386",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_9e7ca13400694efa93b01cf9c6f34c45~mv2.png"
-    ]
-  },
-  {
-    "year": "2011-2017",
-    "title": "Design and preliminary evaluation of a multi-robotic system with pelvic and hip assistance for pediatric gait rehabilitation",
-    "authors": "Evelyn J. Park, Jiyeon Kang, Hao Su, Paul Stegall, Daniel L. Miranda, Wen-Hao Hsu, Mustafa Karabas, Nathan Phipps, Sunil K. Agrawal, Eugene C. Goldfield, and Conor J. Walsh",
-    "venue": "IEEE-RAS-EMBS International Conference on Rehabilitation Robotics (ICoRR), 2017, pp. 332–339.",
-    "link": "https://ieeexplore.ieee.org/document/8009269",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_9468ae1bba06422d8b0596281e2856d7~mv2.png"
-    ]
-  },
-  {
-    "year": "2011-2017",
-    "title": "A single session of perturbation-based gait training with the A-TPAD improves dynamic stability in healthy young subjects",
-    "authors": "Dario Martelli, Jiyeon Kang, and Sunil K. Agrawal",
-    "venue": "IEEE-RAS-EMBS International Conference on Rehabilitation Robotics (ICoRR), 2017, pp. 479–484.",
-    "link": "https://ieeexplore.ieee.org/document/8009294",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_bc1caf0203db4b669b8a9bcc3adaf919~mv2.png"
-    ]
-  },
-  {
-    "year": "2011-2017",
-    "title": "Robot-enhanced mobility training of children with cerebral palsy: short-term and long-term pilot studies",
-    "authors": "Sunil K. Agrawal, Jiyeon Kang, Xi Chen, Mi Jung Kim, Youngmyung Lee, Sang Won Kong, Hyungpil Cho, and Gyung-Jin Park",
-    "venue": "IEEE Syst. J. 10 (2016) 1098–1106.",
-    "link": "https://ieeexplore.ieee.org/document/6980080",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_45ed2bed794c47e88af70f435a20b9e0~mv2.png"
-    ]
-  },
-  {
-    "year": "2011-2017",
-    "title": "A novel assist-as-needed control method to guide pelvic trajectory for gait rehabilitation",
-    "authors": "Jiyeon Kang, Vineet Vashista, and Sunil K. Agrawal",
-    "venue": "IEEE International Conference on Rehabilitation Robotics (ICoRR), 2015, pp. 630–635.",
-    "link": "https://ieeexplore.ieee.org/document/7281271",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_0abf34a2f4a84eb18d980422af9f03d7~mv2.png"
-    ]
-  },
-  {
-    "year": "2011-2017",
-    "title": "A chase-game to teach children on a robot to follow moving objects",
-    "authors": "Jiyeon Kang, Samuel Logan, James C. Galloway, and Sunil K. Agrawal",
-    "venue": "IEEE International Conference on Robotics and Automation (ICRA), 2014, pp. 234–239.",
-    "link": "https://ieeexplore.ieee.org/document/6906615",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_37fc6c40ed73435dbf7b7d445bb4e354~mv2.png"
-    ]
-  },
-  {
-    "year": "2011-2017",
-    "title": "Case studies of a robot enhanced walker for training of children with cerebral palsy",
-    "authors": "Sunil K. Agrawal, Jiyeon Kang, Xi Chen, Mi Jung Kim, Youngmyung Lee, Sang Won Kong, and Gyung-Jin Park",
-    "venue": "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2013, pp. 4243–4248.",
-    "link": "https://ieeexplore.ieee.org/document/6696964",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_ced35342dd344963aaabeb1949cbe030~mv2.png"
-    ]
-  },
-  {
-    "year": "2011-2017",
-    "title": "On the comfortableness of muscle power assistive robotic system",
-    "authors": "Jiyeon Kang, Keehoon Kim, Sin Jung Kim, and Sang Rok Oh",
-    "venue": "IEEE Ras & Embs International Conference on Biomedical Robotics and Biomechatronics (BioRoB), 2012, pp. 1759–1764.",
-    "link": "https://ieeexplore.ieee.org/document/6290665",
-    "images": [
-      "https://static.wixstatic.com/media/d17a04_db614c2fd615423fad8b8a0d1fa12960~mv2.png"
-    ]
-  },
-  {
-    "year": "2011-2017",
-    "title": "Minimum heat loss control of fluid-powered systems",
-    "authors": "Jiyeon Kang and Frank C. Park",
-    "venue": "International Conference on Control, Automation and Systems (ICCAS), 2011, pp. 1383–1387.",
-    "link": "https://ieeexplore.ieee.org/abstract/document/6106142"
+    "year": "2026",
+    "title": "Study on acute in-patient stroke survivor's interest level on use of a novel robotic ADL trainer for upper limb rehabilitation",
+    "authors": "Arjun Singh, Jihnhee Yu, Amit Kandel, and Jiyeon Kang",
+    "venue": "Submitted",
+    "link": ""
   }
 ]

@@ -14,7 +14,7 @@
       <p class="venue">{{ venue }}</p>
     </div>
 
-    <!-- <transition name="pop">
+    <transition name="pop">
       <div v-if="showSummary" class="summary-card">
         <p class="summary-eyebrow">Summary</p>
         <h4>논문 제목</h4>
@@ -25,7 +25,7 @@
           <li>핵심 내용</li>
         </ul>
       </div>
-    </transition> -->
+    </transition>
   </li>
 </template>
 

@@ -6,11 +6,20 @@
 
     <section class="filters section">
       <div class="chip-row">
-        <button class="chip" :class="{ active: selectedYear === 'all' }" @click="selectedYear = 'all'">
+        <button
+          class="chip"
+          :class="{ active: selectedYear === 'all' }"
+          @click="selectedYear = 'all'"
+        >
           전체
         </button>
-        <button v-for="y in years" :key="y" class="chip" :class="{ active: selectedYear === y }"
-          @click="selectedYear = y">
+        <button
+          v-for="y in years"
+          :key="y"
+          class="chip"
+          :class="{ active: selectedYear === y }"
+          @click="selectedYear = y"
+        >
           {{ y }}
         </button>
       </div>
@@ -18,8 +27,16 @@
 
     <section class="list section">
       <ul>
-        <PublicationItem v-for="(pub, i) in filteredPublications" :key="i" :year="pub.year" :title="pub.title"
-          :authors="pub.authors" :venue="pub.venue" :link="pub.link" :images="pub.images" />
+        <PublicationItem
+          v-for="(pub, i) in filteredPublications"
+          :key="i"
+          :year="pub.year"
+          :title="pub.title"
+          :authors="pub.authors"
+          :venue="pub.venue"
+          :link="pub.link"
+          :images="pub.images"
+        />
       </ul>
       <p v-if="!filteredPublications.length" class="empty">해당 연도의 논문이 없습니다.</p>
     </section>
@@ -27,14 +44,13 @@
 </template>
 
 <script setup lang="ts">
-// TODO: img path
 import { computed, ref } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import PublicationItem from '../components/PublicationItem.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import publicationsData from '../data/publications.json'
 
-const publications = publicationsData
+const publications = [...publicationsData].reverse()
 const selectedYear = ref('all')
 
 const years = computed(() => Array.from(new Set(publications.map((p) => p.year))))
