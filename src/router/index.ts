@@ -28,6 +28,9 @@ const routes = [
     children: [
       { path: '', name: 'admin-main', component: () => import('../pages/admin/AdminMainPage.vue') },
       { path: 'members', name: 'admin-members', component: () => import('../pages/admin/AdminMemberPage.vue') },
+      { path: 'publications', name: 'admin-publications', component: () => import('../pages/admin/AdminPublicationsPage.vue') },
+      { path: 'news', name: 'admin-news', component: () => import('../pages/admin/AdminNewsPage.vue') },
+      { path: 'equipment', name: 'admin-equipment', component: () => import('../pages/admin/AdminEquipmentPage.vue') },
     ],
   },
   {

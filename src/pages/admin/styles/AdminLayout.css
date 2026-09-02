@@ -32,6 +32,28 @@
     }
   }
 
+  .admin-nav {
+    display: flex;
+    gap: 16px;
+    font-size: 13.44px;
+
+    a {
+      padding: 7px 16px;
+      border-radius: 999px;
+      color: var(--text-muted);
+      transition: background-color 0.2s ease, color 0.2s ease;
+
+      &.active {
+        color: var(--orange-deep);
+      }
+
+      /* &:hover {
+        background-color: var(--orange-light);
+        color: var(--orange-deep);
+      } */
+    }
+  }
+
   .admin-body {
     max-width: 1100px;
     margin: 0 auto;
