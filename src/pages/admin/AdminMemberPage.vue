@@ -3,31 +3,17 @@
     <p class="eyebrow">Admin</p>
     <h1>멤버 관리</h1>
 
-    <label class="group-field">
-      <span>그룹명</span>
-      <input v-model="form.groupTitle" type="text" placeholder="예: Graduate Students" @change="persist" />
-    </label>
-
     <div class="layout">
       <aside class="member-panel">
         <ul class="member-list">
-          <li
-            class="member-row"
-            :class="{ active: mode === 'pi' }"
-            @click="selectPI"
-          >
+          <li class="member-row" :class="{ active: mode === 'pi' }" @click="selectPI">
             <span class="pi-tag">PI</span>
-            <span class="name">{{ form.pi.name || '이름 없음' }}</span>
+            <span class="name">{{ form.pi.name }}</span>
           </li>
 
-          <li
-            v-for="m in form.members"
-            :key="m.id"
-            class="member-row"
-            :class="{ active: mode === 'member' && selectedId === m.id }"
-            @click="selectMember(m.id)"
-          >
-            <span class="name">{{ m.name || '이름 없음' }}</span>
+          <li v-for="m in form.members" :key="m.id" class="member-row"
+            :class="{ active: mode === 'member' && selectedId === m.id }" @click="selectMember(m.id)">
+            <span class="name">{{ m.name }}</span>
           </li>
         </ul>
 
@@ -45,7 +31,7 @@
             </label>
             <label class="field">
               <span>소속·직함</span>
-              <input v-model="form.pi.role" type="text" placeholder="예: GIST 기계공학과 교수" />
+              <input v-model="form.pi.role" type="text" placeholder="예: GIST AI학과 교수" />
             </label>
             <label class="field">
               <span>소개</span>
@@ -89,12 +75,7 @@
 
           <div class="actions">
             <button type="submit" class="btn save">저장</button>
-            <button
-              v-if="mode === 'member'"
-              type="button"
-              class="btn delete"
-              @click="onDelete"
-            >
+            <button v-if="mode === 'member'" type="button" class="btn delete" @click="onDelete">
               삭제
             </button>
           </div>
