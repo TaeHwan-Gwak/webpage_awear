@@ -27,16 +27,9 @@
           </li>
         </template>
         <template v-else>
-          <NewsItem
-            v-for="(item, i) in pagedNews"
-            :key="item.id ?? item.date"
-            :index="displayNews.length - ((currentPage - 1) * pageSize + i)"
-            :date="item.date"
-            :desc="item.desc"
-            :tag="item.tag"
-            :link="item.link"
-            :image="item.image"
-          />
+          <NewsItem v-for="(item, i) in pagedNews" :key="item.id ?? item.date"
+            :index="displayNews.length - ((currentPage - 1) * pageSize + i)" :date="item.date" :desc="item.desc"
+            :tag="item.tag" :link="item.link" :image="item.image" />
         </template>
       </ol>
 
@@ -44,22 +37,11 @@
         <button type="button" class="page-btn" :disabled="currentPage === 1" @click="currentPage--">
           이전
         </button>
-        <button
-          v-for="p in totalPages"
-          :key="p"
-          type="button"
-          class="page-btn"
-          :class="{ active: p === currentPage }"
-          @click="currentPage = p"
-        >
+        <button v-for="p in totalPages" :key="p" type="button" class="page-btn" :class="{ active: p === currentPage }"
+          @click="currentPage = p">
           {{ p }}
         </button>
-        <button
-          type="button"
-          class="page-btn"
-          :disabled="currentPage === totalPages"
-          @click="currentPage++"
-        >
+        <button type="button" class="page-btn" :disabled="currentPage === totalPages" @click="currentPage++">
           다음
         </button>
       </nav>
@@ -68,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import NewsItem from '../components/NewsItem.vue'
@@ -81,7 +63,19 @@ const displayNews = computed(() =>
   news.value.length ? news.value : [...newsData].reverse()
 )
 
-const pageSize = ref(10)
+const isMobile = () =>
+  typeof window !== 'undefined' &&
+  (window.matchMedia('(max-width: 768px)').matches ||
+    /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent))
+
+const pageSize = ref(isMobile() ? 5 : 10)
+
+onMounted(() => {
+  if (isMobile()) {
+    pageSize.value = 5
+  }
+})
+
 const currentPage = ref(1)
 
 const totalPages = computed(() => Math.max(1, Math.ceil(displayNews.value.length / pageSize.value)))

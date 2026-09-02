@@ -4,22 +4,14 @@
 
     <SignalDivider />
 
+    <!-- TODO: 모바일 페이지에서 년도 선택할 수 있게 수정 -->
     <section class="filters section">
       <div class="chip-row">
-        <button
-          class="chip"
-          :class="{ active: selectedYear === 'all' }"
-          @click="selectedYear = 'all'"
-        >
+        <button class="chip" :class="{ active: selectedYear === 'all' }" @click="selectedYear = 'all'">
           전체
         </button>
-        <button
-          v-for="y in years"
-          :key="y"
-          class="chip"
-          :class="{ active: selectedYear === y }"
-          @click="selectedYear = y"
-        >
+        <button v-for="y in years" :key="y" class="chip" :class="{ active: selectedYear === y }"
+          @click="selectedYear = y">
           {{ y }}
         </button>
       </div>
@@ -27,16 +19,8 @@
 
     <section class="list section">
       <ul>
-        <PublicationItem
-          v-for="(pub, i) in filteredPublications"
-          :key="i"
-          :year="pub.year"
-          :title="pub.title"
-          :authors="pub.authors"
-          :venue="pub.venue"
-          :link="pub.link"
-          :images="pub.images"
-        />
+        <PublicationItem v-for="(pub, i) in filteredPublications" :key="i" :year="pub.year" :title="pub.title"
+          :authors="pub.authors" :venue="pub.venue" :link="pub.link" :images="pub.images" />
       </ul>
       <p v-if="!filteredPublications.length" class="empty">해당 연도의 논문이 없습니다.</p>
     </section>
