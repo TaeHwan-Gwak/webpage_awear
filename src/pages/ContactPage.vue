@@ -27,7 +27,7 @@
         </a>
       </div>
 
-      <GoogleMap />
+      <img src="/dasanbuilding.webp" alt="다산빌딩" class="dasanbuilding" />
     </section>
 
     <SignalDivider />
@@ -69,7 +69,6 @@
 <script setup lang="ts">
 import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
-import GoogleMap from '../components/GoogleMap.vue'
 
 const ResearchField = [
   { id: 'field-1', field: '로봇 설계, 제작 및 제어' },
