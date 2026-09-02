@@ -1,6 +1,6 @@
 <template>
   <main class="publications-page">
-    <PageHeader eyebrow="Publications" title="페이지 제목" description="페이지 설명" />
+    <PageHeader eyebrow="Publications" title="Publications" description="" />
 
     <SignalDivider />
 

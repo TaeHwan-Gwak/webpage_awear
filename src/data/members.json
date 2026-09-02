@@ -7,10 +7,10 @@
   },
   "groupTitle": "그룹명",
   "members": [
-    { "id": "m1", "name": "이름", "role": "역할", "note": "" },
-    { "id": "m2", "name": "이름", "role": "역할", "note": "" },
-    { "id": "m3", "name": "이름", "role": "역할", "note": "" },
-    { "id": "m4", "name": "이름", "role": "역할", "note": "" },
-    { "id": "m5", "name": "이름", "role": "역할", "note": "" }
+    { "id": "m1", "name": "이름1", "role": "역할", "note": "" },
+    { "id": "m2", "name": "이름2", "role": "역할", "note": "" },
+    { "id": "m3", "name": "이름3", "role": "역할", "note": "" },
+    { "id": "m4", "name": "이름4", "role": "역할", "note": "" },
+    { "id": "m5", "name": "이름5", "role": "역할", "note": "" }
   ]
 }

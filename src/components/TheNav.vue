@@ -6,27 +6,13 @@
       </router-link>
 
       <nav class="links" aria-label="주요 메뉴">
-        <div
-          v-for="item in items"
-          :key="item.to"
-          class="nav-item"
-          @mouseenter="openDropdown(item.to)"
-          @mouseleave="closeDropdown"
-        >
+        <div v-for="item in items" :key="item.to" class="nav-item" @mouseenter="openDropdown(item.to)"
+          @mouseleave="closeDropdown">
           <router-link :to="item.to" @click="closeDropdown">{{ item.label }}</router-link>
 
-          <div
-            v-if="item.children"
-            class="dropdown"
-            :class="{ 'is-open': activeDropdown === item.to }"
-          >
-            <router-link
-              v-for="child in item.children"
-              :key="child.to"
-              :to="child.to"
-              class="dropdown-item"
-              @click="onSubItemClick"
-            >
+          <div v-if="item.children" class="dropdown" :class="{ 'is-open': activeDropdown === item.to }">
+            <router-link v-for="child in item.children" :key="child.to" :to="child.to" class="dropdown-item"
+              @click="onSubItemClick">
               {{ child.label }}
             </router-link>
           </div>
@@ -42,13 +28,8 @@
       <nav v-if="open" class="mobile-links" aria-label="주요 메뉴 (모바일)">
         <template v-for="item in items" :key="item.to">
           <router-link :to="item.to" @click="open = false">{{ item.label }}</router-link>
-          <router-link
-            v-for="child in item.children"
-            :key="child.to"
-            :to="child.to"
-            class="mobile-sub"
-            @click="open = false"
-          >
+          <router-link v-for="child in item.children" :key="child.to" :to="child.to" class="mobile-sub"
+            @click="open = false">
             {{ child.label }}
           </router-link>
         </template>
@@ -81,6 +62,7 @@ const onSubItemClick = (e: MouseEvent) => {
 }
 
 const items = [
+  { label: 'Home', to: '/' },
   {
     label: 'Research',
     to: '/research',
@@ -93,6 +75,7 @@ const items = [
   { label: 'Publications', to: '/publications' },
   { label: 'Member', to: '/member' },
   { label: 'News', to: '/news' },
+  { label: 'Equipment', to: '/equipment' },
   { label: 'Contact', to: '/contact' },
 ]
 
