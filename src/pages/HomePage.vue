@@ -136,6 +136,8 @@ const fallbackNews: NewsItemType[] = [
 
 const { news, loading: newsLoading, error: newsError } = useNews()
 const displayNews = computed(() => (news.value.length ? news.value : fallbackNews))
+
+// TODO: OnMounted 달아서 홈 들어올 때 Admin Auth 체크하고, 토큰 날리기
 </script>
 
 <style src="./styles/HomePage.css" scoped></style>
