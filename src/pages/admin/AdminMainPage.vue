@@ -1,7 +1,7 @@
 <template>
-  <div class="admin-dashboard">
+  <div class="admin-main">
     <p class="eyebrow">Admin</p>
-    <h1>대시보드</h1>
+    <h1>Main</h1>
     <p class="desc">
 
     </p>
@@ -10,4 +10,4 @@
 
 <script setup lang="ts"></script>
 
-<style src="./styles/AdminDashboardPage.css" scoped></style>
+<style src="./styles/AdminMainPage.css" scoped></style>

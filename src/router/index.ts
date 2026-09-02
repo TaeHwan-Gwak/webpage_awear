@@ -26,7 +26,7 @@ const routes = [
     component: () => import('../pages/admin/AdminLayout.vue'),
     meta: { requiresAdminAuth: true },
     children: [
-      { path: '', name: 'admin-dashboard', component: () => import('../pages/admin/AdminDashboardPage.vue') },
+      { path: '', name: 'admin-main', component: () => import('../pages/admin/AdminMainPage.vue') },
       { path: 'members', name: 'admin-members', component: () => import('../pages/admin/AdminMemberPage.vue') },
     ],
   },
