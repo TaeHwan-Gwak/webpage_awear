@@ -10,7 +10,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 12px;
-    font-size: 13.6px;
+    font-size: 16px;
     color: var(--text-muted);
 
     .brand {
@@ -62,7 +62,7 @@
     max-width: var(--page-max);
     margin: 24px auto 0;
     padding: 0 32px 28px;
-    font-size: 12.48px;
+    font-size: 15px;
     color: var(--text-faint);
     font-family: var(--font-mono);
   }

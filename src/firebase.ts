@@ -23,6 +23,6 @@ if (isConfigured) {
   storage = getStorage(app)
 } else if (import.meta.env.DEV) {
   console.info(
-    '[firebase] .env에 VITE_FIREBASE_* 값이 없어 Firebase 연결을 건너뜁니다. 정적 데이터로 표시됩니다.'
+    '[firebase] Skipping Firebase connection because VITE_FIREBASE_* values are missing in .env. Falling back to static data.'
   )
 }

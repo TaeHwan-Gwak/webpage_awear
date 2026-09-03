@@ -7,8 +7,8 @@
 
       <div class="hero-text section">
         <p class="eyebrow">AI-based WEArable Robotics Lab</p>
-        <h1>헤드라인</h1>
-        <p class="lede">소개 문구</p>
+        <h1>Headline</h1>
+        <p class="lede">Intro text</p>
       </div>
     </section>
 
@@ -16,14 +16,14 @@
 
     <!-- <section id="mission" class="mission section">
       <p class="eyebrow">Mission</p>
-      <h2>미션 문구</h2>
+      <h2>Mission statement</h2>
     </section> -->
 
     <section id="research" class="themes section">
       <header class="head">
         <p class="eyebrow">Research Themes</p>
-        <h2>섹션 제목</h2>
-        <router-link class="more-link" to="/research">연구 분야 보기 →</router-link>
+        <h2>Section title</h2>
+        <router-link class="more-link" to="/research">View Research →</router-link>
       </header>
 
       <!-- <div class="chip-grid">
@@ -46,7 +46,7 @@
       </header>
       <div class="gallery-grid">
         <div v-for="i in 8" :key="i" class="gallery-item" aria-hidden="true">
-          <span class="ph-label">이미지</span>
+          <span class="ph-label">Image</span>
         </div>
       </div>
     </section>
@@ -54,10 +54,10 @@
     <section id="news" class="news section">
       <header class="head">
         <p class="eyebrow">News</p>
-        <h2>섹션 제목</h2>
+        <h2>Section title</h2>
       </header>
 
-      <p v-if="newsError" class="status">최신 소식을 불러오지 못해 이전 내용을 보여드리고 있어요.</p>
+      <p v-if="newsError" class="status">Couldn't load the latest news, showing previous content instead.</p>
 
       <ol class="timeline">
         <template v-if="newsLoading">
@@ -72,22 +72,22 @@
         </template>
       </ol>
 
-      <router-link class="more-link" to="/news">소식 전체 보기 →</router-link>
+      <router-link class="more-link" to="/news">View all news →</router-link>
     </section>
 
     <!-- <section id="pi" class="pi section">
       <div class="card">
         <div class="portrait" aria-hidden="true">
-          <span class="ph-label">이미지</span>
+          <span class="ph-label">Image</span>
         </div>
 
         <div class="body">
           <p class="eyebrow">Principal Investigator</p>
-          <h2>이름</h2>
-          <p class="role">소속·직함</p>
-          <p class="bio">소개</p>
-          <span class="mail">이메일</span>
-          <router-link class="more-link" to="/member">연구실 구성원 보기 →</router-link>
+          <h2>Name</h2>
+          <p class="role">Affiliation / Title</p>
+          <p class="bio">Bio</p>
+          <span class="mail">Email</span>
+          <router-link class="more-link" to="/member">View lab members →</router-link>
         </div>
       </div>
     </section> -->
@@ -97,11 +97,11 @@
         <p class="eyebrow">How to Apply</p>
         <h2>Join Us</h2>
         <p class="desc">
-          간단한 자기소개 및 경력사항과 함께 학점(만점 기준 표기 필수)을 기재하여<br />
-          아래 이메일로 지원 및 문의 바랍니다.
+          Please include a brief self-introduction and background, along with your GPA<br />
+          (please note the maximum possible scale), and apply via the email below.
         </p>
-        <a class="btn" href="mailto:jkangrobot@gist.ac.kr?subject=[AWEAR Lab 지원] OOO 지원서">
-          이메일로 지원하기 →
+        <a class="btn" href="mailto:jkangrobot@gist.ac.kr?subject=[AWEAR Lab Application] OOO Application">
+          Apply via email →
         </a>
       </div>
     </section> -->
@@ -123,21 +123,21 @@ const heroImages = [
 ]
 
 // const themes = [
-//   { id: 'topic-1', icon: '🦾', title: '테마 이름', count: '논문 수' },
-//   { id: 'topic-2', icon: '🧠', title: '테마 이름', count: '논문 수' },
-//   { id: 'topic-3', icon: '🤖', title: '테마 이름', count: '논문 수' },
+//   { id: 'topic-1', icon: '🦾', title: 'Theme name', count: 'Paper count' },
+//   { id: 'topic-2', icon: '🧠', title: 'Theme name', count: 'Paper count' },
+//   { id: 'topic-3', icon: '🤖', title: 'Theme name', count: 'Paper count' },
 // ]
 
 const fallbackNews: NewsItemType[] = [
-  { id: 'seed-1', date: '날짜', desc: '소식 내용', tag: '태그' },
-  { id: 'seed-2', date: '날짜', desc: '소식 내용', tag: '태그' },
-  { id: 'seed-3', date: '날짜', desc: '소식 내용', tag: '태그' },
+  { id: 'seed-1', date: 'Date', desc: 'News content', tag: 'Tag' },
+  { id: 'seed-2', date: 'Date', desc: 'News content', tag: 'Tag' },
+  { id: 'seed-3', date: 'Date', desc: 'News content', tag: 'Tag' },
 ]
 
 const { news, loading: newsLoading, error: newsError } = useNews()
 const displayNews = computed(() => (news.value.length ? news.value : fallbackNews))
 
-// TODO: OnMounted 달아서 홈 들어올 때 Admin Auth 체크하고, 토큰 날리기
+// TODO: add onMounted to check Admin Auth when entering Home and clear the token
 </script>
 
 <style src="./styles/HomePage.css" scoped></style>

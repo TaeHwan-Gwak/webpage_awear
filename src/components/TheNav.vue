@@ -5,7 +5,7 @@
         <img src="/logo.webp" alt="AWEAR Lab - AI-based WEArable Robotics Lab" class="logo" />
       </router-link>
 
-      <nav class="links" aria-label="주요 메뉴">
+      <nav class="links" aria-label="Main menu">
         <div v-for="item in items" :key="item.to" class="nav-item" @mouseenter="openDropdown(item.to)"
           @mouseleave="closeDropdown">
           <router-link :to="item.to" @click="closeDropdown">{{ item.label }}</router-link>
@@ -19,13 +19,13 @@
         </div>
       </nav>
 
-      <button class="burger" :aria-expanded="open" aria-label="메뉴 열기" @click="open = !open">
+      <button class="burger" :aria-expanded="open" aria-label="Open menu" @click="open = !open">
         <span /><span /><span />
       </button>
     </div>
 
     <transition name="drop">
-      <nav v-if="open" class="mobile-links" aria-label="주요 메뉴 (모바일)">
+      <nav v-if="open" class="mobile-links" aria-label="Main menu (mobile)">
         <template v-for="item in items" :key="item.to">
           <router-link :to="item.to" @click="open = false">{{ item.label }}</router-link>
           <router-link v-for="child in item.children" :key="child.to" :to="child.to" class="mobile-sub"
@@ -67,9 +67,9 @@ const items = [
     label: 'Research',
     to: '/research',
     children: [
-      { label: 'BCI / 뉴럴인터페이스', to: '/research#topic-1' },
-      { label: '로봇 및 의수', to: '/research#topic-2' },
-      { label: 'AI 및 비전', to: '/research#topic-3' },
+      { label: 'BCI / Neural Interface', to: '/research#topic-1' },
+      { label: 'Robotics & Prosthetics', to: '/research#topic-2' },
+      { label: 'AI & Vision', to: '/research#topic-3' },
     ],
   },
   { label: 'Publications', to: '/publications' },

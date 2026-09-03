@@ -29,7 +29,7 @@ export function useNews(max = 5) {
         ...(docSnap.data() as Omit<NewsItem, 'id'>),
       }))
     } catch (e) {
-      error.value = 'news를 불러오지 못했습니다.'
+      error.value = 'Failed to load news.'
       console.error('[useNews]', e)
     } finally {
       loading.value = false

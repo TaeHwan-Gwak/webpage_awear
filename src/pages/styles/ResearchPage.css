@@ -10,7 +10,7 @@
   column-gap: 56px;
   row-gap: 12px;
   align-items: center;
-  scroll-margin-top: 100px;
+  scroll-margin-top: 132px;
 
   .figure {
     grid-column: 1;
@@ -25,7 +25,7 @@
 
     .ph-label {
       font-family: var(--font-mono);
-      font-size: 12.48px;
+      font-size: 15px;
       color: var(--text-faint);
     }
   }
@@ -36,13 +36,13 @@
 
     .index {
       font-family: var(--font-mono);
-      font-size: 13.6px;
+      font-size: 16px;
       color: var(--orange-deep);
     }
 
     h2 {
       margin-top: 10px;
-      font-size: 24px;
+      font-size: 29px;
       color: var(--text);
     }
   }
@@ -50,7 +50,7 @@
   .desc {
     grid-column: 2;
     grid-row: 2;
-    font-size: 15.68px;
+    font-size: 19px;
     max-width: 46ch;
   }
 

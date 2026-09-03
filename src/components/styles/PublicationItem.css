@@ -12,7 +12,7 @@
 
   .year {
     font-family: var(--font-mono);
-    font-size: 14.4px;
+    font-size: 17px;
     color: var(--orange-deep);
     padding-top: 2px;
   }
@@ -42,12 +42,12 @@
       background: rgba(255, 90, 31, 0.1);
       color: var(--orange-deep);
       font-family: var(--font-mono);
-      font-size: 10.88px;
+      font-size: 13px;
       margin-bottom: 8px;
     }
 
     h3 {
-      font-size: 16.32px;
+      font-size: 20px;
       font-weight: 500;
       color: var(--text);
       line-height: 1.5;
@@ -63,13 +63,13 @@
 
     .authors {
       margin-top: 8px;
-      font-size: 14.08px;
+      font-size: 17px;
       color: var(--text-muted);
     }
 
     .venue {
       margin-top: 4px;
-      font-size: 13.44px;
+      font-size: 16px;
       font-family: var(--font-mono);
       color: var(--text-faint);
     }
@@ -89,7 +89,7 @@
 
     .summary-eyebrow {
       font-family: var(--font-mono);
-      font-size: 11.2px;
+      font-size: 13px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--orange-deep);
@@ -97,13 +97,13 @@
 
     h4 {
       margin-top: 10px;
-      font-size: 16px;
+      font-size: 19px;
       color: var(--text);
     }
 
     .summary-desc {
       margin-top: 10px;
-      font-size: 14.4px;
+      font-size: 17px;
       color: var(--text-muted);
     }
 
@@ -115,7 +115,7 @@
       gap: 6px;
 
       li {
-        font-size: 13.76px;
+        font-size: 17px;
         color: var(--text-muted);
         list-style: disc;
       }

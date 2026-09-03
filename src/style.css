@@ -22,6 +22,7 @@
   --page-max: 1200px;
   --radius: 14px;
   --radius-sm: 8px;
+  --nav-height: 100px;
 }
 
 * {
@@ -30,7 +31,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 76px;
+  scroll-padding-top: var(--nav-height);
 }
 
 body {
@@ -97,7 +98,7 @@ button:focus-visible {
 
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 12.48px;
+  font-size: 15px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--orange-deep);

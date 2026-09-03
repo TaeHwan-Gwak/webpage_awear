@@ -7,15 +7,15 @@
       :src="src"
       class="slide"
       :class="{ active: i === current }"
-      :alt="`AWEAR Lab 사진 ${i + 1}`"
+      :alt="`AWEAR Lab photo ${i + 1}`"
       @error="onError(i)"
     />
 
     <div v-if="allFailed" class="fallback" aria-hidden="true">
-      <span class="ph-label">이미지</span>
+      <span class="ph-label">Image</span>
     </div>
 
-    <div class="dots" role="tablist" aria-label="이미지 선택">
+    <div class="dots" role="tablist" aria-label="Select image">
       <button
         v-for="(src, i) in images"
         :key="src"
@@ -23,7 +23,7 @@
         :class="{ active: i === current }"
         role="tab"
         :aria-selected="i === current"
-        :aria-label="`${i + 1}번째 이미지 보기`"
+        :aria-label="`View image ${i + 1}`"
         @click="select(i)"
       />
     </div>

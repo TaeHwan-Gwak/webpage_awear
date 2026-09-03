@@ -12,7 +12,7 @@
 
     .brand {
       font-family: var(--font-display);
-      font-size: 15.68px;
+      font-size: 19px;
       color: var(--text);
     }
 
@@ -20,7 +20,7 @@
       padding: 7px 16px;
       border: 1px solid var(--border);
       border-radius: 999px;
-      font-size: 13.44px;
+      font-size: 16px;
       color: var(--text-muted);
       background: var(--bg);
       transition: border-color 0.2s ease, color 0.2s ease;
@@ -35,7 +35,7 @@
   .admin-nav {
     display: flex;
     gap: 16px;
-    font-size: 13.44px;
+    font-size: 16px;
 
     a {
       padding: 7px 16px;

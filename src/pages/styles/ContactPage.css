@@ -13,7 +13,7 @@
 
     dt {
       font-family: var(--font-mono);
-      font-size: 12.48px;
+      font-size: 15px;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--orange-deep);
@@ -21,7 +21,7 @@
 
     dd {
       margin: 8px 0 0;
-      font-size: 16px;
+      font-size: 19px;
       color: var(--text);
     }
   }
@@ -30,7 +30,7 @@
     display: inline-block;
     margin-top: 24px;
     font-family: var(--font-mono);
-    font-size: 13.76px;
+    font-size: 17px;
     color: var(--orange-deep);
     border-bottom: 1px solid transparent;
     transition: border-color 0.2s ease;
@@ -81,14 +81,14 @@
 }
 
 #internship {
-  scroll-margin-top: 100px;
+  scroll-margin-top: 132px;
 }
 
 .fields,
 .qualify {
   h2 {
     margin-top: 14px;
-    font-size: 20.8px;
+    font-size: 25px;
     color: var(--text);
     max-width: 620px;
   }
@@ -104,7 +104,7 @@
   li {
     position: relative;
     padding-left: 22px;
-    font-size: 15.68px;
+    font-size: 19px;
     color: var(--text-muted);
 
     &::before {
@@ -135,13 +135,13 @@
 
   h2 {
     margin-top: 14px;
-    font-size: clamp(25.6px, 3vw, 33.6px);
+    font-size: clamp(31px, 3vw, 40px);
     color: var(--text);
   }
 
   .desc {
     margin-top: 18px;
-    font-size: 15.68px;
+    font-size: 19px;
   }
 
   .btn {
@@ -152,7 +152,7 @@
     border: 1px solid var(--orange);
     color: var(--orange-deep);
     font-weight: 600;
-    font-size: 15.2px;
+    font-size: 18px;
     transition: background 0.18s ease;
 
     &:hover {

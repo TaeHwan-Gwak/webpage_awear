@@ -1,7 +1,7 @@
 <template>
   <div class="admin-members">
     <p class="eyebrow">Admin</p>
-    <h1>멤버 관리</h1>
+    <h1>Member Management</h1>
 
     <div class="layout">
       <aside class="member-panel">
@@ -17,70 +17,70 @@
           </li>
         </ul>
 
-        <button type="button" class="add-btn" @click="startAdd">+ 추가</button>
+        <button type="button" class="add-btn" @click="startAdd">+ Add</button>
       </aside>
 
       <section class="detail-panel">
-        <p v-if="mode === null" class="empty-hint">왼쪽에서 멤버를 선택하거나, [+ 추가]를 눌러 새로 등록하세요.</p>
+        <p v-if="mode === null" class="empty-hint">Select a member on the left, or click [+ Add] to register a new one.</p>
 
         <form v-else class="detail-form" @submit.prevent="onSave">
           <template v-if="mode === 'pi'">
             <label class="field">
-              <span>이름</span>
-              <input v-model="form.pi.name" type="text" placeholder="이름을 입력하세요" />
+              <span>Name</span>
+              <input v-model="form.pi.name" type="text" placeholder="Enter a name" />
             </label>
             <label class="field">
-              <span>소속·직함</span>
-              <input v-model="form.pi.role" type="text" placeholder="예: GIST AI학과 교수" />
+              <span>Affiliation / Title</span>
+              <input v-model="form.pi.role" type="text" placeholder="e.g. Professor, GIST Dept. of AI" />
             </label>
             <label class="field">
-              <span>소개</span>
-              <textarea v-model="form.pi.bio" rows="4" placeholder="소개 문구를 입력하세요"></textarea>
+              <span>Bio</span>
+              <textarea v-model="form.pi.bio" rows="4" placeholder="Enter a bio"></textarea>
             </label>
             <label class="field">
-              <span>이메일</span>
+              <span>Email</span>
               <input v-model="form.pi.email" type="text" placeholder="example@gist.ac.kr" />
             </label>
           </template>
 
           <template v-else-if="mode === 'member' && activeMember">
             <label class="field">
-              <span>이름</span>
-              <input v-model="activeMember.name" type="text" placeholder="이름을 입력하세요" />
+              <span>Name</span>
+              <input v-model="activeMember.name" type="text" placeholder="Enter a name" />
             </label>
             <label class="field">
-              <span>역할</span>
-              <input v-model="activeMember.role" type="text" placeholder="예: 석사과정" />
+              <span>Role</span>
+              <input v-model="activeMember.role" type="text" placeholder="e.g. M.S. Student" />
             </label>
             <label class="field">
-              <span>비고</span>
-              <input v-model="activeMember.note" type="text" placeholder="선택 입력 사항" />
+              <span>Note</span>
+              <input v-model="activeMember.note" type="text" placeholder="Optional" />
             </label>
           </template>
 
           <template v-else-if="mode === 'new'">
             <label class="field">
-              <span>이름</span>
-              <input v-model="draft.name" type="text" placeholder="이름을 입력하세요" />
+              <span>Name</span>
+              <input v-model="draft.name" type="text" placeholder="Enter a name" />
             </label>
             <label class="field">
-              <span>역할</span>
-              <input v-model="draft.role" type="text" placeholder="예: 석사과정" />
+              <span>Role</span>
+              <input v-model="draft.role" type="text" placeholder="e.g. M.S. Student" />
             </label>
             <label class="field">
-              <span>비고</span>
-              <input v-model="draft.note" type="text" placeholder="선택 입력 사항" />
+              <span>Note</span>
+              <input v-model="draft.note" type="text" placeholder="Optional" />
             </label>
           </template>
 
           <div class="actions">
-            <button type="submit" class="btn save">저장</button>
+            <button type="submit" class="btn save">Save</button>
             <button v-if="mode === 'member'" type="button" class="btn delete" @click="onDelete">
-              삭제
+              Delete
             </button>
           </div>
 
-          <p v-if="status === 'ok'" class="status ok">저장했습니다. (이 브라우저에만 임시 저장됨)</p>
+          <p v-if="status === 'ok'" class="status ok">Saved. (Stored temporarily in this browser only)</p>
         </form>
       </section>
     </div>
@@ -112,7 +112,7 @@ function loadInitial(): MembersForm {
     try {
       return JSON.parse(saved) as MembersForm
     } catch {
-      // 저장된 값이 깨졌으면 원본 JSON으로 폴백
+      // Fall back to the original JSON if the saved value is corrupted
     }
   }
   return {
@@ -181,4 +181,4 @@ function persist() {
 }
 </script>
 
-<style src="./styles/AdminMemberPage.css" scoped></style>
+<style src="./styles/AdminEquipmentPage.css" scoped></style>

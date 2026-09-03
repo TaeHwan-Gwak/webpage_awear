@@ -5,16 +5,16 @@
     <SignalDivider />
 
     <section class="list section">
-      <p v-if="error" class="status">최신 소식을 불러오지 못해 이전 내용을 보여드리고 있어요.</p>
+      <p v-if="error" class="status">Couldn't load the latest news, showing previous content instead.</p>
 
       <div v-if="!loading" class="list-controls">
-        <span class="count">전체 {{ displayNews.length }}건</span>
+        <span class="count">{{ displayNews.length }} total</span>
         <label class="page-size">
-          페이지당
+          Per page
           <select v-model.number="pageSize">
-            <option :value="5">5개</option>
-            <option :value="10">10개</option>
-            <option :value="20">20개</option>
+            <option :value="5">5</option>
+            <option :value="10">10</option>
+            <option :value="20">20</option>
           </select>
         </label>
       </div>
@@ -33,16 +33,16 @@
         </template>
       </ol>
 
-      <nav v-if="!loading && totalPages > 1" class="pagination" aria-label="뉴스 페이지 이동">
+      <nav v-if="!loading && totalPages > 1" class="pagination" aria-label="News pagination">
         <button type="button" class="page-btn" :disabled="currentPage === 1" @click="currentPage--">
-          이전
+          Prev
         </button>
         <button v-for="p in totalPages" :key="p" type="button" class="page-btn" :class="{ active: p === currentPage }"
           @click="currentPage = p">
           {{ p }}
         </button>
         <button type="button" class="page-btn" :disabled="currentPage === totalPages" @click="currentPage++">
-          다음
+          Next
         </button>
       </nav>
     </section>

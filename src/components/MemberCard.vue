@@ -1,7 +1,7 @@
 <template>
   <article class="member-card">
     <div class="avatar" aria-hidden="true">
-      <span class="ph-label">이미지</span>
+      <span class="ph-label">Image</span>
     </div>
     <h3>{{ name }}</h3>
     <p class="role">{{ role }}</p>

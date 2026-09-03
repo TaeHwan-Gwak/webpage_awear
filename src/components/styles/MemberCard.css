@@ -17,25 +17,25 @@
 
   .ph-label {
     font-family: var(--font-mono);
-    font-size: 10.88px;
+    font-size: 13px;
     color: var(--text-faint);
   }
 
   h3 {
     margin-top: 18px;
-    font-size: 16.32px;
+    font-size: 20px;
     color: var(--text);
   }
 
   .role {
     margin-top: 4px;
-    font-size: 13.6px;
+    font-size: 16px;
     color: var(--text-muted);
   }
 
   .note {
     margin-top: 10px;
-    font-size: 12.8px;
+    font-size: 15px;
     color: var(--text-faint);
   }
 }

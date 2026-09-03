@@ -16,7 +16,7 @@
 
     h1 {
       margin-top: 8px;
-      font-size: 25.6px;
+      font-size: 31px;
       color: var(--text);
     }
 
@@ -27,7 +27,7 @@
       span {
         display: block;
         margin-bottom: 8px;
-        font-size: 13.76px;
+        font-size: 17px;
         color: var(--text-muted);
       }
 
@@ -36,7 +36,7 @@
         padding: 11px 14px;
         border: 1px solid var(--border);
         border-radius: var(--radius-sm);
-        font-size: 15.36px;
+        font-size: 18px;
         color: var(--text);
         background: var(--bg);
 
@@ -50,7 +50,7 @@
 
     .error {
       margin-top: 12px;
-      font-size: 13.44px;
+      font-size: 16px;
       color: var(--orange-deep);
     }
 
@@ -63,7 +63,7 @@
       background: var(--orange);
       color: #fff;
       font-weight: 600;
-      font-size: 15.2px;
+      font-size: 18px;
       transition: background 0.18s ease;
 
       &:hover {

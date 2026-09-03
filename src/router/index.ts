@@ -43,7 +43,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to) {
-    if (to.hash) return { el: to.hash, top: 90, behavior: 'smooth' }
+    if (to.hash) return { el: to.hash, top: 122, behavior: 'smooth' }
     return { top: 0 }
   },
 })

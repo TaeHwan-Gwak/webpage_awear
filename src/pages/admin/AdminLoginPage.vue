@@ -5,7 +5,7 @@
       <h1>Admin</h1>
 
       <label class="field">
-        <span>비밀번호</span>
+        <span>Password</span>
         <input
           v-model="password"
           type="password"
@@ -15,9 +15,9 @@
         />
       </label>
 
-      <p v-if="error" class="error">비밀번호가 올바르지 않습니다.</p>
+      <p v-if="error" class="error">Incorrect password.</p>
 
-      <button type="submit" class="btn">입장</button>
+      <button type="submit" class="btn">Enter</button>
     </form>
   </main>
 </template>

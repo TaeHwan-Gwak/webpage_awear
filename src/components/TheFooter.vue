@@ -10,11 +10,11 @@
       <div class="right">
         <span>jkangrobot@gist.ac.kr</span>
         <span class="divider">·</span>
-        <span>광주광역시 북구 첨단과기로 123 다산빌딩</span>
+        <span>123 Cheomdan-gwagiro, Buk-gu, Gwangju, Republic of Korea</span>
       </div>
 
       <div class="social">
-        <a href="#" aria-label="맨 위로 이동">
+        <a href="#" aria-label="Back to top">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
               stroke-linejoin="round" />

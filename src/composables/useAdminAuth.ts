@@ -9,7 +9,7 @@ export function loginAdmin(password: string): boolean {
   const correctPassword = import.meta.env.VITE_ADMIN_PASSWORD
 
   if (!correctPassword) {
-    console.warn('[admin] .env에 VITE_ADMIN_PASSWORD가 설정되지 않았습니다.')
+    console.warn('[admin] VITE_ADMIN_PASSWORD is not set in .env.')
     return false
   }
 

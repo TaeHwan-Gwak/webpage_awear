@@ -1,13 +1,13 @@
 <template>
   <main class="member-page">
-    <PageHeader eyebrow="Member" title="페이지 제목" description="페이지 설명" />
+    <PageHeader eyebrow="Member" title="Page title" description="Page description" />
 
     <SignalDivider />
 
     <section class="pi-feature section">
       <div class="card">
         <div class="portrait" aria-hidden="true">
-          <span class="ph-label">이미지</span>
+          <span class="ph-label">Image</span>
         </div>
         <div class="body">
           <p class="eyebrow">Principal Investigator</p>
