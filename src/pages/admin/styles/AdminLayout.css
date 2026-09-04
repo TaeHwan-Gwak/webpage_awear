@@ -54,6 +54,68 @@
     }
   }
 
+  /* Banner shown when another admin asks for the session */
+  .access-request {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    max-width: 1100px;
+    margin: 20px auto 0;
+    padding: 14px 20px;
+    border: 1px solid var(--orange);
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+
+    .request-text {
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    .warn {
+      display: block;
+      margin-top: 4px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .request-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+
+      button {
+        padding: 7px 18px;
+        border-radius: 999px;
+        font-size: 15px;
+        transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+      }
+
+      .reject {
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        background: var(--bg);
+
+        &:hover {
+          border-color: var(--text-muted);
+          color: var(--text);
+        }
+      }
+
+      .accept {
+        border: 1px solid var(--orange);
+        color: #fff;
+        background: var(--orange);
+
+        &:hover {
+          background: var(--orange-deep);
+          border-color: var(--orange-deep);
+        }
+      }
+    }
+  }
+
   .admin-body {
     max-width: 1100px;
     margin: 0 auto;

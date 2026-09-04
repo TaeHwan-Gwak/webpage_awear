@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '../pages/HomePage.vue'
-import { isAdminAuthenticated } from '../composables/useAdminAuth'
+import { hasAdminToken, requireAdminSession } from '../composables/useAdminAuth'
 
 const routes = [
   { path: '/', name: 'home', component: HomePage },
@@ -50,8 +50,20 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   const needsAuth = to.matched.some((record) => record.meta.requiresAdminAuth)
-  if (needsAuth && !isAdminAuthenticated()) {
-    return { path: '/admin/login', query: { redirect: to.fullPath } }
+  if (!needsAuth) return
+
+  // Note this before requireAdminSession() runs, since it clears the token.
+  const wasLoggedIn = hasAdminToken()
+  const check = requireAdminSession()
+  if (check === 'ok') return
+
+  return {
+    path: '/admin/login',
+    query: {
+      redirect: to.fullPath,
+      // Someone who never signed in does not need an explanation.
+      ...(wasLoggedIn ? { reason: check } : {}),
+    },
   }
 })
 
