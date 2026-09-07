@@ -1,7 +1,8 @@
 <template>
   <main class="contact-page">
-    <PageHeader eyebrow="Contact & Join Us" title="Contact" description="AWEAR Lab is always looking for passionate researchers and interns to join us." />
-
+    <PageHeader eyebrow="Contact & Join Us" title="Contact"
+      description="AWEAR Lab is always looking for passionate researchers and interns to join us." />
+    <SignalDivider />
     <section class="content section">
       <div class="info">
         <dl>
@@ -21,7 +22,8 @@
           </div>
         </dl>
 
-        <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=123+Cheomdan-gwagiro,+Buk-gu,+Gwangju"
+        <a class="directions"
+          href="https://www.google.com/maps/dir/?api=1&destination=123+Cheomdan-gwagiro,+Buk-gu,+Gwangju"
           target="_blank" rel="noopener noreferrer">
           Get directions on Google Maps →
         </a>
@@ -55,12 +57,12 @@
         <p class="eyebrow">How to Apply</p>
         <h2>Join Us</h2>
         <p class="desc">
-          Please include a brief self-introduction and background, along with your GPA<br />
-          (please note the maximum possible scale), and apply or inquire via the email below.
+          Please include a brief self-introduction and background, along with your GPA
+          (please note the maximum possible scale), and apply or inquire via the email. <br />
+          <a class="btn" href="mailto:jkangrobot@gist.ac.kr">
+            jkangrobot@gist.ac.kr
+          </a>
         </p>
-        <a class="btn" href="mailto:jkangrobot@gist.ac.kr?subject=[AWEAR Lab Application] OOO Application">
-          Apply via email →
-        </a>
       </div>
     </section>
   </main>

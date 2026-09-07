@@ -9,14 +9,22 @@
 
       <div v-if="!loading" class="list-controls">
         <span class="count">{{ displayNews.length }} total</span>
-        <label class="page-size">
-          Per page
-          <select v-model.number="pageSize">
-            <option :value="5">5</option>
-            <option :value="10">10</option>
-            <option :value="20">20</option>
-          </select>
-        </label>
+
+        <!-- 커스텀 드롭다운 -->
+        <div class="custom-select-wrapper" ref="dropdownRef">
+          <span class="label">Per page</span>
+          <button type="button" class="select-trigger" :class="{ open: isOpen }" @click="isOpen = !isOpen">
+            <span>{{ pageSize }}</span>
+            <span class="chevron" :class="{ rotated: isOpen }">▾</span>
+          </button>
+
+          <ul v-if="isOpen" class="dropdown-menu">
+            <li v-for="size in [5, 10, 20]" :key="size" class="dropdown-item" :class="{ selected: pageSize === size }"
+              @click="selectSize(size)">
+              {{ size }}
+            </li>
+          </ul>
+        </div>
       </div>
 
       <ol class="timeline">
@@ -50,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onMounted } from 'vue'
+import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import NewsItem from '../components/NewsItem.vue'
@@ -69,14 +77,33 @@ const isMobile = () =>
     /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent))
 
 const pageSize = ref(isMobile() ? 5 : 10)
+const currentPage = ref(1)
+
+// 커스텀 드롭다운 상태
+const isOpen = ref(false)
+const dropdownRef = ref<HTMLElement | null>(null)
+
+const selectSize = (size: number) => {
+  pageSize.value = size
+  isOpen.value = false
+}
+
+const handleClickOutside = (e: MouseEvent) => {
+  if (dropdownRef.value && !dropdownRef.value.contains(e.target as Node)) {
+    isOpen.value = false
+  }
+}
 
 onMounted(() => {
   if (isMobile()) {
     pageSize.value = 5
   }
+  window.addEventListener('click', handleClickOutside)
 })
 
-const currentPage = ref(1)
+onUnmounted(() => {
+  window.removeEventListener('click', handleClickOutside)
+})
 
 const totalPages = computed(() => Math.max(1, Math.ceil(displayNews.value.length / pageSize.value)))
 
