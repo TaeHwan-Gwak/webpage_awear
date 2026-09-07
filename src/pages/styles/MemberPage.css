@@ -1,30 +1,41 @@
 .pi-feature {
   .card {
+    position: relative;
     display: grid;
-    grid-template-columns: 160px 1fr;
-    gap: 44px;
+    grid-template-columns: 168px 1fr;
+    gap: 48px;
     align-items: center;
-    padding: 48px;
+    padding: 52px;
     border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
+    border-radius: calc(var(--radius) + 4px);
+    background: linear-gradient(165deg, var(--surface) 0%, var(--bg) 60%);
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--orange), var(--orange-deep));
+    }
 
     @media (max-width: 860px) {
       grid-template-columns: 1fr;
-      padding: 32px 24px;
+      padding: 36px 26px;
       text-align: center;
     }
   }
 
   .portrait {
-    width: 120px;
-    height: 120px;
+    width: 132px;
+    height: 132px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px dashed var(--border);
+    border: 2px solid var(--border);
     background: var(--surface-2);
+    box-shadow: 0 0 0 6px var(--surface);
 
     @media (max-width: 860px) {
       margin: 0 auto;
@@ -46,28 +57,76 @@
   .role {
     margin-top: 6px;
     font-size: 17px;
-    color: var(--text-muted);
+    color: var(--orange-deep);
+    font-family: var(--font-mono);
   }
 
   .bio {
     margin-top: 18px;
     max-width: 60ch;
     font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .actions {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    @media (max-width: 860px) {
+      justify-content: center;
+    }
   }
 
   .mail {
-    display: inline-block;
-    margin-top: 20px;
     font-family: var(--font-mono);
     font-size: 17px;
-    color: var(--orange-deep);
+    color: var(--text-muted);
+    transition: color 0.18s ease;
+
+    &:hover {
+      color: var(--orange-deep);
+    }
+  }
+
+  .cv-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: var(--orange);
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background 0.18s ease, transform 0.18s ease;
+
+    &:hover {
+      background: var(--orange-deep);
+      transform: translateY(-1px);
+    }
   }
 }
 
 .group {
   .group-title {
+    position: relative;
+    padding-left: 18px;
     font-size: 21px;
     color: var(--text);
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--orange);
+    }
   }
 
   .grid {

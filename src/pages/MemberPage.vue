@@ -14,7 +14,10 @@
           <h2>{{ pi.name }}</h2>
           <p class="role">{{ pi.role }}</p>
           <p class="bio">{{ pi.bio }}</p>
-          <a class="mail" :href="`mailto:${pi.email}`">{{ pi.email }}</a>
+          <div class="actions">
+            <a class="mail" :href="`mailto:${pi.email}`">{{ pi.email }}</a>
+            <router-link class="cv-btn" to="/member/cv">View CV →</router-link>
+          </div>
         </div>
       </div>
     </section>

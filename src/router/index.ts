@@ -11,6 +11,7 @@ const routes = [
     component: () => import('../pages/PublicationsPage.vue'),
   },
   { path: '/member', name: 'member', component: () => import('../pages/MemberPage.vue') },
+  { path: '/member/cv', name: 'member-cv', component: () => import('../pages/CVPage.vue') },
   { path: '/internship', redirect: '/contact#internship' },
   { path: '/news', name: 'news', component: () => import('../pages/NewsPage.vue') },
   { path: '/equipment', name: 'equipment', component: () => import('../pages/EquipmentPage.vue') },

@@ -1,16 +1,22 @@
 {
   "pi": {
-    "name": "이름",
-    "role": "소속·직함",
-    "bio": "소개",
-    "email": "이메일"
+    "name": "Name",
+    "role": "Affiliation / Title",
+    "bio": "Bio",
+    "email": "Email",
+    "cv": [
+      { "section": "Education", "items": ["Degree, Institution, Year"] },
+      { "section": "Experience", "items": ["Position, Institution, Year – Year"] },
+      { "section": "Awards & Honors", "items": ["Award name, Year"] },
+      { "section": "Selected Publications", "items": ["See the Publications page for the full list."] }
+    ]
   },
-  "groupTitle": "그룹명",
+  "groupTitle": "Group Name",
   "members": [
-    { "id": "m1", "name": "이름1", "role": "역할", "note": "" },
-    { "id": "m2", "name": "이름2", "role": "역할", "note": "" },
-    { "id": "m3", "name": "이름3", "role": "역할", "note": "" },
-    { "id": "m4", "name": "이름4", "role": "역할", "note": "" },
-    { "id": "m5", "name": "이름5", "role": "역할", "note": "" }
+    { "id": "m1", "name": "Name 1", "role": "Role", "note": "" },
+    { "id": "m2", "name": "Name 2", "role": "Role", "note": "" },
+    { "id": "m3", "name": "Name 3", "role": "Role", "note": "" },
+    { "id": "m4", "name": "Name 4", "role": "Role", "note": "" },
+    { "id": "m5", "name": "Name 5", "role": "Role", "note": "" }
   ]
 }
