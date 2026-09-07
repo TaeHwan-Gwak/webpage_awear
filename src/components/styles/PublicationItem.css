@@ -42,7 +42,7 @@
       background: rgba(255, 90, 31, 0.1);
       color: var(--orange-deep);
       font-family: var(--font-mono);
-      font-size: 13px;
+      font-size: 15px;
       margin-bottom: 8px;
     }
 
@@ -89,7 +89,7 @@
 
     .summary-eyebrow {
       font-family: var(--font-mono);
-      font-size: 13px;
+      font-size: 15px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--orange-deep);

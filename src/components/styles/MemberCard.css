@@ -26,25 +26,23 @@
 
   .ph-label {
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: 15px;
     color: var(--text-faint);
   }
 
   h3 {
-    margin-top: 18px;
-    font-size: 20px;
+    margin-top: 16px;
+    font-size: 22px;
     color: var(--text);
   }
 
   .role {
-    display: inline-block;
+    display: block;
     margin-top: 8px;
-    padding: 3px 12px;
-    border-radius: 999px;
-    background: rgba(255, 90, 31, 0.1);
-    color: var(--orange-deep);
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--orange-deep);
   }
 
   .note {

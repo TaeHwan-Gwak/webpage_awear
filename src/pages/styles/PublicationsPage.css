@@ -1,7 +1,7 @@
 /* 전체 레이아웃 (데스크톱: 2컬럼 그리드) */
 .content-layout {
   max-width: 1040px;
-  margin: 40px auto 100px;
+  margin: 24px auto 64px;
   padding: 0 24px;
   display: grid;
   grid-template-columns: 140px 1fr;
@@ -19,7 +19,7 @@
 
 .sidebar-title {
   display: block;
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #94a3b8;
@@ -42,7 +42,7 @@
   border: none;
   border-left: 2px solid transparent;
   background: transparent;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: #64748b;
   cursor: pointer;
@@ -116,13 +116,13 @@
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    font-size: 14px;
+    font-size: 15px;
     cursor: pointer;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 
     .label {
       color: #94a3b8;
-      font-size: 12px;
+      font-size: 15px;
       text-transform: uppercase;
       font-weight: 600;
     }
@@ -134,7 +134,7 @@
 
     .arrow {
       color: #64748b;
-      font-size: 12px;
+      font-size: 15px;
       transition: transform 0.2s ease;
       &.open {
         transform: rotate(180deg);
@@ -163,7 +163,7 @@
     border: none;
     border-radius: 8px;
     background: transparent;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 500;
     color: #475569;
     cursor: pointer;

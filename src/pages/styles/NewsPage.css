@@ -44,7 +44,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-sm, 8px);
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text);
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease;
@@ -55,7 +55,7 @@
   }
 
   .chevron {
-    font-size: 11px;
+    font-size: 15px;
     color: var(--text-muted);
     transition: transform 0.2s ease;
 
@@ -86,7 +86,7 @@
 .dropdown-item {
   padding: 6px 12px;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text-muted, #555555);
   border-radius: 6px;

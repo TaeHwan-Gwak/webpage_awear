@@ -76,7 +76,7 @@
     .warn {
       display: block;
       margin-top: 4px;
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text-muted);
     }
 

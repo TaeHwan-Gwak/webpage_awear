@@ -87,15 +87,15 @@
 .fields,
 .qualify {
   h2 {
-    margin-top: 14px;
-    font-size: 25px;
+    margin-top: 12px;
+    font-size: 24px;
     color: var(--text);
     max-width: 620px;
   }
 }
 
 .field-list {
-  margin-top: 28px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -124,29 +124,29 @@
   .panel {
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 64px 56px;
+    padding: 48px 44px;
     background: var(--surface);
     max-width: 640px;
 
     @media (max-width: 640px) {
-      padding: 40px 24px;
+      padding: 36px 24px;
     }
   }
 
   h2 {
-    margin-top: 14px;
-    font-size: clamp(31px, 3vw, 40px);
+    margin-top: 12px;
+    font-size: 24px;
     color: var(--text);
   }
 
   .desc {
-    margin-top: 18px;
+    margin-top: 14px;
     font-size: 19px;
   }
 
   .btn {
     display: inline-block;
-    margin-top: 32px;
+    margin-top: 24px;
     padding: 13px 26px;
     border-radius: 999px;
     border: 1px solid var(--orange);

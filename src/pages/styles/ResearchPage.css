@@ -1,7 +1,7 @@
 .topics {
   display: flex;
   flex-direction: column;
-  gap: 88px;
+  gap: 64px;
 }
 
 .topic {
@@ -42,7 +42,7 @@
 
     h2 {
       margin-top: 10px;
-      font-size: 29px;
+      font-size: 24px;
       color: var(--text);
     }
   }

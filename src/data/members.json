@@ -1,22 +1,234 @@
 {
   "pi": {
-    "name": "Name",
-    "role": "Affiliation / Title",
-    "bio": "Bio",
-    "email": "Email",
+    "name": "Jiyeon Kang",
+    "role": "Associate Professor, Robotics Program, Dept. of AI Convergence, Gwangju Institute of Science and Technology (GIST)",
+    "email": "jkangrobot@gist.ac.kr",
     "cv": [
-      { "section": "Education", "items": ["Degree, Institution, Year"] },
-      { "section": "Experience", "items": ["Position, Institution, Year – Year"] },
-      { "section": "Awards & Honors", "items": ["Award name, Year"] },
-      { "section": "Selected Publications", "items": ["See the Publications page for the full list."] }
+      {
+        "section": "Education",
+        "items": [
+          "Ph.D., Mechanical Engineering, Columbia University, 2018",
+          "M.S., Mechanical & Aerospace Engineering, Seoul National University, 2010",
+          "B.S., Mechanical & Aerospace Engineering, Seoul National University, 2008"
+        ]
+      },
+      {
+        "section": "Experience",
+        "items": [
+          "Associate Professor, Gwangju Institute of Science and Technology (GIST), 2023 – Present",
+          "Assistant Professor, Mechanical and Aerospace Eng., SUNY Buffalo, 2019 – 2022",
+          "Research Associate, Buffalo VA Medical Center, 2021 – 2022",
+          "Affiliated Assistant Professor, Rehabilitation Science, SUNY Buffalo, 2020 – 2022",
+          "Postdoctoral Research Fellow, University of Michigan, 2018",
+          "Researcher, Korea Institute of Science and Technology, 2011 – 2012"
+        ]
+      }
     ]
   },
-  "groupTitle": "Group Name",
+  "postdocs": [
+    {
+      "id": "p1",
+      "name": "Dere Mustapha Deji",
+      "role": "Postdoctoral Researcher",
+      "note": "InnoCORE fellow"
+    }
+  ],
+  "groupTitle": "Graduate Students",
   "members": [
-    { "id": "m1", "name": "Name 1", "role": "Role", "note": "" },
-    { "id": "m2", "name": "Name 2", "role": "Role", "note": "" },
-    { "id": "m3", "name": "Name 3", "role": "Role", "note": "" },
-    { "id": "m4", "name": "Name 4", "role": "Role", "note": "" },
-    { "id": "m5", "name": "Name 5", "role": "Role", "note": "" }
+    {
+      "id": "g1",
+      "name": "Souvik Poddar",
+      "role": "Mechanical and Aerospace Engineering",
+      "note": "Student at SUNY Buffalo in the USA"
+    },
+    {
+      "id": "g2",
+      "name": "Kihyun Kim",
+      "role": "AI Graduate School",
+      "note": ""
+    },
+    {
+      "id": "g3",
+      "name": "Seong-Hun Jeong",
+      "role": "School of Integrated Technology, Robotics Program",
+      "note": ""
+    },
+    {
+      "id": "g4",
+      "name": "Ingyun Ahn",
+      "role": "School of Integrated Technology, Robotics Program",
+      "note": ""
+    },
+    {
+      "id": "g5",
+      "name": "Dae Yeon Kim",
+      "role": "Dept. of AI Convergence, Robotics Program",
+      "note": ""
+    },
+    {
+      "id": "g6",
+      "name": "Youngkee Kim",
+      "role": "Dept. of AI Convergence, Robotics Program",
+      "note": ""
+    },
+    {
+      "id": "g7",
+      "name": "Seohee Jang",
+      "role": "Dept. of AI Convergence, Robotics Program",
+      "note": ""
+    },
+    {
+      "id": "g8",
+      "name": "Kyungmin Kwon",
+      "role": "Dept. of AI Convergence, Robotics Program",
+      "note": ""
+    },
+    {
+      "id": "g9",
+      "name": "Jiye Sohn",
+      "role": "Dept. of AI Convergence, Robotics Program",
+      "note": ""
+    },
+    {
+      "id": "g10",
+      "name": "Junghoon Yang",
+      "role": "Dept. of AI Convergence, Robotics Program",
+      "note": ""
+    },
+    {
+      "id": "g11",
+      "name": "Taehwan Gwak",
+      "role": "Dept. of AI Convergence, Robotics Program",
+      "note": ""
+    },
+    {
+      "id": "g12",
+      "name": "Hyunwon Nam",
+      "role": "Dept. of AI Convergence, Robotics Program",
+      "note": ""
+    }
+  ],
+  "alumniTitle": "Alumni",
+  "alumni": [
+    {
+      "id": "a1",
+      "name": "Na Gyeong Ham",
+      "role": "M.S., Dept. of AI Convergence, GIST",
+      "note": ""
+    },
+    {
+      "id": "a2",
+      "name": "Jinwoo Ahn",
+      "role": "M.S., Dept. of AI Convergence, GIST",
+      "note": "currently at KAIST"
+    },
+    {
+      "id": "a3",
+      "name": "Jin-Woo Lee",
+      "role": "M.S., Dept. of AI Convergence, GIST",
+      "note": "currently at Samsung Electronics"
+    },
+    {
+      "id": "a4",
+      "name": "Jaebeom Jo",
+      "role": "M.S., Dept. of AI Convergence, GIST",
+      "note": "currently at Korea Institute of Machinery & Materials"
+    },
+    {
+      "id": "a5",
+      "name": "Saeb Ragani Lamooki",
+      "role": "Ph.D., Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently at Kelvin Inc. (co-advising with Prof. Lora Cavuoto)"
+    },
+    {
+      "id": "a6",
+      "name": "Nikhil Tej Kantu",
+      "role": "M.S., Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently graduate student at North Carolina State University"
+    },
+    {
+      "id": "a7",
+      "name": "Brian Huang",
+      "role": "Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently graduate student at Georgia Tech"
+    },
+    {
+      "id": "a8",
+      "name": "Sahil Kapahi",
+      "role": "M.S., Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently at Amazon"
+    },
+    {
+      "id": "a9",
+      "name": "Rishi Adusumilli",
+      "role": "M.S., Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently at Philips"
+    },
+    {
+      "id": "a10",
+      "name": "Zixia Meng",
+      "role": "M.S., Dept. of Electrical and Electronics Engineering, SUNY Buffalo",
+      "note": "currently at Huawei"
+    },
+    {
+      "id": "a11",
+      "name": "David Cummiskey",
+      "role": "Master, Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently at Moog Inc."
+    },
+    {
+      "id": "a12",
+      "name": "Yunchang Kim",
+      "role": "Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently graduate student at Univ. of Michigan"
+    },
+    {
+      "id": "a13",
+      "name": "Boxin Xu",
+      "role": "B.S., Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently graduate student at Cornell Univ."
+    },
+    {
+      "id": "a14",
+      "name": "Jnana Sai Abhishek Varma",
+      "role": "M.S., Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently at Amazon Robotics"
+    },
+    {
+      "id": "a15",
+      "name": "Varun Gupta",
+      "role": "M.S., Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently at Amazon"
+    },
+    {
+      "id": "a16",
+      "name": "Chinmay P. Swami",
+      "role": "Dept. of Computer Science and Engineering, SUNY Buffalo",
+      "note": "currently graduate student at North Carolina State University"
+    },
+    {
+      "id": "a17",
+      "name": "Peidong He",
+      "role": "M.S., Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": ""
+    },
+    {
+      "id": "a18",
+      "name": "Nicholas Lenhard",
+      "role": "Master of Biomedical Engineering, SUNY Buffalo",
+      "note": "currently at Univ. of Rochester"
+    },
+    {
+      "id": "a19",
+      "name": "Mohamed Fazil Sulaiman",
+      "role": "Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently at Hello Robot"
+    },
+    {
+      "id": "a20",
+      "name": "Michael Barkachy",
+      "role": "Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently at Stryker"
+    }
   ]
 }

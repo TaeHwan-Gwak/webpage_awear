@@ -16,7 +16,7 @@
 
     h1 {
       margin-top: 8px;
-      font-size: 31px;
+      font-size: 20px;
       color: var(--text);
     }
 
@@ -102,7 +102,7 @@
     .sub {
       display: block;
       margin-top: 4px;
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text-muted);
     }
 

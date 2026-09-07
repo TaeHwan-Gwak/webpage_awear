@@ -44,13 +44,13 @@
 
   .ph-label {
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 15px;
     color: var(--text-faint);
   }
 
   h2 {
     margin-top: 10px;
-    font-size: 29px;
+    font-size: 24px;
     color: var(--text);
   }
 
@@ -113,7 +113,7 @@
   .group-title {
     position: relative;
     padding-left: 18px;
-    font-size: 21px;
+    font-size: 23px;
     color: var(--text);
 
     &::before {
