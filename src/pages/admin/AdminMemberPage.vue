@@ -21,7 +21,8 @@
       </aside>
 
       <section class="detail-panel">
-        <p v-if="mode === null" class="empty-hint">Select a member on the left, or click [+ Add] to register a new one.</p>
+        <p v-if="mode === null" class="empty-hint">Select a member on the left, or click [+ Add] to register a new one.
+        </p>
 
         <form v-else class="detail-form" @submit.prevent="onSave">
           <template v-if="mode === 'pi'">
@@ -33,10 +34,10 @@
               <span>Affiliation / Title</span>
               <input v-model="form.pi.role" type="text" placeholder="e.g. Professor, GIST Dept. of AI" />
             </label>
-            <label class="field">
+            <!-- <label class="field">
               <span>Bio</span>
               <textarea v-model="form.pi.bio" rows="4" placeholder="Enter a bio"></textarea>
-            </label>
+            </label> -->
             <label class="field">
               <span>Email</span>
               <input v-model="form.pi.email" type="text" placeholder="example@gist.ac.kr" />
@@ -75,13 +76,8 @@
 
           <div class="actions">
             <button type="submit" class="btn save" :disabled="!canEditAdmin">Save</button>
-            <button
-              v-if="mode === 'member'"
-              type="button"
-              class="btn delete"
-              :disabled="!canEditAdmin"
-              @click="onDelete"
-            >
+            <button v-if="mode === 'member'" type="button" class="btn delete" :disabled="!canEditAdmin"
+              @click="onDelete">
               Delete
             </button>
           </div>
@@ -107,7 +103,7 @@ interface Member {
 }
 
 interface MembersForm {
-  pi: { name: string; role: string; bio: string; email: string }
+  pi: { name: string; role: string; email: string }
   groupTitle: string
   members: Member[]
 }
