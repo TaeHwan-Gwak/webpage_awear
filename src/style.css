@@ -15,9 +15,14 @@
 
   --ok: #2f9e57;
 
-  --font-display: "Space Grotesk", "Pretendard", sans-serif;
-  --font-body: "Inter", "Pretendard", sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+/* 제목/브랜드: 너무 튀지 않으면서 정갈하고 또렷한 폰트 */
+  --font-display: "Pretendard Variable", Pretendard, Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* 본문: 한글·영문 통일감이 뛰어난 Pretendard 최우선 */
+  --font-body: "Pretendard Variable", Pretendard, Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* 연도, 태그, 코드: 덜 거칠고 모던한 모노스페이스 */
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 
   --page-max: 1200px;
   --radius: 14px;
