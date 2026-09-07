@@ -8,7 +8,7 @@
   .nav-inner {
     max-width: var(--page-max);
     margin: 0 auto;
-    padding: 28px 32px;
+    padding: 16px 32px; /* 상하 여백 정돈 */
     display: flex;
     align-items: center;
     gap: 32px;
@@ -17,16 +17,21 @@
       display: flex;
       align-items: center;
       margin-right: auto;
+      flex-shrink: 0; /* flex 공간 부족 시 로고 영역 축소 방지 */
 
       .logo {
-        height: 44px;
-        width: auto;
+        height: 38px; /* 로고 세로 높이 */
+        width: auto;  /* 가로 비율 유지 */
+        object-fit: contain; /* 이미지 비율 찌그러짐 방지 */
+        display: block;
+        flex-shrink: 0;
       }
     }
 
     .links {
       display: flex;
-      gap: 28px;
+      align-items: center;
+      gap: 22px; /* 메뉴 사이 간격 28px -> 22px로 축소 */
 
       @media (max-width: 860px) {
         display: none;
@@ -34,11 +39,13 @@
 
       .nav-item {
         position: relative;
-        padding-bottom: 18px;
-        margin-bottom: -18px;
+        padding-bottom: 12px;
+        margin-bottom: -12px;
 
         > a {
-          font-size: 18px;
+          font-size: 15px; /* 글자 크기 18px -> 15px로 축소 */
+          font-weight: 500;
+          letter-spacing: -0.01em;
           color: var(--text-muted);
           transition: color 0.2s ease;
 
@@ -48,7 +55,7 @@
 
           &.router-link-active {
             color: var(--orange-deep);
-            font-weight: 500;
+            font-weight: 600;
           }
         }
 
@@ -75,9 +82,9 @@
 
           .dropdown-item {
             display: block;
-            padding: 9px 12px;
+            padding: 8px 12px;
             border-radius: var(--radius-sm);
-            font-size: 17px;
+            font-size: 14px; /* 드롭다운 글자 크기 17px -> 14px */
             color: var(--text-muted);
             white-space: nowrap;
             transition: background 0.15s ease, color 0.15s ease;
@@ -88,25 +95,6 @@
             }
           }
         }
-      }
-    }
-
-    .cta {
-      border: 1px solid var(--border);
-      padding: 8px 16px;
-      border-radius: 999px;
-      font-size: 17px;
-      color: var(--text);
-      white-space: nowrap;
-      transition: border-color 0.2s ease, background 0.2s ease;
-
-      &:hover {
-        border-color: var(--orange);
-        background: rgba(255, 90, 31, 0.08);
-      }
-
-      @media (max-width: 860px) {
-        display: none;
       }
     }
 
@@ -145,6 +133,7 @@
 
     a {
       padding: 12px 4px;
+      font-size: 15px;
       border-bottom: 1px solid var(--border-soft);
       color: var(--text-muted);
 
@@ -155,15 +144,8 @@
 
     .mobile-sub {
       padding-left: 20px;
-      font-size: 17px;
+      font-size: 14px;
       color: var(--text-faint);
-    }
-
-    .cta {
-      display: block;
-      text-align: center;
-      margin-top: 12px;
-      color: var(--orange-deep);
     }
   }
 
