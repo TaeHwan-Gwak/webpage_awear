@@ -17,7 +17,7 @@
           </li>
         </ul>
 
-        <button type="button" class="add-btn" @click="startAdd">+ Add</button>
+        <button type="button" class="add-btn" :disabled="!canEditAdmin" @click="startAdd">+ Add</button>
       </aside>
 
       <section class="detail-panel">
@@ -74,8 +74,14 @@
           </template>
 
           <div class="actions">
-            <button type="submit" class="btn save">Save</button>
-            <button v-if="mode === 'member'" type="button" class="btn delete" @click="onDelete">
+            <button type="submit" class="btn save" :disabled="!canEditAdmin">Save</button>
+            <button
+              v-if="mode === 'member'"
+              type="button"
+              class="btn delete"
+              :disabled="!canEditAdmin"
+              @click="onDelete"
+            >
               Delete
             </button>
           </div>
@@ -89,7 +95,9 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import membersData from '../../data/members.json'
+import { canEditAdmin, requireAdminSession } from '../../composables/useAdminAuth'
 
 interface Member {
   id: string
@@ -103,6 +111,8 @@ interface MembersForm {
   groupTitle: string
   members: Member[]
 }
+
+const router = useRouter()
 
 const STORAGE_KEY = 'awear-admin-members-draft'
 
@@ -149,6 +159,7 @@ function selectMember(id: string) {
 }
 
 function startAdd() {
+  if (!guardSession()) return
   mode.value = 'new'
   selectedId.value = null
   draft.name = ''
@@ -157,7 +168,24 @@ function startAdd() {
   status.value = 'idle'
 }
 
+/**
+ * Gate that every edit, add and delete goes through.
+ * When the session is gone it sends you back to login with the reason attached.
+ */
+function guardSession(): boolean {
+  const check = requireAdminSession()
+  if (check === 'ok') return true
+
+  router.replace({
+    path: '/admin/login',
+    query: { redirect: router.currentRoute.value.fullPath, reason: check },
+  })
+  return false
+}
+
 function onSave() {
+  if (!guardSession()) return
+
   if (mode.value === 'new') {
     const id = 'm' + Date.now()
     form.members.push({ id, name: draft.name, role: draft.role, note: draft.note })
@@ -168,6 +196,7 @@ function onSave() {
 }
 
 function onDelete() {
+  if (!guardSession()) return
   if (mode.value !== 'member' || !selectedId.value) return
   const idx = form.members.findIndex((m) => m.id === selectedId.value)
   if (idx !== -1) form.members.splice(idx, 1)

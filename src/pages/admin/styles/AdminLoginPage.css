@@ -69,6 +69,47 @@
       &:hover {
         background: var(--orange-deep);
       }
+
+      &:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      /* Secondary action, e.g. cancelling a pending request */
+      &.ghost {
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text-muted);
+        font-weight: 500;
+
+        &:hover {
+          background: var(--surface);
+          border-color: var(--text-muted);
+          color: var(--text);
+        }
+      }
+    }
+
+    /* Status wording such as an expired session; informational, unlike .error */
+    .notice {
+      margin-top: 12px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    /* Smaller line hanging off a .notice or .error */
+    .sub {
+      display: block;
+      margin-top: 4px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .field input:disabled {
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: not-allowed;
     }
   }
 }
