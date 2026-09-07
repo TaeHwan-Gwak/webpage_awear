@@ -1,28 +1,39 @@
 <template>
   <footer class="footer">
     <div class="footer-inner">
+      <!-- 좌측: 연구실 명칭 & 기관명 -->
       <div class="left">
         <span class="brand">AWEAR Lab</span>
         <span class="divider">·</span>
-        <span>Gwangju Institute of Science and Technology</span>
+        <a href="https://www.gist.ac.kr/en/" target="_blank" rel="noreferrer" class="affil-link">
+          Gwangju Institute of Science and Technology
+        </a>
       </div>
 
+      <!-- 우측: 이메일 & 주소 & Top 버튼 -->
       <div class="right">
-        <span>jkangrobot@gist.ac.kr</span>
-        <span class="divider">·</span>
-        <span>123 Cheomdan-gwagiro, Buk-gu, Gwangju, Republic of Korea</span>
-      </div>
+        <div class="contact-group">
+          <a href="mailto:jkangrobot@gist.ac.kr" class="email">
+            jkangrobot@gist.ac.kr
+          </a>
+          <span class="divider">·</span>
+          <span class="address">
+            123 Cheomdan-gwagiro, Buk-gu, Gwangju, Republic of Korea
+          </span>
+        </div>
 
-      <div class="social">
-        <a href="#" aria-label="Back to top">
+        <a href="#" class="back-to-top" aria-label="Back to top">
           <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-              stroke-linejoin="round" />
+            <path d="M12 19V5M5 12l7-7 7 7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </a>
       </div>
     </div>
-    <div class="legal">© {{ year }} AWEAR Lab, GIST. All rights reserved.</div>
+
+    <!-- 하단 저작권 -->
+    <div class="legal">
+      <p>© {{ year }} AWEAR Lab, GIST. All rights reserved.</p>
+    </div>
   </footer>
 </template>
 
