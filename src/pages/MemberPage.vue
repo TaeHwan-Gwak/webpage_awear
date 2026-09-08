@@ -37,12 +37,12 @@
       </div>
     </section>
 
-    <section v-if="alumni?.length" class="group section">
+    <section v-if="alumni?.length" class="group alumni section">
       <h2 class="group-title">{{ alumniTitle ?? 'Alumni' }}</h2>
-      <div class="grid">
-        <MemberCard v-for="member in alumni" :key="member.id" :name="member.name" :role="member.role"
+      <ul class="alumni-list">
+        <AlumniItem v-for="member in alumni" :key="member.id" :name="member.name" :role="member.role"
           :note="member.note" />
-      </div>
+      </ul>
     </section>
   </main>
 </template>
@@ -51,6 +51,7 @@
 import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import MemberCard from '../components/MemberCard.vue'
+import AlumniItem from '../components/AlumniItem.vue'
 import membersData from '../data/members.json'
 
 const { pi, postdocs, groupTitle, members, alumniTitle, alumni } = membersData

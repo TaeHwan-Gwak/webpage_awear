@@ -1,0 +1,39 @@
+.alumni-item {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1.4fr;
+  gap: 16px;
+  align-items: baseline;
+  padding: 14px 4px;
+  border-top: 1px solid var(--border-soft);
+
+  &:last-child {
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .name {
+    font-size: 17px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .role {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .note {
+    font-size: 14px;
+    color: var(--orange-deep);
+  }
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 16px 4px;
+
+    .name {
+      font-size: 16px;
+    }
+  }
+}

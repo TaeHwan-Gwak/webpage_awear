@@ -172,3 +172,10 @@
     }
   }
 }
+
+.alumni {
+  .alumni-list {
+    margin-top: 24px;
+    max-width: 900px;
+  }
+}

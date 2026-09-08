@@ -5,7 +5,7 @@
     </div>
     <h3>{{ name }}</h3>
     <p class="role">{{ role }}</p>
-    <p v-if="note" class="note">{{ note }}</p>
+    <p class="note">{{ note }}</p>
   </article>
 </template>
 
