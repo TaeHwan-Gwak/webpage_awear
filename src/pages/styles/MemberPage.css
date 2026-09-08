@@ -45,18 +45,30 @@
   .ph-label {
     font-family: var(--font-mono);
     font-size: 15px;
+
+    @media (max-width: 720px) {
+      font-size: 12px;
+    }
     color: var(--text-faint);
   }
 
   h2 {
     margin-top: 10px;
     font-size: 24px;
+
+    @media (max-width: 720px) {
+      font-size: 20px;
+    }
     color: var(--text);
   }
 
   .role {
     margin-top: 6px;
     font-size: 17px;
+
+    @media (max-width: 720px) {
+      font-size: 14px;
+    }
     color: var(--orange-deep);
     font-family: var(--font-mono);
   }
@@ -65,6 +77,10 @@
     margin-top: 18px;
     max-width: 60ch;
     font-size: 18px;
+
+    @media (max-width: 720px) {
+      font-size: 15px;
+    }
     line-height: 1.7;
   }
 
@@ -83,6 +99,10 @@
   .mail {
     font-family: var(--font-mono);
     font-size: 17px;
+
+    @media (max-width: 720px) {
+      font-size: 14px;
+    }
     color: var(--text-muted);
     transition: color 0.18s ease;
 
@@ -100,6 +120,10 @@
     color: #fff;
     font-weight: 600;
     font-size: 16px;
+
+    @media (max-width: 720px) {
+      font-size: 13px;
+    }
     transition: background 0.18s ease, transform 0.18s ease;
 
     &:hover {
@@ -114,6 +138,10 @@
     position: relative;
     padding-left: 18px;
     font-size: 23px;
+
+    @media (max-width: 720px) {
+      font-size: 19px;
+    }
     color: var(--text);
 
     &::before {

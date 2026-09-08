@@ -35,6 +35,10 @@
     .lede {
       margin-top: 22px;
       font-size: 20px;
+
+      @media (max-width: 720px) {
+        font-size: 17px;
+      }
       max-width: 620px;
     }
 
@@ -50,6 +54,10 @@
   h2 {
     margin-top: 12px;
     font-size: 24px;
+
+    @media (max-width: 720px) {
+      font-size: 20px;
+    }
   }
 }
 
@@ -57,6 +65,10 @@
   h2 {
     margin-top: 16px;
     font-size: 22px;
+
+    @media (max-width: 720px) {
+      font-size: 18px;
+    }
     font-weight: 500;
     color: var(--text);
     line-height: 1.5;
@@ -87,16 +99,28 @@
 
     .chip-icon {
       font-size: 20px;
+
+      @media (max-width: 720px) {
+        font-size: 17px;
+      }
     }
 
     .chip-title {
       font-size: 18px;
+
+      @media (max-width: 720px) {
+        font-size: 15px;
+      }
       color: var(--text);
     }
 
     .chip-count {
       font-family: var(--font-mono);
       font-size: 15px;
+
+      @media (max-width: 720px) {
+        font-size: 12px;
+      }
       color: var(--text-faint);
     }
   }
@@ -128,6 +152,10 @@
     .ph-label {
       font-family: var(--font-mono);
       font-size: 15px;
+
+      @media (max-width: 720px) {
+        font-size: 12px;
+      }
       color: var(--text-faint);
     }
   }
@@ -164,11 +192,19 @@
     .play {
       color: var(--orange);
       font-size: 21px;
+
+      @media (max-width: 720px) {
+        font-size: 18px;
+      }
     }
 
     .media-title {
       margin-top: 12px;
       font-size: 18px;
+
+      @media (max-width: 720px) {
+        font-size: 15px;
+      }
       color: var(--text);
     }
 
@@ -176,6 +212,10 @@
       margin-top: 4px;
       font-family: var(--font-mono);
       font-size: 15px;
+
+      @media (max-width: 720px) {
+        font-size: 12px;
+      }
       color: var(--text-faint);
     }
   }
@@ -186,6 +226,10 @@
     margin-top: 24px;
     font-family: var(--font-mono);
     font-size: 15px;
+
+    @media (max-width: 720px) {
+      font-size: 12px;
+    }
     color: var(--text-faint);
   }
 
@@ -214,6 +258,10 @@
   margin-top: 24px;
   font-family: var(--font-mono);
   font-size: 17px;
+
+  @media (max-width: 720px) {
+    font-size: 14px;
+  }
   color: var(--orange-deep);
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease;
@@ -259,18 +307,30 @@
   .ph-label {
     font-family: var(--font-mono);
     font-size: 15px;
+
+    @media (max-width: 720px) {
+      font-size: 12px;
+    }
     color: var(--text-faint);
   }
 
   h2 {
     margin-top: 10px;
     font-size: 24px;
+
+    @media (max-width: 720px) {
+      font-size: 20px;
+    }
     color: var(--text);
   }
 
   .role {
     margin-top: 6px;
     font-size: 17px;
+
+    @media (max-width: 720px) {
+      font-size: 14px;
+    }
     color: var(--text-muted);
   }
 
@@ -278,6 +338,10 @@
     margin-top: 18px;
     max-width: 60ch;
     font-size: 18px;
+
+    @media (max-width: 720px) {
+      font-size: 15px;
+    }
   }
 
   .mail {
@@ -285,6 +349,10 @@
     margin-top: 20px;
     font-family: var(--font-mono);
     font-size: 17px;
+
+    @media (max-width: 720px) {
+      font-size: 14px;
+    }
     color: var(--orange-deep);
   }
 }
@@ -305,12 +373,20 @@
   h2 {
     margin-top: 12px;
     font-size: 24px;
+
+    @media (max-width: 720px) {
+      font-size: 20px;
+    }
     color: var(--text);
   }
 
   .desc {
     margin-top: 14px;
     font-size: 19px;
+
+    @media (max-width: 720px) {
+      font-size: 16px;
+    }
   }
 
   .btn {
@@ -322,6 +398,10 @@
     color: var(--orange-deep);
     font-weight: 600;
     font-size: 18px;
+
+    @media (max-width: 720px) {
+      font-size: 15px;
+    }
     transition: background 0.18s ease;
 
     &:hover {

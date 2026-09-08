@@ -14,6 +14,10 @@
     dt {
       font-family: var(--font-mono);
       font-size: 15px;
+
+      @media (max-width: 720px) {
+        font-size: 12px;
+      }
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--orange-deep);
@@ -22,6 +26,10 @@
     dd {
       margin: 8px 0 0;
       font-size: 19px;
+
+      @media (max-width: 720px) {
+        font-size: 16px;
+      }
       color: var(--text);
     }
   }
@@ -31,6 +39,10 @@
     margin-top: 24px;
     font-family: var(--font-mono);
     font-size: 17px;
+
+    @media (max-width: 720px) {
+      font-size: 14px;
+    }
     color: var(--orange-deep);
     border-bottom: 1px solid transparent;
     transition: border-color 0.2s ease;
@@ -89,6 +101,10 @@
   h2 {
     margin-top: 12px;
     font-size: 24px;
+
+    @media (max-width: 720px) {
+      font-size: 20px;
+    }
     color: var(--text);
     max-width: 620px;
   }
@@ -105,6 +121,10 @@
     position: relative;
     padding-left: 22px;
     font-size: 19px;
+
+    @media (max-width: 720px) {
+      font-size: 16px;
+    }
     color: var(--text-muted);
 
     &::before {
@@ -136,12 +156,20 @@
   h2 {
     margin-top: 12px;
     font-size: 24px;
+
+    @media (max-width: 720px) {
+      font-size: 20px;
+    }
     color: var(--text);
   }
 
   .desc {
     margin-top: 14px;
     font-size: 19px;
+
+    @media (max-width: 720px) {
+      font-size: 16px;
+    }
   }
 
   .btn {
@@ -153,6 +181,10 @@
     color: var(--orange-deep);
     font-weight: 600;
     font-size: 18px;
+
+    @media (max-width: 720px) {
+      font-size: 15px;
+    }
     transition: background 0.18s ease;
 
     &:hover {

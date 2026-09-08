@@ -58,6 +58,10 @@
           text-decoration: none;
           font-family: var(--font-mono);
           font-size: 13px;
+
+          @media (max-width: 720px) {
+            font-size: 11px;
+          }
           transition: color 0.15s ease;
 
           &:hover {
@@ -71,6 +75,10 @@
 
         .address {
           font-size: 13px;
+
+          @media (max-width: 720px) {
+            font-size: 11px;
+          }
           color: var(--text-faint);
         }
       }
@@ -135,6 +143,10 @@
     p {
       margin: 0;
       font-size: 12px;
+
+      @media (max-width: 720px) {
+        font-size: 10px;
+      }
       color: var(--text-faint);
       font-family: var(--font-mono);
     }

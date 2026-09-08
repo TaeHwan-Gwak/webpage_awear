@@ -12,6 +12,10 @@
   .desc {
     margin-top: 16px;
     font-size: 18px;
+
+    @media (max-width: 720px) {
+      font-size: 15px;
+    }
     max-width: 60ch;
   }
 
