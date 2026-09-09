@@ -8,13 +8,8 @@
       <div class="grid">
         <figure v-for="item in equipment" :key="item.id" class="equipment-card">
           <div class="thumb">
-            <img
-              v-if="item.image && !brokenIds.has(item.id)"
-              :src="item.image"
-              :alt="item.name"
-              loading="lazy"
-              @error="brokenIds.add(item.id)"
-            />
+            <img v-if="item.image && !brokenIds.has(item.id)" :src="item.image" :alt="item.name" loading="lazy"
+              @error="brokenIds.add(item.id)" />
             <span v-else class="ph-label">Image</span>
           </div>
           <figcaption class="name">{{ item.name }}</figcaption>
