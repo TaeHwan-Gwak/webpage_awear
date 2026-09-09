@@ -1,0 +1,12 @@
+[
+  { "id": "eq1", "name": "Delsys Surface Electromyography", "image": "/equipment/delsys-emg.jpg" },
+  { "id": "eq2", "name": "BrainProduct LiveAmp EEG", "image": "/equipment/liveamp-eeg.jpg" },
+  { "id": "eq3", "name": "BambuLab 3D Printer (PLA)", "image": "/equipment/bambulab-3d-printer.jpg" },
+  { "id": "eq4", "name": "Pinnacle Mouse EEG", "image": "/equipment/pinnacle-mouse-eeg.jpg" },
+  { "id": "eq5", "name": "6-Axis Force/Torque Sensor", "image": "/equipment/force-torque-sensor.jpg" },
+  { "id": "eq6", "name": "OptiTrack Motion Capture", "image": "/equipment/optitrack-motion-capture.jpg" },
+  { "id": "eq7", "name": "AMTI Force Plates", "image": "/equipment/amti-force-plates.jpg" },
+  { "id": "eq8", "name": "Photon Mono (Resin 3D Printer)", "image": "/equipment/photon-mono.jpg" },
+  { "id": "eq9", "name": "Rotarod (Harvard PanLab)", "image": "/equipment/rotarod.jpg" },
+  { "id": "eq10", "name": "CompactRIO & myRIO", "image": "/equipment/compactrio-myrio.jpg" }
+]
