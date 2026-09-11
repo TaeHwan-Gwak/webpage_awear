@@ -21,12 +21,6 @@
             123 Cheomdan-gwagiro, Buk-gu, Gwangju, Republic of Korea
           </span>
         </div>
-
-        <a href="#" class="back-to-top" aria-label="Back to top">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 19V5M5 12l7-7 7 7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </a>
       </div>
     </div>
 

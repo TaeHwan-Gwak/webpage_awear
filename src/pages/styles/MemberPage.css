@@ -179,3 +179,125 @@
     max-width: 900px;
   }
 }
+
+.card-slot {
+  position: relative;
+
+  .admin-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+  }
+}
+
+.alumni-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .alumni-item {
+    flex: 1;
+  }
+}
+
+.pi-feature .actions .admin-controls {
+  margin-left: 4px;
+}
+
+.pi-feature .edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 420px;
+}
+
+.edit-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(32, 24, 16, 0.32);
+  padding: 24px;
+}
+
+.edit-modal {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+  border-radius: var(--radius);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: block;
+
+  span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm, 8px);
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--bg);
+
+    &:focus {
+      outline: 2px solid var(--orange);
+      outline-offset: 1px;
+      border-color: var(--orange);
+    }
+  }
+}
+
+.edit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.save-btn,
+.cancel-btn {
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.save-btn {
+  border: none;
+  background: var(--orange);
+  color: #fff;
+
+  &:hover {
+    background: var(--orange-deep);
+  }
+}
+
+.cancel-btn {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+
+  &:hover {
+    border-color: var(--text-muted);
+    color: var(--text);
+  }
+}
+
+.group .admin-add-btn {
+  margin-top: 20px;
+}

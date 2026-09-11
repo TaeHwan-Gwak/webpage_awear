@@ -70,14 +70,16 @@
     max-width: 46ch;
   }
 
-  &.reverse {
-    .figure {
-      grid-column: 2;
-    }
+  @media (min-width: 781px) {
+    &.reverse {
+      .figure {
+        grid-column: 2;
+      }
 
-    .heading,
-    .desc {
-      grid-column: 1;
+      .heading,
+      .desc {
+        grid-column: 1;
+      }
     }
   }
 

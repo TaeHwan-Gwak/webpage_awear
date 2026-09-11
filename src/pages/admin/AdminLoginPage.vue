@@ -100,7 +100,7 @@ function onInput() {
 }
 
 function enterAdmin() {
-  const redirect = (route.query.redirect as string) || '/admin'
+  const redirect = (route.query.redirect as string) || '/'
   router.replace(redirect)
 }
 

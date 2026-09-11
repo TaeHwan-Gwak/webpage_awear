@@ -27,6 +27,8 @@
         </div>
       </div>
 
+      <AdminAddButton v-if="isEditable" label="Add news item" @add="startAdd" />
+
       <ol class="timeline">
         <template v-if="loading">
           <li v-for="n in 6" :key="n" class="skeleton-entry">
@@ -35,9 +37,34 @@
           </li>
         </template>
         <template v-else>
-          <NewsItem v-for="(item, i) in pagedNews" :key="item.id ?? item.date"
-            :index="displayNews.length - ((currentPage - 1) * pageSize + i)" :date="item.date" :desc="item.desc"
-            :tag="item.tag" :link="item.link" :image="item.image" />
+          <li v-if="editingId === 'new'" class="news-edit-row">
+            <input v-model="draft.date" placeholder="Date (e.g. 2026.01)" />
+            <input v-model="draft.tag" placeholder="Tag (e.g. General)" />
+            <textarea v-model="draft.desc" rows="3" placeholder="Description"></textarea>
+            <input v-model="draft.link" placeholder="Link (optional)" />
+            <div class="edit-actions">
+              <button type="button" class="save-btn" @click="saveEdit">Save</button>
+              <button type="button" class="cancel-btn" @click="cancelEdit">Cancel</button>
+            </div>
+          </li>
+
+          <template v-for="(item, i) in pagedNews" :key="item.id ?? item.date">
+            <li v-if="editingId === item.id" class="news-edit-row">
+              <input v-model="draft.date" placeholder="Date (e.g. 2026.01)" />
+              <input v-model="draft.tag" placeholder="Tag (e.g. General)" />
+              <textarea v-model="draft.desc" rows="3" placeholder="Description"></textarea>
+              <input v-model="draft.link" placeholder="Link (optional)" />
+              <div class="edit-actions">
+                <button type="button" class="save-btn" @click="saveEdit">Save</button>
+                <button type="button" class="cancel-btn" @click="cancelEdit">Cancel</button>
+              </div>
+            </li>
+            <li v-else class="news-row">
+              <NewsItem class="news-row-content" :index="displayNews.length - ((currentPage - 1) * pageSize + i)"
+                :date="item.date" :desc="item.desc" :tag="item.tag" :link="item.link" :image="item.image" />
+              <AdminEditControls v-if="isEditable" @edit="startEdit(item)" @delete="deleteItem(item)" />
+            </li>
+          </template>
         </template>
       </ol>
 
@@ -58,25 +85,83 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
+import { computed, ref, reactive, watch, onMounted, onUnmounted } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import NewsItem from '../components/NewsItem.vue'
-import { useNews } from '../composables/useNews'
+import AdminEditControls from '../components/AdminEditControls.vue'
+import AdminAddButton from '../components/AdminAddButton.vue'
+import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
+import { useAdminMode } from '../composables/useAdminMode'
+import { saveJsonFile } from '../services/localSave'
 import SignalDivider from '../components/SignalDivider.vue'
-import newsData from '../data/news.json'
+import newsDataRaw from '../data/news.json'
 
 const { news, loading, error } = useNews(200)
+const { isAdmin } = useAdminMode()
+
+// 로컬 news.json 사본. 어드민 편집은 이 배열을 고치고 저장 API로 파일에 반영합니다.
+const localNews = ref<NewsItemType[]>([...(newsDataRaw as NewsItemType[])])
+
+// Firestore에 실제 데이터가 있으면 그 목록을 그대로 보여주고 편집은 막습니다 —
+// 이 화면의 저장 기능은 로컬 news.json으로만 반영되기 때문입니다.
+const isEditable = computed(() => isAdmin.value && !news.value.length)
+
 const displayNews = computed(() =>
-  news.value.length ? news.value : [...newsData].reverse()
+  news.value.length ? news.value : [...localNews.value].reverse()
 )
+
+const editingId = ref<string | 'new' | null>(null)
+const draft = reactive({ date: '', tag: '', desc: '', link: '' })
+
+function startEdit(item: NewsItemType) {
+  editingId.value = item.id
+  draft.date = item.date
+  draft.tag = item.tag ?? ''
+  draft.desc = item.desc
+  draft.link = item.link ?? ''
+}
+
+function startAdd() {
+  editingId.value = 'new'
+  draft.date = ''
+  draft.tag = ''
+  draft.desc = ''
+  draft.link = ''
+}
+
+function cancelEdit() {
+  editingId.value = null
+}
+
+async function saveEdit() {
+  if (editingId.value === 'new') {
+    const id = 'n' + Date.now()
+    localNews.value.push({ id, date: draft.date, tag: draft.tag, desc: draft.desc, link: draft.link })
+  } else {
+    const target = localNews.value.find((n) => n.id === editingId.value)
+    if (target) {
+      target.date = draft.date
+      target.tag = draft.tag
+      target.desc = draft.desc
+      target.link = draft.link
+    }
+  }
+  editingId.value = null
+  await saveJsonFile('news.json', localNews.value)
+}
+
+async function deleteItem(item: NewsItemType) {
+  localNews.value = localNews.value.filter((n) => n.id !== item.id)
+  await saveJsonFile('news.json', localNews.value)
+}
 
 const isMobile = () =>
   typeof window !== 'undefined' &&
   (window.matchMedia('(max-width: 768px)').matches ||
     /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent))
 
-const pageSize = ref(isMobile() ? 5 : 10)
+const pageSize = ref(isMobile() ? 5 : 20)
 const currentPage = ref(1)
 
 // 커스텀 드롭다운 상태

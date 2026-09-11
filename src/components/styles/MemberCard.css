@@ -1,18 +1,46 @@
 .member-card {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   min-height: 232px;
   padding: 26px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--surface);
+  background: var(--bg);
   text-align: center;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease,
+    border-radius 0.2s ease;
+
+  &:has(.info-panel.visible) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 
   &:hover {
+    z-index: 20;
     border-color: var(--orange);
     transform: translateY(-3px);
     box-shadow: 0 12px 24px rgba(32, 24, 16, 0.08);
+  }
+
+  &.admin-mode:hover {
+    z-index: 1;
+    border-color: var(--border);
+    transform: none;
+    box-shadow: none;
+  }
+
+  .hover-spinner {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border);
+    border-top-color: var(--orange);
+    border-radius: 50%;
+    animation: member-card-spin 0.7s linear infinite;
   }
 
   .avatar {
@@ -39,18 +67,25 @@
   }
 
   h3 {
+    display: -webkit-box;
     margin-top: 16px;
+    min-height: 2.6em;
     font-size: 22px;
+    line-height: 1.3;
 
     @media (max-width: 720px) {
       font-size: 18px;
     }
     color: var(--text);
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .role {
-    display: block;
+    display: -webkit-box;
     margin-top: 8px;
+    min-height: 2.6em;
     font-family: var(--font-mono);
     font-size: 14px;
 
@@ -59,6 +94,9 @@
     }
     line-height: 1.5;
     color: var(--orange-deep);
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .note {
@@ -74,5 +112,55 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  .info-panel {
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    top: 100%;
+    padding: 14px 20px;
+    background: var(--bg);
+    border: 1px solid var(--orange);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: 0 12px 24px rgba(32, 24, 16, 0.1);
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+
+    &.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    p {
+      font-size: 12px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+
+      @media (max-width: 720px) {
+        font-size: 10px;
+      }
+    }
+
+    .info-email {
+      font-family: var(--font-mono);
+      color: var(--orange-deep);
+    }
+
+    .info-interests {
+      margin-top: 4px;
+      color: var(--text-muted);
+    }
+  }
+}
+
+@keyframes member-card-spin {
+  to {
+    transform: rotate(360deg);
   }
 }

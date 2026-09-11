@@ -149,6 +149,90 @@
       gap: 8px;
     }
   }
+
+  .news-row {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    .news-row-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .admin-controls {
+      flex-shrink: 0;
+      margin-top: 22px;
+    }
+  }
+
+  .news-edit-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    margin: 12px 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm, 8px);
+    background: var(--surface);
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm, 8px);
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text);
+      background: var(--bg);
+
+      &:focus {
+        outline: 2px solid var(--orange);
+        outline-offset: 1px;
+        border-color: var(--orange);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .edit-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .save-btn,
+    .cancel-btn {
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .save-btn {
+      border: none;
+      background: var(--orange);
+      color: #fff;
+
+      &:hover {
+        background: var(--orange-deep);
+      }
+    }
+
+    .cancel-btn {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text-muted);
+
+      &:hover {
+        border-color: var(--text-muted);
+        color: var(--text);
+      }
+    }
+  }
 }
 
 .pagination {
@@ -197,4 +281,9 @@
     align-items: flex-start;
     gap: 12px;
   }
+}
+.admin-add-btn {
+  display: block;
+  margin: 20px auto 0;
+  max-width: 820px;
 }

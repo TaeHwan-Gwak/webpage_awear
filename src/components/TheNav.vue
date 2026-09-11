@@ -19,6 +19,8 @@
         </div>
       </nav>
 
+      <button v-if="isAdmin" type="button" class="logout-btn" @click="onLogout">Logout</button>
+
       <button class="burger" :aria-expanded="open" aria-label="Open menu" @click="open = !open">
         <span /><span /><span />
       </button>
@@ -33,6 +35,7 @@
             {{ child.label }}
           </router-link>
         </template>
+        <button v-if="isAdmin" type="button" class="logout-btn mobile" @click="onLogout">Logout</button>
       </nav>
     </transition>
   </header>
@@ -40,10 +43,21 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useAdminMode } from '../composables/useAdminMode'
+import { logoutAdmin } from '../composables/useAdminAuth'
 
 const route = useRoute()
+const router = useRouter()
 const open = ref(false)
+const { isAdmin, refresh } = useAdminMode()
+
+function onLogout() {
+  logoutAdmin()
+  refresh()
+  open.value = false
+  router.push('/')
+}
 
 const activeDropdown = ref<string | null>(null)
 

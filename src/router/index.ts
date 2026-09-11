@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '../pages/HomePage.vue'
-import { hasAdminToken, requireAdminSession } from '../composables/useAdminAuth'
 
 const routes = [
   { path: '/', name: 'home', component: HomePage },
@@ -18,21 +17,13 @@ const routes = [
   { path: '/contact', name: 'contact', component: () => import('../pages/ContactPage.vue') },
 
   {
+    path: '/admin',
+    redirect: '/admin/login',
+  },
+  {
     path: '/admin/login',
     name: 'admin-login',
     component: () => import('../pages/admin/AdminLoginPage.vue'),
-  },
-  {
-    path: '/admin',
-    component: () => import('../pages/admin/AdminLayout.vue'),
-    meta: { requiresAdminAuth: true },
-    children: [
-      { path: '', name: 'admin-main', component: () => import('../pages/admin/AdminMainPage.vue') },
-      { path: 'members', name: 'admin-members', component: () => import('../pages/admin/AdminMemberPage.vue') },
-      // { path: 'publications', name: 'admin-publications', component: () => import('../pages/admin/AdminPublicationsPage.vue') },
-      // { path: 'news', name: 'admin-news', component: () => import('../pages/admin/AdminNewsPage.vue') },
-      // { path: 'equipment', name: 'admin-equipment', component: () => import('../pages/admin/AdminEquipmentPage.vue') },
-    ],
   },
   {
     path: '/:pathMatch(.*)*',
@@ -47,25 +38,6 @@ const router = createRouter({
     if (to.hash) return { el: to.hash, top: 122, behavior: 'smooth' }
     return { top: 0 }
   },
-})
-
-router.beforeEach((to) => {
-  const needsAuth = to.matched.some((record) => record.meta.requiresAdminAuth)
-  if (!needsAuth) return
-
-  // Note this before requireAdminSession() runs, since it clears the token.
-  const wasLoggedIn = hasAdminToken()
-  const check = requireAdminSession()
-  if (check === 'ok') return
-
-  return {
-    path: '/admin/login',
-    query: {
-      redirect: to.fullPath,
-      // Someone who never signed in does not need an explanation.
-      ...(wasLoggedIn ? { reason: check } : {}),
-    },
-  }
 })
 
 export default router

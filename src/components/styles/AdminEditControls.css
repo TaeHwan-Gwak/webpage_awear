@@ -1,0 +1,30 @@
+.admin-controls {
+  display: inline-flex;
+  gap: 6px;
+
+  .icon-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+
+    &:hover {
+      background: var(--surface);
+    }
+
+    &.edit:hover {
+      border-color: var(--orange);
+      color: var(--orange-deep);
+    }
+
+    &.delete:hover {
+      border-color: #d3452c;
+      color: #d3452c;
+    }
+  }
+}

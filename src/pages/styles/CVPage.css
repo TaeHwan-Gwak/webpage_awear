@@ -1,12 +1,19 @@
-.cv-content {
+.cv-topbar {
+  position: relative;
   max-width: 760px;
+  margin: 0 auto;
+  height: 0;
 
   .back-link {
+    position: absolute;
+    top: 150px;
+    right: 32px;
     display: inline-block;
     font-family: var(--font-mono);
     font-size: 15px;
 
     @media (max-width: 720px) {
+      top: 126px;
       font-size: 12px;
     }
     color: var(--text-muted);
@@ -16,6 +23,10 @@
       color: var(--orange-deep);
     }
   }
+}
+
+.cv-content {
+  max-width: 760px;
 
   .cv-block {
     margin-top: 36px;
