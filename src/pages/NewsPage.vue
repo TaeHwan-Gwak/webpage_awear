@@ -81,7 +81,10 @@
                 <button type="button" class="cancel-btn" @click="cancelEdit">Cancel</button>
               </div>
             </li>
-            <li v-else class="news-row">
+            <li v-else class="news-row" :class="{ dragging: draggedNewsIndex === i }" :draggable="isEditable"
+              @dragstart="newsOnDragStart(i)" @dragover="newsOnDragOver($event)" @drop="newsOnDrop(i)"
+              @dragend="newsOnDragEnd">
+              <DragHandle class="handle" />
               <NewsItem class="news-row-content" :index="displayNews.length - ((currentPage - 1) * pageSize + i)"
                 :date="item.date" :desc="item.desc" :tag="item.tag" :link="item.link" :image="item.image" />
               <AdminEditControls v-if="isEditable" @edit="startEdit(item)" @delete="deleteItem(item)" />
@@ -113,10 +116,12 @@ import SkeletonLoader from '../components/SkeletonLoader.vue'
 import NewsItem from '../components/NewsItem.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
+import DragHandle from '../components/DragHandle.vue'
 import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
 import { useAdminMode } from '../composables/useAdminMode'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
+import { renumberIds, renameSingleImageField } from '../utils/renumber'
 import { checkRequired } from '../utils/validate'
 import SignalDivider from '../components/SignalDivider.vue'
 import newsDataRaw from '../data/news.json'
@@ -225,6 +230,40 @@ async function deleteItem(item: NewsItemType) {
   localNews.value = localNews.value.filter((n) => n.id !== item.id)
   if (item.image) await deleteImage(item.image)
   await saveJsonFile('news.json', localNews.value)
+}
+
+// displayNews는 localNews를 뒤집은(최신순) 배열이고, pagedNews는 그걸 또 페이지 단위로 자른 것이라
+// 드래그로 옮긴 위치를 실제 localNews 배열의 인덱스로 다시 변환해줘야 합니다.
+const draggedNewsIndex = ref<number | null>(null)
+
+function newsOnDragStart(indexInPage: number) {
+  draggedNewsIndex.value = indexInPage
+}
+
+function newsOnDragOver(e: DragEvent) {
+  e.preventDefault()
+}
+
+async function newsOnDrop(targetIndexInPage: number) {
+  const from = draggedNewsIndex.value
+  draggedNewsIndex.value = null
+  if (from === null || from === targetIndexInPage) return
+
+  const pageStart = (currentPage.value - 1) * pageSize.value
+  const total = localNews.value.length
+  const fromLocal = total - 1 - (pageStart + from)
+  const toLocal = total - 1 - (pageStart + targetIndexInPage)
+
+  const [moved] = localNews.value.splice(fromLocal, 1)
+  localNews.value.splice(toLocal, 0, moved)
+
+  const changes = renumberIds(localNews.value, 'n')
+  await renameSingleImageField(localNews.value, changes, 'image')
+  await saveJsonFile('news.json', localNews.value)
+}
+
+function newsOnDragEnd() {
+  draggedNewsIndex.value = null
 }
 
 const isMobile = () =>

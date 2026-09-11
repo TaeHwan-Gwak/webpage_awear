@@ -57,3 +57,17 @@ export async function deleteImage(imagePath: string): Promise<boolean> {
     return false
   }
 }
+
+/** Renames a file on disk from oldPath to newPath (both public paths, e.g. "/member/g5.jpg"). */
+export async function renameImage(oldPath: string, newPath: string): Promise<boolean> {
+  try {
+    const res = await fetch('/api/rename-image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ oldPath, newPath }),
+    })
+    return res.ok
+  } catch {
+    return false
+  }
+}

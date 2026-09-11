@@ -117,6 +117,54 @@ function handleImageUpload(publicDir: string): Connect.NextHandleFunction {
   }
 }
 
+function isSafePublicPath(p: string): { folder: string } | null {
+  if (!p || p.includes('..') || !p.startsWith('/')) return null
+  const folder = p.split('/')[1]
+  if (!ALLOWED_IMAGE_FOLDERS.has(folder)) return null
+  return { folder }
+}
+
+function handleImageRename(publicDir: string): Connect.NextHandleFunction {
+  return (req, res, next) => {
+    if (req.url !== '/api/rename-image') {
+      next()
+      return
+    }
+    if (req.method !== 'POST') {
+      res.statusCode = 405
+      res.end('Method not allowed')
+      return
+    }
+
+    readBody(req).then((body) => {
+      res.setHeader('Content-Type', 'application/json')
+      try {
+        const { oldPath, newPath } = JSON.parse(body) as { oldPath?: string; newPath?: string }
+
+        if (!oldPath || !newPath || !isSafePublicPath(oldPath) || !isSafePublicPath(newPath)) {
+          res.statusCode = 400
+          res.end(JSON.stringify({ ok: false, error: 'Invalid path' }))
+          return
+        }
+
+        const oldFull = path.join(publicDir, oldPath)
+        const newFull = path.join(publicDir, newPath)
+
+        if (fs.existsSync(oldFull)) {
+          fs.mkdirSync(path.dirname(newFull), { recursive: true })
+          fs.renameSync(oldFull, newFull)
+        }
+
+        res.statusCode = 200
+        res.end(JSON.stringify({ ok: true, path: newPath }))
+      } catch (e) {
+        res.statusCode = 500
+        res.end(JSON.stringify({ ok: false, error: String(e) }))
+      }
+    })
+  }
+}
+
 function handleImageDelete(publicDir: string): Connect.NextHandleFunction {
   return (req, res, next) => {
     if (req.url !== '/api/delete-image') {
@@ -168,11 +216,13 @@ export function localSavePlugin(): Plugin {
     configureServer(server) {
       server.middlewares.use(handleLocalSave(dataDir))
       server.middlewares.use(handleImageUpload(publicDir))
+      server.middlewares.use(handleImageRename(publicDir))
       server.middlewares.use(handleImageDelete(publicDir))
     },
     configurePreviewServer(server) {
       server.middlewares.use(handleLocalSave(dataDir))
       server.middlewares.use(handleImageUpload(publicDir))
+      server.middlewares.use(handleImageRename(publicDir))
       server.middlewares.use(handleImageDelete(publicDir))
     },
   }

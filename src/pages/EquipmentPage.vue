@@ -8,7 +8,11 @@
       <AdminAddButton v-if="isAdmin" label="Add equipment" @add="startAdd" />
 
       <div class="grid">
-        <div v-for="item in equipment" :key="item.id" class="equipment-slot">
+        <div v-for="(item, i) in equipment" :key="item.id" class="equipment-slot"
+          :class="{ dragging: equipmentDrag.draggedIndex.value === i }" :draggable="isAdmin"
+          @dragstart="equipmentDrag.onDragStart(i)" @dragover="equipmentDrag.onDragOver(i, $event)"
+          @drop="equipmentDrag.onDrop(i)" @dragend="equipmentDrag.onDragEnd">
+          <DragHandle class="handle" />
           <figure class="equipment-card">
             <div class="thumb">
               <img v-if="item.image && !brokenIds.has(item.id)" :src="item.image" :alt="item.name" loading="lazy"
@@ -52,9 +56,12 @@ import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
+import DragHandle from '../components/DragHandle.vue'
 import { useAdminMode } from '../composables/useAdminMode'
+import { useDragReorder } from '../composables/useDragReorder'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
+import { renumberIds, renameSingleImageField } from '../utils/renumber'
 import { checkRequired } from '../utils/validate'
 import equipmentDataRaw from '../data/equipment.json'
 
@@ -68,6 +75,11 @@ const { isAdmin } = useAdminMode()
 
 const equipment = reactive<Equipment[]>(JSON.parse(JSON.stringify(equipmentDataRaw)))
 const brokenIds = reactive(new Set<string>())
+const equipmentDrag = useDragReorder(equipment, async () => {
+  const changes = renumberIds(equipment, 'eq')
+  await renameSingleImageField(equipment, changes, 'image')
+  await saveJsonFile('equipment.json', equipment)
+})
 
 const editingId = ref<string | null>(null)
 const isNewEquipment = ref(false)

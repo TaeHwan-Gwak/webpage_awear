@@ -71,6 +71,18 @@
 
 .equipment-slot {
   position: relative;
+  transition: opacity 0.15s ease;
+
+  &.dragging {
+    opacity: 0.4;
+  }
+
+  .handle {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+  }
 
   .admin-controls {
     position: absolute;

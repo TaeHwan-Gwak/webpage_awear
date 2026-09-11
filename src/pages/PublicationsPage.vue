@@ -43,13 +43,18 @@
         <AdminAddButton v-if="isAdmin" label="Add publication" @add="startAdd" />
 
         <ul v-if="filteredPublications.length">
-          <li v-for="pub in filteredPublications" :key="pub.id" class="pub-row">
+          <li v-for="(pub, i) in filteredPublications" :key="pub.id" class="pub-row"
+            :class="{ dragging: draggedPubIndex === i }" :draggable="isAdmin && selectedYear === 'all'"
+            @dragstart="pubOnDragStart(i)" @dragover="pubOnDragOver($event)" @drop="pubOnDrop(i)"
+            @dragend="pubOnDragEnd">
+            <DragHandle v-if="selectedYear === 'all'" class="handle" />
             <PublicationItem :year="pub.year" :title="pub.title" :authors="pub.authors" :venue="pub.venue"
               :link="pub.link" :images="pub.images" />
             <AdminEditControls v-if="isAdmin" @edit="startEdit(pub)" @delete="deletePub(pub)" />
           </li>
         </ul>
         <p v-else class="empty">No papers found for {{ selectedYear }}.</p>
+        <p v-if="isAdmin && selectedYear !== 'all'" class="drag-hint">Switch to "All" to reorder papers.</p>
       </section>
     </div>
 
@@ -92,9 +97,11 @@ import PublicationItem from '../components/PublicationItem.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
+import DragHandle from '../components/DragHandle.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
+import { renumberIds, renameMultiImageField } from '../utils/renumber'
 import { checkRequired } from '../utils/validate'
 import publicationsDataRaw from '../data/publications.json'
 
@@ -225,6 +232,40 @@ async function deletePub(pub: Publication) {
   if (idx !== -1) localPubs.splice(idx, 1)
   await Promise.all((pub.images ?? []).map((src) => deleteImage(src)))
   await saveJsonFile('publications.json', localPubs)
+}
+
+// publications는 localPubs를 뒤집은(최신순) 배열이라, 드래그로 옮긴 위치를
+// 실제 localPubs 배열의 인덱스로 다시 변환해줘야 합니다. 연도 필터가 걸려있으면
+// (부분집합만 보여서 위치 매핑이 애매해지므로) 재정렬은 "All"일 때만 허용합니다.
+const draggedPubIndex = ref<number | null>(null)
+
+function pubOnDragStart(i: number) {
+  draggedPubIndex.value = i
+}
+
+function pubOnDragOver(e: DragEvent) {
+  e.preventDefault()
+}
+
+async function pubOnDrop(targetIndex: number) {
+  const from = draggedPubIndex.value
+  draggedPubIndex.value = null
+  if (from === null || from === targetIndex || selectedYear.value !== 'all') return
+
+  const total = localPubs.length
+  const fromLocal = total - 1 - from
+  const toLocal = total - 1 - targetIndex
+
+  const [moved] = localPubs.splice(fromLocal, 1)
+  localPubs.splice(toLocal, 0, moved)
+
+  const changes = renumberIds(localPubs, 'pub')
+  await renameMultiImageField(localPubs, changes)
+  await saveJsonFile('publications.json', localPubs)
+}
+
+function pubOnDragEnd() {
+  draggedPubIndex.value = null
 }
 </script>
 

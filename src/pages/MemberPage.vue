@@ -47,7 +47,11 @@
     <section v-if="form.postdocs?.length || isAdmin" class="group section">
       <h2 class="group-title">Postdoctoral Researchers</h2>
       <div class="grid">
-        <div v-for="member in form.postdocs" :key="member.id" class="card-slot">
+        <div v-for="(member, i) in form.postdocs" :key="member.id" class="card-slot"
+          :class="{ dragging: postdocDrag.draggedIndex.value === i }" :draggable="isAdmin"
+          @dragstart="postdocDrag.onDragStart(i)" @dragover="postdocDrag.onDragOver(i, $event)"
+          @drop="postdocDrag.onDrop(i)" @dragend="postdocDrag.onDragEnd">
+          <DragHandle class="handle" />
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
             :interests="member.interests" :photo="member.photo" />
           <AdminEditControls v-if="isAdmin" @edit="startEdit('postdocs', member)" @delete="deleteMember('postdocs', member)" />
@@ -59,7 +63,11 @@
     <section class="group section">
       <h2 class="group-title">{{ form.groupTitle }}</h2>
       <div class="grid">
-        <div v-for="member in form.members" :key="member.id" class="card-slot">
+        <div v-for="(member, i) in form.members" :key="member.id" class="card-slot"
+          :class="{ dragging: memberDrag.draggedIndex.value === i }" :draggable="isAdmin"
+          @dragstart="memberDrag.onDragStart(i)" @dragover="memberDrag.onDragOver(i, $event)"
+          @drop="memberDrag.onDrop(i)" @dragend="memberDrag.onDragEnd">
+          <DragHandle class="handle" />
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
             :interests="member.interests" :photo="member.photo" />
           <AdminEditControls v-if="isAdmin" @edit="startEdit('members', member)" @delete="deleteMember('members', member)" />
@@ -71,7 +79,11 @@
     <section v-if="form.alumni?.length || isAdmin" class="group alumni section">
       <h2 class="group-title">{{ form.alumniTitle ?? 'Alumni' }}</h2>
       <ul class="alumni-list">
-        <li v-for="member in form.alumni" :key="member.id" class="alumni-row">
+        <li v-for="(member, i) in form.alumni" :key="member.id" class="alumni-row"
+          :class="{ dragging: alumniDrag.draggedIndex.value === i }" :draggable="isAdmin"
+          @dragstart="alumniDrag.onDragStart(i)" @dragover="alumniDrag.onDragOver(i, $event)"
+          @drop="alumniDrag.onDrop(i)" @dragend="alumniDrag.onDragEnd">
+          <DragHandle class="handle" />
           <AlumniItem :name="member.name" :role="member.role" :note="member.note" />
           <AdminEditControls v-if="isAdmin" @edit="startEdit('alumni', member)" @delete="deleteMember('alumni', member)" />
         </li>
@@ -115,9 +127,12 @@ import MemberCard from '../components/MemberCard.vue'
 import AlumniItem from '../components/AlumniItem.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
+import DragHandle from '../components/DragHandle.vue'
 import { useAdminMode } from '../composables/useAdminMode'
+import { useDragReorder } from '../composables/useDragReorder'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
+import { renumberIds, renameSingleImageField } from '../utils/renumber'
 import { checkRequired, isValidEmail } from '../utils/validate'
 import membersDataRaw from '../data/members.json'
 
@@ -134,6 +149,21 @@ interface Member {
 const { isAdmin } = useAdminMode()
 
 const form = reactive(JSON.parse(JSON.stringify(membersDataRaw)) as typeof membersDataRaw)
+
+const postdocDrag = useDragReorder(form.postdocs, async () => {
+  const changes = renumberIds(form.postdocs, FALLBACK_PREFIX.postdocs)
+  await renameSingleImageField(form.postdocs, changes, 'photo')
+  await saveJsonFile('members.json', form)
+})
+const memberDrag = useDragReorder(form.members, async () => {
+  const changes = renumberIds(form.members, FALLBACK_PREFIX.members)
+  await renameSingleImageField(form.members, changes, 'photo')
+  await saveJsonFile('members.json', form)
+})
+const alumniDrag = useDragReorder(form.alumni, async () => {
+  renumberIds(form.alumni, FALLBACK_PREFIX.alumni)
+  await saveJsonFile('members.json', form)
+})
 
 type GroupKey = 'postdocs' | 'members' | 'alumni'
 
