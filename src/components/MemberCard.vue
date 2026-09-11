@@ -1,7 +1,8 @@
 <template>
   <article class="member-card" :class="{ 'admin-mode': isAdmin }" @mouseenter="onEnter" @mouseleave="onLeave">
     <div class="avatar" aria-hidden="true">
-      <span class="ph-label">Image</span>
+      <img v-if="photo" :src="photo" alt="" class="avatar-photo" />
+      <span v-else class="ph-label">Image</span>
     </div>
     <h3>{{ name }}</h3>
     <p class="role">{{ role }}</p>
@@ -26,6 +27,7 @@ defineProps<{
   note?: string
   email?: string
   interests?: string
+  photo?: string
 }>()
 
 const { isAdmin } = useAdminMode()

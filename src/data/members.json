@@ -23,7 +23,8 @@
           "Researcher, Korea Institute of Science and Technology, 2011 – 2012"
         ]
       }
-    ]
+    ],
+    "photo": ""
   },
   "postdocs": [
     {
@@ -32,7 +33,8 @@
       "role": "Postdoctoral Researcher",
       "note": "InnoCORE fellow",
       "email": "deredeji@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     }
   ],
   "groupTitle": "Graduate Students",
@@ -43,7 +45,8 @@
       "role": "Mechanical and Aerospace Engineering",
       "note": "Student at SUNY Buffalo in the USA",
       "email": "souvikpoddar@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     },
     {
       "id": "g2",
@@ -51,7 +54,8 @@
       "role": "AI Graduate School",
       "note": "",
       "email": "kihyunkim@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     },
     {
       "id": "g3",
@@ -59,7 +63,8 @@
       "role": "School of Integrated Technology, Robotics Program",
       "note": "",
       "email": "seonghunjeong@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     },
     {
       "id": "g4",
@@ -67,7 +72,8 @@
       "role": "School of Integrated Technology, Robotics Program",
       "note": "",
       "email": "ingyunahn@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     },
     {
       "id": "g5",
@@ -75,7 +81,8 @@
       "role": "Dept. of AI Convergence, Robotics Program",
       "note": "",
       "email": "daekim@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     },
     {
       "id": "g6",
@@ -83,7 +90,8 @@
       "role": "Dept. of AI Convergence, Robotics Program",
       "note": "",
       "email": "youngkeekim@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     },
     {
       "id": "g7",
@@ -91,7 +99,8 @@
       "role": "Dept. of AI Convergence, Robotics Program",
       "note": "",
       "email": "seoheejang@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     },
     {
       "id": "g8",
@@ -99,7 +108,8 @@
       "role": "Dept. of AI Convergence, Robotics Program",
       "note": "",
       "email": "kyungminkwon@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     },
     {
       "id": "g9",
@@ -107,7 +117,8 @@
       "role": "Dept. of AI Convergence, Robotics Program",
       "note": "",
       "email": "jiyesohn@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     },
     {
       "id": "g10",
@@ -115,7 +126,8 @@
       "role": "Dept. of AI Convergence, Robotics Program",
       "note": "",
       "email": "junghoonyang@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     },
     {
       "id": "g11",
@@ -123,7 +135,8 @@
       "role": "Dept. of AI Convergence, Robotics Program",
       "note": "",
       "email": "taehwangwak@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     },
     {
       "id": "g12",
@@ -131,7 +144,8 @@
       "role": "Dept. of AI Convergence, Robotics Program",
       "note": "",
       "email": "hyunwonnam@gm.gist.ac.kr",
-      "interests": ""
+      "interests": "",
+      "photo": ""
     }
   ],
   "alumniTitle": "Alumni",

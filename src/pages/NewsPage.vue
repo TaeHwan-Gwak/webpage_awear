@@ -37,11 +37,21 @@
           </li>
         </template>
         <template v-else>
-          <li v-if="editingId === 'new'" class="news-edit-row">
+          <li v-if="isNewItem" class="news-edit-row">
             <input v-model="draft.date" placeholder="Date (e.g. 2026.01)" />
             <input v-model="draft.tag" placeholder="Tag (e.g. General)" />
             <textarea v-model="draft.desc" rows="3" placeholder="Description"></textarea>
             <input v-model="draft.link" placeholder="Link (optional)" />
+            <div class="image-field">
+              <div v-if="draft.image" class="photo-preview">
+                <img :src="draft.image" alt="" />
+                <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeNewsImage">✕</button>
+              </div>
+              <label class="upload-btn">
+                {{ uploadingImage ? 'Uploading…' : '+ Upload image' }}
+                <input type="file" accept="image/*" :disabled="uploadingImage" @change="onImageSelected" />
+              </label>
+            </div>
             <div class="edit-actions">
               <button type="button" class="save-btn" @click="saveEdit">Save</button>
               <button type="button" class="cancel-btn" @click="cancelEdit">Cancel</button>
@@ -54,6 +64,16 @@
               <input v-model="draft.tag" placeholder="Tag (e.g. General)" />
               <textarea v-model="draft.desc" rows="3" placeholder="Description"></textarea>
               <input v-model="draft.link" placeholder="Link (optional)" />
+              <div class="image-field">
+                <div v-if="draft.image" class="photo-preview">
+                  <img :src="draft.image" alt="" />
+                  <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeNewsImage">✕</button>
+                </div>
+                <label class="upload-btn">
+                  {{ uploadingImage ? 'Uploading…' : '+ Upload image' }}
+                  <input type="file" accept="image/*" :disabled="uploadingImage" @change="onImageSelected" />
+                </label>
+              </div>
               <div class="edit-actions">
                 <button type="button" class="save-btn" @click="saveEdit">Save</button>
                 <button type="button" class="cancel-btn" @click="cancelEdit">Cancel</button>
@@ -93,7 +113,8 @@ import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
 import { useAdminMode } from '../composables/useAdminMode'
-import { saveJsonFile } from '../services/localSave'
+import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
+import { nextSequentialId } from '../utils/nextId'
 import SignalDivider from '../components/SignalDivider.vue'
 import newsDataRaw from '../data/news.json'
 
@@ -111,33 +132,68 @@ const displayNews = computed(() =>
   news.value.length ? news.value : [...localNews.value].reverse()
 )
 
-const editingId = ref<string | 'new' | null>(null)
-const draft = reactive({ date: '', tag: '', desc: '', link: '' })
+const editingId = ref<string | null>(null)
+const isNewItem = ref(false)
+const uploadingImage = ref(false)
+const draft = reactive({ date: '', tag: '', desc: '', link: '', image: '' })
 
 function startEdit(item: NewsItemType) {
-  editingId.value = item.id
+  editingId.value = item.id ?? null
+  isNewItem.value = false
   draft.date = item.date
   draft.tag = item.tag ?? ''
   draft.desc = item.desc
   draft.link = item.link ?? ''
+  draft.image = item.image ?? ''
 }
 
 function startAdd() {
-  editingId.value = 'new'
+  // 이미지 업로드 시 id 기준 파일명이 필요해서, 저장 전에 미리 id를 만들어둡니다.
+  editingId.value = nextSequentialId(localNews.value.map((n) => n.id ?? ''), 'n')
+  isNewItem.value = true
   draft.date = ''
   draft.tag = ''
   draft.desc = ''
   draft.link = ''
+  draft.image = ''
 }
 
 function cancelEdit() {
   editingId.value = null
 }
 
+async function onImageSelected(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file || !editingId.value) return
+
+  uploadingImage.value = true
+  const ext = file.name.split('.').pop() || 'jpg'
+  const path = await uploadImage('news', `${editingId.value}.${ext}`, file)
+  uploadingImage.value = false
+
+  if (path) draft.image = path
+  else alert('Image upload failed. Is the local dev server running?')
+}
+
+async function removeNewsImage() {
+  if (draft.image) await deleteImage(draft.image)
+  draft.image = ''
+}
+
 async function saveEdit() {
-  if (editingId.value === 'new') {
-    const id = 'n' + Date.now()
-    localNews.value.push({ id, date: draft.date, tag: draft.tag, desc: draft.desc, link: draft.link })
+  if (!editingId.value) return
+
+  if (isNewItem.value) {
+    localNews.value.push({
+      id: editingId.value,
+      date: draft.date,
+      tag: draft.tag,
+      desc: draft.desc,
+      link: draft.link,
+      image: draft.image,
+    })
   } else {
     const target = localNews.value.find((n) => n.id === editingId.value)
     if (target) {
@@ -145,6 +201,7 @@ async function saveEdit() {
       target.tag = draft.tag
       target.desc = draft.desc
       target.link = draft.link
+      target.image = draft.image
     }
   }
   editingId.value = null
@@ -153,6 +210,7 @@ async function saveEdit() {
 
 async function deleteItem(item: NewsItemType) {
   localNews.value = localNews.value.filter((n) => n.id !== item.id)
+  if (item.image) await deleteImage(item.image)
   await saveJsonFile('news.json', localNews.value)
 }
 

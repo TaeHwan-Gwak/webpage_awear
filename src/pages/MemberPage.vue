@@ -7,12 +7,24 @@
     <section class="pi-feature section">
       <div class="card">
         <div class="portrait" aria-hidden="true">
-          <span class="ph-label">Image</span>
+          <img v-if="!editingPI && form.pi.photo" :src="form.pi.photo" alt="" class="portrait-photo" />
+          <span v-else-if="!editingPI" class="ph-label">Image</span>
         </div>
         <div v-if="editingPI" class="body edit-form">
           <label class="field"><span>Name</span><input v-model="piDraft.name" /></label>
           <label class="field"><span>Role</span><input v-model="piDraft.role" /></label>
           <label class="field"><span>Email</span><input v-model="piDraft.email" /></label>
+          <div class="field">
+            <span>Photo</span>
+            <div v-if="piDraft.photo" class="photo-preview">
+              <img :src="piDraft.photo" alt="" />
+              <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removePIPhoto">✕</button>
+            </div>
+            <label class="upload-btn">
+              {{ uploadingPIPhoto ? 'Uploading…' : '+ Upload photo' }}
+              <input type="file" accept="image/*" :disabled="uploadingPIPhoto" @change="onPIPhotoSelected" />
+            </label>
+          </div>
           <div class="edit-actions">
             <button type="button" class="save-btn" @click="savePI">Save</button>
             <button type="button" class="cancel-btn" @click="editingPI = false">Cancel</button>
@@ -36,7 +48,7 @@
       <div class="grid">
         <div v-for="member in form.postdocs" :key="member.id" class="card-slot">
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
-            :interests="member.interests" />
+            :interests="member.interests" :photo="member.photo" />
           <AdminEditControls v-if="isAdmin" @edit="startEdit('postdocs', member)" @delete="deleteMember('postdocs', member)" />
         </div>
       </div>
@@ -48,7 +60,7 @@
       <div class="grid">
         <div v-for="member in form.members" :key="member.id" class="card-slot">
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
-            :interests="member.interests" />
+            :interests="member.interests" :photo="member.photo" />
           <AdminEditControls v-if="isAdmin" @edit="startEdit('members', member)" @delete="deleteMember('members', member)" />
         </div>
       </div>
@@ -73,6 +85,17 @@
         <label class="field"><span>Note</span><input v-model="draft.note" /></label>
         <label v-if="editingGroup !== 'alumni'" class="field"><span>Email</span><input v-model="draft.email" /></label>
         <label v-if="editingGroup !== 'alumni'" class="field"><span>Interests</span><input v-model="draft.interests" /></label>
+        <div v-if="editingGroup !== 'alumni'" class="field">
+          <span>Photo</span>
+          <div v-if="draft.photo" class="photo-preview">
+            <img :src="draft.photo" alt="" />
+            <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removeMemberPhoto">✕</button>
+          </div>
+          <label class="upload-btn">
+            {{ uploadingPhoto ? 'Uploading…' : '+ Upload photo' }}
+            <input type="file" accept="image/*" :disabled="uploadingPhoto" @change="onMemberPhotoSelected" />
+          </label>
+        </div>
         <div class="edit-actions">
           <button type="button" class="save-btn" @click="saveMember">Save</button>
           <button type="button" class="cancel-btn" @click="cancelEdit">Cancel</button>
@@ -91,7 +114,8 @@ import AlumniItem from '../components/AlumniItem.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import { useAdminMode } from '../composables/useAdminMode'
-import { saveJsonFile } from '../services/localSave'
+import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
+import { nextSequentialId } from '../utils/nextId'
 import membersDataRaw from '../data/members.json'
 
 interface Member {
@@ -101,6 +125,7 @@ interface Member {
   note?: string
   email?: string
   interests?: string
+  photo?: string
 }
 
 const { isAdmin } = useAdminMode()
@@ -109,28 +134,42 @@ const form = reactive(JSON.parse(JSON.stringify(membersDataRaw)) as typeof membe
 
 type GroupKey = 'postdocs' | 'members' | 'alumni'
 
+const FALLBACK_PREFIX: Record<GroupKey, string> = {
+  postdocs: 'p',
+  members: 'g',
+  alumni: 'a',
+}
+
 const editingGroup = ref<GroupKey | null>(null)
-const editingId = ref<string | 'new' | null>(null)
-const draft = reactive({ name: '', role: '', note: '', email: '', interests: '' })
+const editingId = ref<string | null>(null)
+const isNewMember = ref(false)
+const uploadingPhoto = ref(false)
+const draft = reactive({ name: '', role: '', note: '', email: '', interests: '', photo: '' })
 
 function startEdit(group: GroupKey, member: Member) {
   editingGroup.value = group
   editingId.value = member.id
+  isNewMember.value = false
   draft.name = member.name
   draft.role = member.role
   draft.note = member.note ?? ''
   draft.email = member.email ?? ''
   draft.interests = member.interests ?? ''
+  draft.photo = member.photo ?? ''
 }
 
 function startAdd(group: GroupKey) {
+  const list = form[group] as Member[]
   editingGroup.value = group
-  editingId.value = 'new'
+  // 사진 업로드 시 id 기준 파일명이 필요해서, 저장 전에 미리 id를 만들어둡니다.
+  editingId.value = nextSequentialId(list.map((m) => m.id), FALLBACK_PREFIX[group])
+  isNewMember.value = true
   draft.name = ''
   draft.role = ''
   draft.note = ''
   draft.email = ''
   draft.interests = ''
+  draft.photo = ''
 }
 
 function cancelEdit() {
@@ -138,13 +177,40 @@ function cancelEdit() {
   editingId.value = null
 }
 
+async function onMemberPhotoSelected(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file || !editingId.value) return
+
+  uploadingPhoto.value = true
+  const ext = file.name.split('.').pop() || 'jpg'
+  const path = await uploadImage('member', `${editingId.value}.${ext}`, file)
+  uploadingPhoto.value = false
+
+  if (path) draft.photo = path
+  else alert('Photo upload failed. Is the local dev server running?')
+}
+
+async function removeMemberPhoto() {
+  if (draft.photo) await deleteImage(draft.photo)
+  draft.photo = ''
+}
+
 async function saveMember() {
-  if (!editingGroup.value) return
+  if (!editingGroup.value || !editingId.value) return
   const list = form[editingGroup.value] as Member[]
 
-  if (editingId.value === 'new') {
-    const id = editingGroup.value[0] + Date.now()
-    list.push({ id, name: draft.name, role: draft.role, note: draft.note, email: draft.email, interests: draft.interests })
+  if (isNewMember.value) {
+    list.push({
+      id: editingId.value,
+      name: draft.name,
+      role: draft.role,
+      note: draft.note,
+      email: draft.email,
+      interests: draft.interests,
+      photo: draft.photo,
+    })
   } else {
     const target = list.find((m) => m.id === editingId.value)
     if (target) {
@@ -153,6 +219,7 @@ async function saveMember() {
       target.note = draft.note
       target.email = draft.email
       target.interests = draft.interests
+      target.photo = draft.photo
     }
   }
 
@@ -164,23 +231,47 @@ async function deleteMember(group: GroupKey, member: Member) {
   const list = form[group] as Member[]
   const idx = list.findIndex((m) => m.id === member.id)
   if (idx !== -1) list.splice(idx, 1)
+  if (member.photo) await deleteImage(member.photo)
   await saveJsonFile('members.json', form)
 }
 
 const editingPI = ref(false)
-const piDraft = reactive({ name: '', role: '', email: '' })
+const uploadingPIPhoto = ref(false)
+const piDraft = reactive({ name: '', role: '', email: '', photo: '' })
 
 function startEditPI() {
   piDraft.name = form.pi.name
   piDraft.role = form.pi.role
   piDraft.email = form.pi.email
+  piDraft.photo = form.pi.photo ?? ''
   editingPI.value = true
+}
+
+async function onPIPhotoSelected(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file) return
+
+  uploadingPIPhoto.value = true
+  const ext = file.name.split('.').pop() || 'jpg'
+  const path = await uploadImage('member', `pi.${ext}`, file)
+  uploadingPIPhoto.value = false
+
+  if (path) piDraft.photo = path
+  else alert('Photo upload failed. Is the local dev server running?')
+}
+
+async function removePIPhoto() {
+  if (piDraft.photo) await deleteImage(piDraft.photo)
+  piDraft.photo = ''
 }
 
 async function savePI() {
   form.pi.name = piDraft.name
   form.pi.role = piDraft.role
   form.pi.email = piDraft.email
+  form.pi.photo = piDraft.photo
   editingPI.value = false
   await saveJsonFile('members.json', form)
 }

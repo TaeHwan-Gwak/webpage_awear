@@ -60,6 +60,21 @@
         <label class="field"><span>Authors</span><input v-model="draft.authors" /></label>
         <label class="field"><span>Venue</span><input v-model="draft.venue" /></label>
         <label class="field"><span>Link (optional)</span><input v-model="draft.link" /></label>
+
+        <div class="field">
+          <span>Images</span>
+          <div class="image-list">
+            <div v-for="src in draft.images" :key="src" class="image-thumb">
+              <img :src="src" alt="" />
+              <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeImage(src)">✕</button>
+            </div>
+          </div>
+          <label class="upload-btn">
+            {{ uploading ? 'Uploading…' : '+ Upload image' }}
+            <input type="file" accept="image/*" :disabled="uploading" @change="onFileSelected" />
+          </label>
+        </div>
+
         <div class="edit-actions">
           <button type="button" class="save-btn" @click="saveEdit">Save</button>
           <button type="button" class="cancel-btn" @click="cancelEdit">Cancel</button>
@@ -77,7 +92,8 @@ import SignalDivider from '../components/SignalDivider.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import { useAdminMode } from '../composables/useAdminMode'
-import { saveJsonFile } from '../services/localSave'
+import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
+import { nextSequentialId } from '../utils/nextId'
 import publicationsDataRaw from '../data/publications.json'
 
 interface Publication {
@@ -112,35 +128,70 @@ const selectYear = (y: string) => {
   isMobileMenuOpen.value = false
 }
 
-const editingId = ref<string | 'new' | null>(null)
-const draft = reactive({ year: '', title: '', authors: '', venue: '', link: '' })
+const editingId = ref<string | null>(null)
+const isNew = ref(false)
+const uploading = ref(false)
+const draft = reactive({ year: '', title: '', authors: '', venue: '', link: '', images: [] as string[] })
 
 function startEdit(pub: Publication) {
   editingId.value = pub.id
+  isNew.value = false
   draft.year = pub.year
   draft.title = pub.title
   draft.authors = pub.authors
   draft.venue = pub.venue
   draft.link = pub.link ?? ''
+  draft.images = [...(pub.images ?? [])]
 }
 
 function startAdd() {
-  editingId.value = 'new'
+  // 이미지 업로드 시 id 기준으로 파일명을 붙여야 해서, 저장 전에 id를 미리 만들어둡니다.
+  editingId.value = nextSequentialId(localPubs.map((p) => p.id), 'pub')
+  isNew.value = true
   draft.year = ''
   draft.title = ''
   draft.authors = ''
   draft.venue = ''
   draft.link = ''
+  draft.images = []
 }
 
 function cancelEdit() {
   editingId.value = null
 }
 
+async function onFileSelected(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file || !editingId.value) return
+
+  uploading.value = true
+  const ext = file.name.split('.').pop() || 'jpg'
+  const filename = `${editingId.value}-${draft.images.length + 1}.${ext}`
+  const path = await uploadImage('publications', filename, file)
+  uploading.value = false
+
+  if (path) draft.images.push(path)
+  else alert('Image upload failed. Is the local dev server running?')
+}
+
+async function removeImage(src: string) {
+  draft.images = draft.images.filter((s) => s !== src)
+  await deleteImage(src)
+}
+
 async function saveEdit() {
-  if (editingId.value === 'new') {
-    const id = 'pub' + Date.now()
-    localPubs.push({ id, year: draft.year, title: draft.title, authors: draft.authors, venue: draft.venue, link: draft.link })
+  if (isNew.value) {
+    localPubs.push({
+      id: editingId.value!,
+      year: draft.year,
+      title: draft.title,
+      authors: draft.authors,
+      venue: draft.venue,
+      link: draft.link,
+      images: draft.images,
+    })
   } else {
     const target = localPubs.find((p) => p.id === editingId.value)
     if (target) {
@@ -149,6 +200,7 @@ async function saveEdit() {
       target.authors = draft.authors
       target.venue = draft.venue
       target.link = draft.link
+      target.images = draft.images
     }
   }
 
@@ -159,6 +211,7 @@ async function saveEdit() {
 async function deletePub(pub: Publication) {
   const idx = localPubs.findIndex((p) => p.id === pub.id)
   if (idx !== -1) localPubs.splice(idx, 1)
+  await Promise.all((pub.images ?? []).map((src) => deleteImage(src)))
   await saveJsonFile('publications.json', localPubs)
 }
 </script>
