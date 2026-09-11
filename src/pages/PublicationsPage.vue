@@ -75,6 +75,7 @@
           </label>
         </div>
 
+        <p v-if="formError" class="form-error">{{ formError }}</p>
         <div class="edit-actions">
           <button type="button" class="save-btn" @click="saveEdit">Save</button>
           <button type="button" class="cancel-btn" @click="cancelEdit">Cancel</button>
@@ -94,6 +95,7 @@ import AdminAddButton from '../components/AdminAddButton.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
+import { checkRequired } from '../utils/validate'
 import publicationsDataRaw from '../data/publications.json'
 
 interface Publication {
@@ -131,11 +133,13 @@ const selectYear = (y: string) => {
 const editingId = ref<string | null>(null)
 const isNew = ref(false)
 const uploading = ref(false)
+const formError = ref<string | null>(null)
 const draft = reactive({ year: '', title: '', authors: '', venue: '', link: '', images: [] as string[] })
 
 function startEdit(pub: Publication) {
   editingId.value = pub.id
   isNew.value = false
+  formError.value = null
   draft.year = pub.year
   draft.title = pub.title
   draft.authors = pub.authors
@@ -148,6 +152,7 @@ function startAdd() {
   // 이미지 업로드 시 id 기준으로 파일명을 붙여야 해서, 저장 전에 id를 미리 만들어둡니다.
   editingId.value = nextSequentialId(localPubs.map((p) => p.id), 'pub')
   isNew.value = true
+  formError.value = null
   draft.year = ''
   draft.title = ''
   draft.authors = ''
@@ -158,6 +163,7 @@ function startAdd() {
 
 function cancelEdit() {
   editingId.value = null
+  formError.value = null
 }
 
 async function onFileSelected(e: Event) {
@@ -182,6 +188,12 @@ async function removeImage(src: string) {
 }
 
 async function saveEdit() {
+  const requiredError = checkRequired({ Year: draft.year, Title: draft.title, Authors: draft.authors, Venue: draft.venue })
+  if (requiredError) {
+    formError.value = requiredError
+    return
+  }
+
   if (isNew.value) {
     localPubs.push({
       id: editingId.value!,

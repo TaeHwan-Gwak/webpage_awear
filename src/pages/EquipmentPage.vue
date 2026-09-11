@@ -36,6 +36,7 @@
             <input type="file" accept="image/*" :disabled="uploading" @change="onImageSelected" />
           </label>
         </div>
+        <p v-if="formError" class="form-error">{{ formError }}</p>
         <div class="edit-actions">
           <button type="button" class="save-btn" @click="saveEdit">Save</button>
           <button type="button" class="cancel-btn" @click="cancelEdit">Cancel</button>
@@ -54,6 +55,7 @@ import AdminAddButton from '../components/AdminAddButton.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
+import { checkRequired } from '../utils/validate'
 import equipmentDataRaw from '../data/equipment.json'
 
 interface Equipment {
@@ -70,11 +72,13 @@ const brokenIds = reactive(new Set<string>())
 const editingId = ref<string | null>(null)
 const isNewEquipment = ref(false)
 const uploading = ref(false)
+const formError = ref<string | null>(null)
 const draft = reactive({ name: '', image: '' })
 
 function startEdit(item: Equipment) {
   editingId.value = item.id
   isNewEquipment.value = false
+  formError.value = null
   draft.name = item.name
   draft.image = item.image ?? ''
 }
@@ -83,12 +87,14 @@ function startAdd() {
   // 이미지 업로드 시 id 기준 파일명이 필요해서, 저장 전에 미리 id를 만들어둡니다.
   editingId.value = nextSequentialId(equipment.map((e) => e.id), 'eq')
   isNewEquipment.value = true
+  formError.value = null
   draft.name = ''
   draft.image = ''
 }
 
 function cancelEdit() {
   editingId.value = null
+  formError.value = null
 }
 
 async function onImageSelected(e: Event) {
@@ -113,6 +119,12 @@ async function removeImage() {
 
 async function saveEdit() {
   if (!editingId.value) return
+
+  const requiredError = checkRequired({ Name: draft.name })
+  if (requiredError) {
+    formError.value = requiredError
+    return
+  }
 
   if (isNewEquipment.value) {
     equipment.push({ id: editingId.value, name: draft.name, image: draft.image })

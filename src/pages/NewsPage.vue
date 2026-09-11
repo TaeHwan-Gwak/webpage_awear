@@ -52,6 +52,7 @@
                 <input type="file" accept="image/*" :disabled="uploadingImage" @change="onImageSelected" />
               </label>
             </div>
+            <p v-if="formError" class="form-error">{{ formError }}</p>
             <div class="edit-actions">
               <button type="button" class="save-btn" @click="saveEdit">Save</button>
               <button type="button" class="cancel-btn" @click="cancelEdit">Cancel</button>
@@ -74,6 +75,7 @@
                   <input type="file" accept="image/*" :disabled="uploadingImage" @change="onImageSelected" />
                 </label>
               </div>
+              <p v-if="formError" class="form-error">{{ formError }}</p>
               <div class="edit-actions">
                 <button type="button" class="save-btn" @click="saveEdit">Save</button>
                 <button type="button" class="cancel-btn" @click="cancelEdit">Cancel</button>
@@ -115,6 +117,7 @@ import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
 import { useAdminMode } from '../composables/useAdminMode'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
+import { checkRequired } from '../utils/validate'
 import SignalDivider from '../components/SignalDivider.vue'
 import newsDataRaw from '../data/news.json'
 
@@ -135,11 +138,13 @@ const displayNews = computed(() =>
 const editingId = ref<string | null>(null)
 const isNewItem = ref(false)
 const uploadingImage = ref(false)
+const formError = ref<string | null>(null)
 const draft = reactive({ date: '', tag: '', desc: '', link: '', image: '' })
 
 function startEdit(item: NewsItemType) {
   editingId.value = item.id ?? null
   isNewItem.value = false
+  formError.value = null
   draft.date = item.date
   draft.tag = item.tag ?? ''
   draft.desc = item.desc
@@ -151,6 +156,7 @@ function startAdd() {
   // 이미지 업로드 시 id 기준 파일명이 필요해서, 저장 전에 미리 id를 만들어둡니다.
   editingId.value = nextSequentialId(localNews.value.map((n) => n.id ?? ''), 'n')
   isNewItem.value = true
+  formError.value = null
   draft.date = ''
   draft.tag = ''
   draft.desc = ''
@@ -160,6 +166,7 @@ function startAdd() {
 
 function cancelEdit() {
   editingId.value = null
+  formError.value = null
 }
 
 async function onImageSelected(e: Event) {
@@ -184,6 +191,12 @@ async function removeNewsImage() {
 
 async function saveEdit() {
   if (!editingId.value) return
+
+  const requiredError = checkRequired({ Date: draft.date, Description: draft.desc })
+  if (requiredError) {
+    formError.value = requiredError
+    return
+  }
 
   if (isNewItem.value) {
     localNews.value.push({

@@ -25,9 +25,10 @@
               <input type="file" accept="image/*" :disabled="uploadingPIPhoto" @change="onPIPhotoSelected" />
             </label>
           </div>
+          <p v-if="piFormError" class="form-error">{{ piFormError }}</p>
           <div class="edit-actions">
             <button type="button" class="save-btn" @click="savePI">Save</button>
-            <button type="button" class="cancel-btn" @click="editingPI = false">Cancel</button>
+            <button type="button" class="cancel-btn" @click="cancelEditPI">Cancel</button>
           </div>
         </div>
         <div v-else class="body">
@@ -96,6 +97,7 @@
             <input type="file" accept="image/*" :disabled="uploadingPhoto" @change="onMemberPhotoSelected" />
           </label>
         </div>
+        <p v-if="formError" class="form-error">{{ formError }}</p>
         <div class="edit-actions">
           <button type="button" class="save-btn" @click="saveMember">Save</button>
           <button type="button" class="cancel-btn" @click="cancelEdit">Cancel</button>
@@ -116,6 +118,7 @@ import AdminAddButton from '../components/AdminAddButton.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
+import { checkRequired, isValidEmail } from '../utils/validate'
 import membersDataRaw from '../data/members.json'
 
 interface Member {
@@ -144,12 +147,14 @@ const editingGroup = ref<GroupKey | null>(null)
 const editingId = ref<string | null>(null)
 const isNewMember = ref(false)
 const uploadingPhoto = ref(false)
+const formError = ref<string | null>(null)
 const draft = reactive({ name: '', role: '', note: '', email: '', interests: '', photo: '' })
 
 function startEdit(group: GroupKey, member: Member) {
   editingGroup.value = group
   editingId.value = member.id
   isNewMember.value = false
+  formError.value = null
   draft.name = member.name
   draft.role = member.role
   draft.note = member.note ?? ''
@@ -164,6 +169,7 @@ function startAdd(group: GroupKey) {
   // 사진 업로드 시 id 기준 파일명이 필요해서, 저장 전에 미리 id를 만들어둡니다.
   editingId.value = nextSequentialId(list.map((m) => m.id), FALLBACK_PREFIX[group])
   isNewMember.value = true
+  formError.value = null
   draft.name = ''
   draft.role = ''
   draft.note = ''
@@ -175,6 +181,7 @@ function startAdd(group: GroupKey) {
 function cancelEdit() {
   editingGroup.value = null
   editingId.value = null
+  formError.value = null
 }
 
 async function onMemberPhotoSelected(e: Event) {
@@ -199,6 +206,17 @@ async function removeMemberPhoto() {
 
 async function saveMember() {
   if (!editingGroup.value || !editingId.value) return
+
+  const requiredError = checkRequired({ Name: draft.name, Role: draft.role })
+  if (requiredError) {
+    formError.value = requiredError
+    return
+  }
+  if (editingGroup.value !== 'alumni' && draft.email && !isValidEmail(draft.email)) {
+    formError.value = 'Please enter a valid email address.'
+    return
+  }
+
   const list = form[editingGroup.value] as Member[]
 
   if (isNewMember.value) {
@@ -237,6 +255,7 @@ async function deleteMember(group: GroupKey, member: Member) {
 
 const editingPI = ref(false)
 const uploadingPIPhoto = ref(false)
+const piFormError = ref<string | null>(null)
 const piDraft = reactive({ name: '', role: '', email: '', photo: '' })
 
 function startEditPI() {
@@ -244,7 +263,13 @@ function startEditPI() {
   piDraft.role = form.pi.role
   piDraft.email = form.pi.email
   piDraft.photo = form.pi.photo ?? ''
+  piFormError.value = null
   editingPI.value = true
+}
+
+function cancelEditPI() {
+  editingPI.value = false
+  piFormError.value = null
 }
 
 async function onPIPhotoSelected(e: Event) {
@@ -268,6 +293,16 @@ async function removePIPhoto() {
 }
 
 async function savePI() {
+  const requiredError = checkRequired({ Name: piDraft.name, Role: piDraft.role, Email: piDraft.email })
+  if (requiredError) {
+    piFormError.value = requiredError
+    return
+  }
+  if (!isValidEmail(piDraft.email)) {
+    piFormError.value = 'Please enter a valid email address.'
+    return
+  }
+
   form.pi.name = piDraft.name
   form.pi.role = piDraft.role
   form.pi.email = piDraft.email

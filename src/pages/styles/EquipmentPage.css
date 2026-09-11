@@ -188,6 +188,11 @@
   }
 }
 
+.form-error {
+  font-size: 13px;
+  color: #d3452c;
+}
+
 .edit-actions {
   display: flex;
   gap: 10px;
