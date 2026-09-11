@@ -54,7 +54,8 @@
           <DragHandle class="handle" />
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
             :interests="member.interests" :photo="member.photo" />
-          <AdminEditControls v-if="isAdmin" @edit="startEdit('postdocs', member)" @delete="deleteMember('postdocs', member)" />
+          <AdminEditControls v-if="isAdmin" @edit="startEdit('postdocs', member)"
+            @delete="deleteMember('postdocs', member)" />
         </div>
       </div>
       <AdminAddButton v-if="isAdmin" label="Add postdoc" @add="startAdd('postdocs')" />
@@ -70,7 +71,8 @@
           <DragHandle class="handle" />
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
             :interests="member.interests" :photo="member.photo" />
-          <AdminEditControls v-if="isAdmin" @edit="startEdit('members', member)" @delete="deleteMember('members', member)" />
+          <AdminEditControls v-if="isAdmin" @edit="startEdit('members', member)"
+            @delete="deleteMember('members', member)" />
         </div>
       </div>
       <AdminAddButton v-if="isAdmin" label="Add member" @add="startAdd('members')" />
@@ -85,7 +87,8 @@
           @drop="alumniDrag.onDrop(i)" @dragend="alumniDrag.onDragEnd">
           <DragHandle class="handle" />
           <AlumniItem :name="member.name" :role="member.role" :note="member.note" />
-          <AdminEditControls v-if="isAdmin" @edit="startEdit('alumni', member)" @delete="deleteMember('alumni', member)" />
+          <AdminEditControls v-if="isAdmin" @edit="startEdit('alumni', member)"
+            @delete="deleteMember('alumni', member)" />
         </li>
       </ul>
       <AdminAddButton v-if="isAdmin" label="Add alumnus" @add="startAdd('alumni')" />
@@ -97,12 +100,14 @@
         <label class="field"><span>Role</span><input v-model="draft.role" /></label>
         <label class="field"><span>Note</span><input v-model="draft.note" /></label>
         <label v-if="editingGroup !== 'alumni'" class="field"><span>Email</span><input v-model="draft.email" /></label>
-        <label v-if="editingGroup !== 'alumni'" class="field"><span>Interests</span><input v-model="draft.interests" /></label>
+        <label v-if="editingGroup !== 'alumni'" class="field"><span>Interests</span><input
+            v-model="draft.interests" /></label>
         <div v-if="editingGroup !== 'alumni'" class="field">
           <span>Photo</span>
           <div v-if="draft.photo" class="photo-preview">
             <img :src="draft.photo" alt="" />
-            <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removeMemberPhoto">✕</button>
+            <button type="button" class="remove-image-btn" aria-label="Remove photo"
+              @click="removeMemberPhoto">✕</button>
           </div>
           <label class="upload-btn">
             {{ uploadingPhoto ? 'Uploading…' : '+ Upload photo' }}
@@ -343,3 +348,6 @@ async function savePI() {
 </script>
 
 <style src="./styles/MemberPage.css" scoped></style>
+
+
+<!-- error test -->
