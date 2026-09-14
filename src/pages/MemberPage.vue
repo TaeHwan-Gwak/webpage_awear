@@ -71,7 +71,7 @@
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
             :interests="member.interests" :photo="member.photo" />
           <AdminEditControls v-if="isAdmin" @edit="startEdit('members', member)" @delete="deleteMember('members', member)" />
-          <button v-if="isAdmin" type="button" class="graduate-btn" @click="graduateMember(member)">
+          <button v-if="isAdmin" type="button" class="graduate-btn" @click="confirmGraduate(member)">
             Graduate →
           </button>
         </div>
@@ -122,6 +122,21 @@
         </div>
       </div>
     </div>
+
+    <div v-if="graduateTarget" class="edit-modal-backdrop" @click.self="cancelGraduate">
+      <div class="edit-modal">
+        <h3 class="confirm-title">Move {{ graduateTarget.name }} to Alumni?</h3>
+        <p class="confirm-body">
+          Alumni entries don't have email, interests, or a photo — those will be removed
+          <span v-if="graduateTarget.photo">(the photo file will be deleted too)</span>. This can be undone
+          afterward, but the removed info won't come back automatically.
+        </p>
+        <div class="edit-actions">
+          <button type="button" class="save-btn" @click="doGraduate">Move to Alumni</button>
+          <button type="button" class="cancel-btn" @click="cancelGraduate">Cancel</button>
+        </div>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -151,8 +166,6 @@ interface Member {
   email?: string
   interests?: string
   photo?: string
-  previousId?: string
-  previousIndex?: number
 }
 
 const { isAdmin } = useAdminMode()
@@ -312,7 +325,6 @@ async function deleteMember(group: GroupKey, member: Member) {
 
 // Alumni는 최근 졸업자가 맨 위(배열 앞쪽)에 오도록 관리하고 있어서, 새로 졸업한
 // 사람도 그 자리(unshift)에 넣고, 사진은 Alumni 목록에서 안 쓰니 삭제합니다.
-// 원래 있던 id/자리를 기억해뒀다가, 나중에 Undo하면 그 자리로 정확히 되돌립니다.
 async function graduateMember(member: Member) {
   const idx = form.members.findIndex((m) => m.id === member.id)
   if (idx === -1) return
@@ -329,30 +341,22 @@ async function graduateMember(member: Member) {
     name: member.name,
     role: member.role,
     note: member.note ?? '',
-    previousId: member.id,
-    previousIndex: idx,
   })
 
   await saveJsonFile('members.json', form)
 }
 
-// 실수로 졸업 처리했을 때 되돌리는 용도. 졸업시킬 때 기억해둔 원래 id/자리가 있고
-// 그 id가 지금 다른 사람이 안 쓰고 있으면 그대로 복원하고, 아니면(오래전에 만든
-// alumni라 기록이 없거나 id가 이미 재사용됐으면) 새 id로 맨 끝에 추가합니다.
+// 실수로 졸업 처리했을 때 되돌리는 용도. 그 사이에 다른 졸업/삭제/순서변경이 있었을
+// 수 있어서 "원래 자리"를 복원하는 건 오히려 꼬일 수 있으므로, 그냥 Graduate
+// Students 맨 끝(=새 id)에 추가합니다. 위치가 마음에 안 들면 드래그로 옮기면 됩니다.
 async function ungraduateMember(alum: Member) {
   const idx = form.alumni.findIndex((a) => a.id === alum.id)
   if (idx === -1) return
   form.alumni.splice(idx, 1)
 
-  const idTaken = alum.previousId && form.members.some((m) => m.id === alum.previousId)
-  const restoredId =
-    alum.previousId && !idTaken ? alum.previousId : nextSequentialId(form.members.map((m) => m.id), FALLBACK_PREFIX.members)
-
-  const insertAt =
-    alum.previousIndex !== undefined ? Math.min(alum.previousIndex, form.members.length) : form.members.length
-
-  form.members.splice(insertAt, 0, {
-    id: restoredId,
+  const newId = nextSequentialId(form.members.map((m) => m.id), FALLBACK_PREFIX.members)
+  form.members.push({
+    id: newId,
     name: alum.name,
     role: alum.role,
     note: alum.note ?? '',
@@ -362,6 +366,22 @@ async function ungraduateMember(alum: Member) {
   })
 
   await saveJsonFile('members.json', form)
+}
+
+const graduateTarget = ref<Member | null>(null)
+
+function confirmGraduate(member: Member) {
+  graduateTarget.value = member
+}
+
+function cancelGraduate() {
+  graduateTarget.value = null
+}
+
+async function doGraduate() {
+  if (!graduateTarget.value) return
+  await graduateMember(graduateTarget.value)
+  graduateTarget.value = null
 }
 
 const editingPI = ref(false)

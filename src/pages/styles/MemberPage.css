@@ -382,6 +382,18 @@
   }
 }
 
+.confirm-title {
+  font-size: 17px;
+  color: var(--text);
+}
+
+.confirm-body {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
 .form-error {
   font-size: 13px;
   color: #d3452c;
