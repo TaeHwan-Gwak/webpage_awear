@@ -1,18 +1,14 @@
 .equipment-grid {
   .grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
 
-    /* @media (max-width: 960px) {
+    @media (max-width: 860px) {
       grid-template-columns: repeat(2, 1fr);
-    } */
+    }
 
-    /* @media (max-width: 640px) {
-      grid-template-columns: repeat(2, 1fr);
-    } */
-
-    @media (max-width: 420px) {
+    @media (max-width: 480px) {
       grid-template-columns: 1fr;
     }
   }
@@ -22,12 +18,14 @@
     padding: 20px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: var(--surface);
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    background: var(--bg);
+    box-shadow: 0 1px 2px rgba(32, 24, 16, 0.04);
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
     &:hover {
       border-color: var(--orange);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(32, 24, 16, 0.08);
     }
 
     .thumb {
@@ -35,28 +33,31 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px dashed var(--border);
+      border: 1px solid var(--border-soft);
       border-radius: var(--radius-sm);
-      background: var(--surface-2);
+      background: var(--surface);
       overflow: hidden;
 
       img {
         width: 100%;
         height: 100%;
         object-fit: contain;
-        padding: 12px;
+        padding: 16px;
       }
 
       .ph-label {
         font-family: var(--font-mono);
-        font-size: 15px;
+        font-size: 13px;
         color: var(--text-faint);
       }
     }
 
     .name {
-      margin-top: 14px;
-      font-size: 17px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-soft);
+      font-size: 15px;
+      font-weight: 500;
       color: var(--text);
       line-height: 1.4;
       text-align: center;
