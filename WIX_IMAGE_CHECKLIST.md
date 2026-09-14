@@ -1,0 +1,93 @@
+# Wix 이미지 교체 체크리스트
+
+admin 수정 화면에서 해당 항목 열고 '+ Upload image'로 실제 파일 올리면 자동으로 교체됩니다.
+
+## News (2건)
+
+- [ ] **n11** — 김기현학생이 IROS 2025에서 'Subject-independent sEMG-based...
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_37f07810548e44039d0fb10671a6e608~mv2.jpg
+- [ ] **n12** — 정성훈학생, 안인균학생, 최유진학생이 2026 로봇학회에서 발표했습니다....
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_1cc96ce503e04b43a7a34d6260472b42~mv2.png
+
+## Publications (43건)
+
+- [ ] **pub2** — On the comfortableness of muscle power assistive robotic sys
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_db614c2fd615423fad8b8a0d1fa12960~mv2.png
+- [ ] **pub3** — Case studies of a robot enhanced walker for training of chil
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_ced35342dd344963aaabeb1949cbe030~mv2.png
+- [ ] **pub4** — A chase-game to teach children on a robot to follow moving o
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_37fc6c40ed73435dbf7b7d445bb4e354~mv2.png
+- [ ] **pub5** — A novel assist-as-needed control method to guide pelvic traj
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_0abf34a2f4a84eb18d980422af9f03d7~mv2.png
+- [ ] **pub6** — Robot-enhanced mobility training of children with cerebral p
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_45ed2bed794c47e88af70f435a20b9e0~mv2.png
+- [ ] **pub7** — A single session of perturbation-based gait training with th
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_bc1caf0203db4b669b8a9bcc3adaf919~mv2.png
+- [ ] **pub8** — Design and preliminary evaluation of a multi-robotic system 
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_9468ae1bba06422d8b0596281e2856d7~mv2.png
+- [ ] **pub9** — Enhancing seated stability using trunk support trainer (TruS
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_9e7ca13400694efa93b01cf9c6f34c45~mv2.png
+- [ ] **pub10** — Adaptation of stability during perturbed walking in Parkinso
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_fa61fb70aa544a579cfbbfbbf9b453ae~mv2.png
+- [ ] **pub11** — On the adaptation of pelvic motion by applying 3-dimensional
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_abe3ea9c9cbf4738a806dcf29e881823~mv2.png
+- [ ] **pub12** — Robot-driven downward pelvic pull to improve crouch gait in 
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_ebc07baed9f341978256330f8d447b5e~mv2.png
+- [ ] **pub13** — A perturbation-based gait training with multidirectional wai
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_1115fcb9020b4404aba33d286426cd0a~mv2.png
+- [ ] **pub14** — Chapter 9. Robot enhanced walkers for training of children w
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_9f4f95c7206b4b4ba5a36448160d61ca~mv2.png
+- [ ] **pub15** — Effects of repeated waist-pull perturbations on gait stabili
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_88b5ffc610ec4e798787d7258e65149e~mv2.png
+- [ ] **pub16** — Walking with a weighted pelvic belt or with an equivalent pu
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_fd2f51b820b84dd898aedc306414f1b9~mv2.png
+- [ ] **pub17** — Simulating hemiparetic gait in healthy subjects using TPAD w
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_2c3285d5dc904ba5ad9a54294bf6fa4a~mv2.png
+- [ ] **pub18** — A haptic object to quantify the effect of feedback modality 
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_6661e32b66694b199d60c1af7a0c6c4a~mv2.png
+- [ ] **pub19** — Challenges and opportunities for statistical monitoring of g
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_fad90bcc27f74313a5ac18897e2e33e3~mv2.png
+- [ ] **pub20** — Spherical parallel instrument for daily living emulation (SP
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_d19bccba59f94e9c8eafd085589c31a2~mv2.png
+- [ ] **pub21** — Promoting functional and independent sitting in children wit
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_053c71648dc345ba84e7b92c0de82dcb~mv2.png
+- [ ] **pub22** — A novel 3-RRR Spherical Parallel Instrument for Daily Living
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_102cd31cd86e45249ffa320125f1741a~mv2.png
+- [ ] **pub23** — Personalized and nonparametric framework for detecting chang
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_84f1d9277d054682830833c17746cecb~mv2.png
+- [ ] **pub24** — A novel framework for designing a multi-DoF prosthetic wrist
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_0448fce82d0542aea69e79e97f60940a~mv2.png
+- [ ] **pub25** — Acute effects of a perturbation-based balance training on co
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_3450cfea5b3b46d28fe7a3b014576646~mv2.png
+- [ ] **pub26** — Getting a grip on the impact of incidental feedback from bod
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_1d98a3d8534a4fb18e15e664214a9f0d~mv2.png
+- [ ] **pub27** — A cable-actuated prosthetic emulator for transradial amputee
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_70b3ebb8aafd472097477325cde315af~mv2.png
+- [ ] **pub28** — A data analytic end-to-end framework for the automated quant
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_697e9afef12d4b7bb36892a164a629b0~mv2.png
+- [ ] **pub29** — Adjustments in shoulder and back kinematics in repetitive pa
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_226a3f7a0c784334818105e4739289ed~mv2.png
+- [ ] **pub30** — Temporal and spatial goal-directed reaching in upper limb pr
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_f0d65fcd5c2e41c2a169386e6c371ca8~mv2.png
+- [ ] **pub31** — CNN-based controller for multi-DoF prosthetic wrist using sE
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_7aa8e91b6f594a3ea99916065830da0a~mv2.png
+- [ ] **pub32** — A lightweight transradial prosthetic emulator for optimizing
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_0f2c62e16cad494dbbe2f86e05b9749e~mv2.png
+- [ ] **pub33** — A transradial prosthesis with a high-functional wrist for va
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_9885ccc7c50d4569926946131caca3fb~mv2.png
+- [ ] **pub34** — Continuous joint velocity estimation using CNN-based deep le
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_bd176b383cdc43ba851681e781e9a21c~mv2.png
+- [ ] **pub38** — Resist-as-needed ADL training with SPINDLE for patients with
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_96f0d529da2a4f83bb6d6170372e9f62~mv2.png
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_d7a6ec9afdc447688856414caf8187d0~mv2.jpg
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_19fa7343114d409d8e67b3ef73bc282e~mv2.jpg
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_21a920436d3b442ea4ce2837bdf83169~mv2.png
+- [ ] **pub41** — Subject-independent sEMG-based prosthetic control using MAMB
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_f4de51bfa0a140cbba00e9577e925890~mv2.png
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_20c6ae1f146a45c9aaf60b6c78a97d8f~mv2.png
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_4c199ab0b21e4ffdb92c0f806e196c3e~mv2.png
+- [ ] **pub43** — A robotic emulator for user-driven design of multi-DOF trans
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_fd31248a64694a28ada77a63d315b95b~mv2.png
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_f3a51b46f04843b6aec6175b19a09e8e~mv2.png
+- [ ] **pub44** — Joint torque estimation from daily living motion for passive
+  - 현재 링크: https://static.wixstatic.com/media/d17a04_da8e1962c07c4f6fa6f79159391b758b~mv2.png

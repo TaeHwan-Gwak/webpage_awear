@@ -13,5 +13,5 @@ import TheFooter from './components/TheFooter.vue'
 import ScrollToTopButton from './components/ScrollToTopButton.vue'
 
 const route = useRoute()
-const isAdminRoute = computed(() => route.path.startsWith('/admin'))
+const isAdminRoute = computed(() => route.path === '/admin/login')
 </script>

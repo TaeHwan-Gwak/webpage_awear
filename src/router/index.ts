@@ -25,7 +25,7 @@ const routes = [
     },
   },
   {
-    path: '/publications',
+    path: '/publication',
     name: 'publications',
     component: () => import('../pages/PublicationsPage.vue'),
     meta: {
@@ -89,6 +89,12 @@ const routes = [
     name: 'admin-login',
     component: () => import('../pages/admin/AdminLoginPage.vue'),
     meta: { title: `Admin | ${SITE_NAME}`, robots: 'noindex, nofollow' },
+  },
+  {
+    path: '/admin/stats',
+    name: 'admin-stats',
+    component: () => import('../pages/admin/AdminStatsPage.vue'),
+    meta: { title: `Stats | ${SITE_NAME}`, robots: 'noindex, nofollow' },
   },
   {
     path: '/:pathMatch(.*)*',

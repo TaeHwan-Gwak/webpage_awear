@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAdminMode } from '../composables/useAdminMode'
 import { logoutAdmin } from '../composables/useAdminAuth'
@@ -75,7 +75,7 @@ const onSubItemClick = (e: MouseEvent) => {
   target?.blur()
 }
 
-const items = [
+const baseItems = [
   { label: 'Home', to: '/' },
   {
     label: 'Research',
@@ -86,12 +86,15 @@ const items = [
       { label: 'AI & Vision', to: '/research#topic-3' },
     ],
   },
-  { label: 'Publications', to: '/publications' },
+  { label: 'Publications', to: '/publication' },
   { label: 'Member', to: '/member' },
   { label: 'News', to: '/news' },
   { label: 'Equipment', to: '/equipment' },
   { label: 'Contact', to: '/contact' },
 ]
+
+// admin일 때만 맨 끝에 통계 탭이 붙습니다.
+const items = computed(() => (isAdmin.value ? [...baseItems, { label: 'Stats', to: '/admin/stats' }] : baseItems))
 
 function onBrandClick(e: MouseEvent) {
   if (route.path !== '/') return

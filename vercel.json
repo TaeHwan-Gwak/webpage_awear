@@ -1,4 +1,9 @@
 {
+  "redirects": [
+    { "source": "/principal-investigator", "destination": "/member", "permanent": true },
+    { "source": "/internship", "destination": "/contact#internship", "permanent": true },
+    { "source": "/contact-me", "destination": "/contact", "permanent": true }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
