@@ -208,6 +208,24 @@
     right: 10px;
     z-index: 2;
   }
+
+  .graduate-btn {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px;
+    border: 1px dashed var(--border);
+    border-radius: 999px;
+    font-size: 13px;
+    color: var(--text-muted);
+    background: transparent;
+    transition: border-color 0.18s ease, color 0.18s ease;
+
+    &:hover {
+      border-color: var(--orange);
+      color: var(--orange-deep);
+    }
+  }
 }
 
 .alumni-row {
@@ -223,6 +241,25 @@
 
   .alumni-item {
     flex: 1;
+  }
+
+  .graduate-btn {
+    display: inline-block;
+    width: auto;
+    margin-top: 0;
+    padding: 6px 14px;
+    border: 1px dashed var(--border);
+    border-radius: 999px;
+    font-size: 13px;
+    color: var(--text-muted);
+    background: transparent;
+    white-space: nowrap;
+    transition: border-color 0.18s ease, color 0.18s ease;
+
+    &:hover {
+      border-color: var(--orange);
+      color: var(--orange-deep);
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 <template>
   <article class="member-card" :class="{ 'admin-mode': isAdmin }" @mouseenter="onEnter" @mouseleave="onLeave">
     <div class="avatar" aria-hidden="true">
-      <img v-if="photo" :src="photo" alt="" class="avatar-photo" />
+      <img v-if="photo" :src="photo" :alt="name" class="avatar-photo" />
       <span v-else class="ph-label">Image</span>
     </div>
     <h3>{{ name }}</h3>

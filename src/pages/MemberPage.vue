@@ -54,8 +54,7 @@
           <DragHandle class="handle" />
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
             :interests="member.interests" :photo="member.photo" />
-          <AdminEditControls v-if="isAdmin" @edit="startEdit('postdocs', member)"
-            @delete="deleteMember('postdocs', member)" />
+          <AdminEditControls v-if="isAdmin" @edit="startEdit('postdocs', member)" @delete="deleteMember('postdocs', member)" />
         </div>
       </div>
       <AdminAddButton v-if="isAdmin" label="Add postdoc" @add="startAdd('postdocs')" />
@@ -71,8 +70,10 @@
           <DragHandle class="handle" />
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
             :interests="member.interests" :photo="member.photo" />
-          <AdminEditControls v-if="isAdmin" @edit="startEdit('members', member)"
-            @delete="deleteMember('members', member)" />
+          <AdminEditControls v-if="isAdmin" @edit="startEdit('members', member)" @delete="deleteMember('members', member)" />
+          <button v-if="isAdmin" type="button" class="graduate-btn" @click="graduateMember(member)">
+            Graduate →
+          </button>
         </div>
       </div>
       <AdminAddButton v-if="isAdmin" label="Add member" @add="startAdd('members')" />
@@ -87,8 +88,10 @@
           @drop="alumniDrag.onDrop(i)" @dragend="alumniDrag.onDragEnd">
           <DragHandle class="handle" />
           <AlumniItem :name="member.name" :role="member.role" :note="member.note" />
-          <AdminEditControls v-if="isAdmin" @edit="startEdit('alumni', member)"
-            @delete="deleteMember('alumni', member)" />
+          <button v-if="isAdmin" type="button" class="graduate-btn back" @click="ungraduateMember(member)">
+            ← Undo
+          </button>
+          <AdminEditControls v-if="isAdmin" @edit="startEdit('alumni', member)" @delete="deleteMember('alumni', member)" />
         </li>
       </ul>
       <AdminAddButton v-if="isAdmin" label="Add alumnus" @add="startAdd('alumni')" />
@@ -100,14 +103,12 @@
         <label class="field"><span>Role</span><input v-model="draft.role" /></label>
         <label class="field"><span>Note</span><input v-model="draft.note" /></label>
         <label v-if="editingGroup !== 'alumni'" class="field"><span>Email</span><input v-model="draft.email" /></label>
-        <label v-if="editingGroup !== 'alumni'" class="field"><span>Interests</span><input
-            v-model="draft.interests" /></label>
+        <label v-if="editingGroup !== 'alumni'" class="field"><span>Interests</span><input v-model="draft.interests" /></label>
         <div v-if="editingGroup !== 'alumni'" class="field">
           <span>Photo</span>
           <div v-if="draft.photo" class="photo-preview">
             <img :src="draft.photo" alt="" />
-            <button type="button" class="remove-image-btn" aria-label="Remove photo"
-              @click="removeMemberPhoto">✕</button>
+            <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removeMemberPhoto">✕</button>
           </div>
           <label class="upload-btn">
             {{ uploadingPhoto ? 'Uploading…' : '+ Upload photo' }}
@@ -125,7 +126,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { onBeforeUnmount, reactive, ref, watchEffect } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import MemberCard from '../components/MemberCard.vue'
@@ -139,6 +140,7 @@ import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { renumberIds, renameSingleImageField } from '../utils/renumber'
 import { checkRequired, isValidEmail } from '../utils/validate'
+import { setStructuredData, removeStructuredData } from '../utils/structuredData'
 import membersDataRaw from '../data/members.json'
 
 interface Member {
@@ -149,11 +151,31 @@ interface Member {
   email?: string
   interests?: string
   photo?: string
+  previousId?: string
+  previousIndex?: number
 }
 
 const { isAdmin } = useAdminMode()
 
 const form = reactive(JSON.parse(JSON.stringify(membersDataRaw)) as typeof membersDataRaw)
+
+watchEffect(() => {
+  setStructuredData({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: form.pi.name,
+    jobTitle: form.pi.role,
+    email: form.pi.email,
+    image: form.pi.photo || undefined,
+    worksFor: {
+      '@type': 'ResearchOrganization',
+      name: 'AWEAR Lab',
+      parentOrganization: 'Gwangju Institute of Science and Technology',
+    },
+  })
+})
+
+onBeforeUnmount(removeStructuredData)
 
 const postdocDrag = useDragReorder(form.postdocs, async () => {
   const changes = renumberIds(form.postdocs, FALLBACK_PREFIX.postdocs)
@@ -288,6 +310,60 @@ async function deleteMember(group: GroupKey, member: Member) {
   await saveJsonFile('members.json', form)
 }
 
+// Alumni는 최근 졸업자가 맨 위(배열 앞쪽)에 오도록 관리하고 있어서, 새로 졸업한
+// 사람도 그 자리(unshift)에 넣고, 사진은 Alumni 목록에서 안 쓰니 삭제합니다.
+// 원래 있던 id/자리를 기억해뒀다가, 나중에 Undo하면 그 자리로 정확히 되돌립니다.
+async function graduateMember(member: Member) {
+  const idx = form.members.findIndex((m) => m.id === member.id)
+  if (idx === -1) return
+  form.members.splice(idx, 1)
+
+  if (member.photo) await deleteImage(member.photo)
+
+  const newId = nextSequentialId(
+    form.alumni.map((a) => a.id),
+    FALLBACK_PREFIX.alumni
+  )
+  ;(form.alumni as Member[]).unshift({
+    id: newId,
+    name: member.name,
+    role: member.role,
+    note: member.note ?? '',
+    previousId: member.id,
+    previousIndex: idx,
+  })
+
+  await saveJsonFile('members.json', form)
+}
+
+// 실수로 졸업 처리했을 때 되돌리는 용도. 졸업시킬 때 기억해둔 원래 id/자리가 있고
+// 그 id가 지금 다른 사람이 안 쓰고 있으면 그대로 복원하고, 아니면(오래전에 만든
+// alumni라 기록이 없거나 id가 이미 재사용됐으면) 새 id로 맨 끝에 추가합니다.
+async function ungraduateMember(alum: Member) {
+  const idx = form.alumni.findIndex((a) => a.id === alum.id)
+  if (idx === -1) return
+  form.alumni.splice(idx, 1)
+
+  const idTaken = alum.previousId && form.members.some((m) => m.id === alum.previousId)
+  const restoredId =
+    alum.previousId && !idTaken ? alum.previousId : nextSequentialId(form.members.map((m) => m.id), FALLBACK_PREFIX.members)
+
+  const insertAt =
+    alum.previousIndex !== undefined ? Math.min(alum.previousIndex, form.members.length) : form.members.length
+
+  form.members.splice(insertAt, 0, {
+    id: restoredId,
+    name: alum.name,
+    role: alum.role,
+    note: alum.note ?? '',
+    email: '',
+    interests: '',
+    photo: '',
+  })
+
+  await saveJsonFile('members.json', form)
+}
+
 const editingPI = ref(false)
 const uploadingPIPhoto = ref(false)
 const piFormError = ref<string | null>(null)
@@ -348,6 +424,3 @@ async function savePI() {
 </script>
 
 <style src="./styles/MemberPage.css" scoped></style>
-
-
-<!-- error test -->

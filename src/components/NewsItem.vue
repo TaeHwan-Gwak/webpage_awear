@@ -6,7 +6,7 @@
       <time class="date">{{ date }}</time>
     </div>
     <div class="body">
-      <img v-if="image" :src="image" alt="" loading="lazy" class="photo" />
+      <img v-if="image" :src="image" :alt="desc" loading="lazy" class="photo" />
       <p class="desc">
         {{ desc }}
         <a v-if="link" :href="link" target="_blank" rel="noopener" class="link">[Link]</a>

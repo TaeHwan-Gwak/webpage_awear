@@ -91,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, onBeforeUnmount, reactive, ref, watchEffect } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import PublicationItem from '../components/PublicationItem.vue'
 import SignalDivider from '../components/SignalDivider.vue'
@@ -103,6 +103,7 @@ import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { renumberIds, renameMultiImageField } from '../utils/renumber'
 import { checkRequired } from '../utils/validate'
+import { setStructuredData, removeStructuredData } from '../utils/structuredData'
 import publicationsDataRaw from '../data/publications.json'
 
 interface Publication {
@@ -120,6 +121,27 @@ const { isAdmin } = useAdminMode()
 // 원본 순서 그대로 유지되는 로컬 사본. 화면 표시는 이걸 뒤집어서(최신순) 보여줍니다.
 const localPubs = reactive<Publication[]>(JSON.parse(JSON.stringify(publicationsDataRaw)))
 const publications = computed(() => [...localPubs].reverse())
+
+watchEffect(() => {
+  setStructuredData({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: publications.value.slice(0, 50).map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'ScholarlyArticle',
+        name: p.title,
+        author: p.authors,
+        datePublished: p.year,
+        isPartOf: p.venue,
+        url: p.link || undefined,
+      },
+    })),
+  })
+})
+
+onBeforeUnmount(removeStructuredData)
 
 const selectedYear = ref('all')
 const isMobileMenuOpen = ref(false)

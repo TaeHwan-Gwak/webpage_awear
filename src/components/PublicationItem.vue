@@ -3,7 +3,7 @@
     <span class="year">{{ year }}</span>
     <div class="body">
       <div v-if="images && images.length" class="thumbs">
-        <img v-for="(src, i) in images" :key="i" :src="src" alt="" loading="lazy" />
+        <img v-for="(src, i) in images" :key="i" :src="src" :alt="`Figure from ${title}`" loading="lazy" />
       </div>
       <span v-if="theme" class="theme-tag">{{ theme }}</span>
       <h3>
