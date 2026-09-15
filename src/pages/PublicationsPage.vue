@@ -99,6 +99,7 @@ import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
 import { useAdminMode } from '../composables/useAdminMode'
+import { useEscapeKey } from '../composables/useEscapeKey'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { checkRequired } from '../utils/validate'
@@ -285,6 +286,10 @@ async function pubOnDrop(targetIndex: number) {
 function pubOnDragEnd() {
   draggedPubIndex.value = null
 }
+
+useEscapeKey(() => {
+  if (editingId.value) cancelEdit()
+})
 </script>
 
 <style src="./styles/PublicationsPage.css" scoped></style>

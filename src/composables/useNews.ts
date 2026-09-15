@@ -1,6 +1,5 @@
 import { ref, onMounted } from 'vue'
-import { collection, getDocs, orderBy, query, limit } from 'firebase/firestore'
-import { db } from '../firebase'
+import { getDb } from '../firebase'
 
 export interface NewsItem {
   id: string
@@ -17,11 +16,13 @@ export function useNews(max = 5) {
   const error = ref<string | null>(null)
 
   onMounted(async () => {
+    const db = await getDb()
     if (!db) {
       loading.value = false
       return
     }
     try {
+      const { collection, getDocs, orderBy, query, limit } = await import('firebase/firestore')
       const q = query(collection(db, 'news'), orderBy('date', 'desc'), limit(max))
       const snapshot = await getDocs(q)
       news.value = snapshot.docs.map((docSnap) => ({

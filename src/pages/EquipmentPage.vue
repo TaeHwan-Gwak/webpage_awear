@@ -59,6 +59,7 @@ import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { useDragReorder } from '../composables/useDragReorder'
+import { useEscapeKey } from '../composables/useEscapeKey'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { checkRequired } from '../utils/validate'
@@ -153,6 +154,10 @@ async function deleteEquipment(item: Equipment) {
   if (item.image) await deleteImage(item.image)
   await saveJsonFile('equipment.json', equipment)
 }
+
+useEscapeKey(() => {
+  if (editingId.value) cancelEdit()
+})
 </script>
 
 <style src="./styles/EquipmentPage.css" scoped></style>

@@ -151,6 +151,7 @@ import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { useDragReorder } from '../composables/useDragReorder'
+import { useEscapeKey } from '../composables/useEscapeKey'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { checkRequired, isValidEmail } from '../utils/validate'
@@ -429,6 +430,12 @@ async function savePI() {
   editingPI.value = false
   await saveJsonFile('members.json', form)
 }
+
+useEscapeKey(() => {
+  if (graduateTarget.value) cancelGraduate()
+  else if (editingGroup.value) cancelEdit()
+  else if (editingPI.value) cancelEditPI()
+})
 </script>
 
 <style src="./styles/MemberPage.css" scoped></style>

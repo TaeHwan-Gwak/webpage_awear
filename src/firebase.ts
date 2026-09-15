@@ -1,7 +1,3 @@
-import { initializeApp, type FirebaseApp } from 'firebase/app'
-import { getFirestore, type Firestore } from 'firebase/firestore'
-import { getStorage, type FirebaseStorage } from 'firebase/storage'
-
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -11,18 +7,33 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 }
 
-const isConfigured = Object.values(firebaseConfig).every(Boolean)
+export const isFirebaseConfigured = Object.values(firebaseConfig).every(Boolean)
 
-export let app: FirebaseApp | undefined
-export let db: Firestore | undefined
-export let storage: FirebaseStorage | undefined
+let dbPromise: Promise<import('firebase/firestore').Firestore> | undefined
 
-if (isConfigured) {
-  app = initializeApp(firebaseConfig)
-  db = getFirestore(app)
-  storage = getStorage(app)
-} else if (import.meta.env.DEV) {
-  console.info(
-    '[firebase] Skipping Firebase connection because VITE_FIREBASE_* values are missing in .env. Falling back to static data.'
-  )
+/**
+ * Lazily loads the Firebase SDK and returns a Firestore instance, only when
+ * VITE_FIREBASE_* is actually configured. Dynamic imports keep the ~450KB SDK
+ * out of everyone's bundle until it's genuinely needed.
+ */
+export function getDb() {
+  if (!isFirebaseConfigured) {
+    if (import.meta.env.DEV) {
+      console.info(
+        '[firebase] Skipping Firebase connection because VITE_FIREBASE_* values are missing in .env. Falling back to static data.'
+      )
+    }
+    return undefined
+  }
+
+  if (!dbPromise) {
+    dbPromise = (async () => {
+      const { initializeApp } = await import('firebase/app')
+      const { getFirestore } = await import('firebase/firestore')
+      const app = initializeApp(firebaseConfig)
+      return getFirestore(app)
+    })()
+  }
+
+  return dbPromise
 }

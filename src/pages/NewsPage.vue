@@ -119,6 +119,7 @@ import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
 import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
 import { useAdminMode } from '../composables/useAdminMode'
+import { useEscapeKey } from '../composables/useEscapeKey'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { checkRequired } from '../utils/validate'
@@ -133,7 +134,7 @@ const localNews = ref<NewsItemType[]>([...(newsDataRaw as NewsItemType[])])
 
 // Firestore에 실제 데이터가 있으면 그 목록을 그대로 보여주고 편집은 막습니다 —
 // 이 화면의 저장 기능은 로컬 news.json으로만 반영되기 때문입니다.
-const isEditable = computed(() => isAdmin.value && !news.value.length)
+const isEditable = computed(() => isAdmin.value && !loading.value && !news.value.length)
 
 const displayNews = computed(() =>
   news.value.length ? news.value : [...localNews.value].reverse()
@@ -305,6 +306,10 @@ const pagedNews = computed(() => {
 
 watch([pageSize, displayNews], () => {
   currentPage.value = 1
+})
+
+useEscapeKey(() => {
+  if (editingId.value) cancelEdit()
 })
 </script>
 
