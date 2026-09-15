@@ -101,7 +101,6 @@ import DragHandle from '../components/DragHandle.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
-import { renumberIds, renameMultiImageField } from '../utils/renumber'
 import { checkRequired } from '../utils/validate'
 import { setStructuredData, removeStructuredData } from '../utils/structuredData'
 import publicationsDataRaw from '../data/publications.json'
@@ -280,9 +279,6 @@ async function pubOnDrop(targetIndex: number) {
 
   const [moved] = localPubs.splice(fromLocal, 1)
   localPubs.splice(toLocal, 0, moved)
-
-  const changes = renumberIds(localPubs, 'pub')
-  await renameMultiImageField(localPubs, changes)
   await saveJsonFile('publications.json', localPubs)
 }
 

@@ -121,7 +121,6 @@ import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
 import { useAdminMode } from '../composables/useAdminMode'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
-import { renumberIds, renameSingleImageField } from '../utils/renumber'
 import { checkRequired } from '../utils/validate'
 import SignalDivider from '../components/SignalDivider.vue'
 import newsDataRaw from '../data/news.json'
@@ -256,9 +255,6 @@ async function newsOnDrop(targetIndexInPage: number) {
 
   const [moved] = localNews.value.splice(fromLocal, 1)
   localNews.value.splice(toLocal, 0, moved)
-
-  const changes = renumberIds(localNews.value, 'n')
-  await renameSingleImageField(localNews.value, changes, 'image')
   await saveJsonFile('news.json', localNews.value)
 }
 

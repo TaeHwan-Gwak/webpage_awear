@@ -153,7 +153,6 @@ import { useAdminMode } from '../composables/useAdminMode'
 import { useDragReorder } from '../composables/useDragReorder'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
-import { renumberIds, renameSingleImageField } from '../utils/renumber'
 import { checkRequired, isValidEmail } from '../utils/validate'
 import { setStructuredData, removeStructuredData } from '../utils/structuredData'
 import membersDataRaw from '../data/members.json'
@@ -190,20 +189,9 @@ watchEffect(() => {
 
 onBeforeUnmount(removeStructuredData)
 
-const postdocDrag = useDragReorder(form.postdocs, async () => {
-  const changes = renumberIds(form.postdocs, FALLBACK_PREFIX.postdocs)
-  await renameSingleImageField(form.postdocs, changes, 'photo')
-  await saveJsonFile('members.json', form)
-})
-const memberDrag = useDragReorder(form.members, async () => {
-  const changes = renumberIds(form.members, FALLBACK_PREFIX.members)
-  await renameSingleImageField(form.members, changes, 'photo')
-  await saveJsonFile('members.json', form)
-})
-const alumniDrag = useDragReorder(form.alumni, async () => {
-  renumberIds(form.alumni, FALLBACK_PREFIX.alumni)
-  await saveJsonFile('members.json', form)
-})
+const postdocDrag = useDragReorder(form.postdocs, () => saveJsonFile('members.json', form))
+const memberDrag = useDragReorder(form.members, () => saveJsonFile('members.json', form))
+const alumniDrag = useDragReorder(form.alumni, () => saveJsonFile('members.json', form))
 
 type GroupKey = 'postdocs' | 'members' | 'alumni'
 

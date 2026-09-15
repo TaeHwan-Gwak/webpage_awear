@@ -61,7 +61,6 @@ import { useAdminMode } from '../composables/useAdminMode'
 import { useDragReorder } from '../composables/useDragReorder'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
-import { renumberIds, renameSingleImageField } from '../utils/renumber'
 import { checkRequired } from '../utils/validate'
 import equipmentDataRaw from '../data/equipment.json'
 
@@ -75,11 +74,7 @@ const { isAdmin } = useAdminMode()
 
 const equipment = reactive<Equipment[]>(JSON.parse(JSON.stringify(equipmentDataRaw)))
 const brokenIds = reactive(new Set<string>())
-const equipmentDrag = useDragReorder(equipment, async () => {
-  const changes = renumberIds(equipment, 'eq')
-  await renameSingleImageField(equipment, changes, 'image')
-  await saveJsonFile('equipment.json', equipment)
-})
+const equipmentDrag = useDragReorder(equipment, () => saveJsonFile('equipment.json', equipment))
 
 const editingId = ref<string | null>(null)
 const isNewEquipment = ref(false)
