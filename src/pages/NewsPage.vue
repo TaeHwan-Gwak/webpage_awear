@@ -106,6 +106,11 @@
         </button>
       </nav>
     </section>
+
+    <UnsavedChangesBar :dirty="pending.isDirty.value" :saving="pending.isSaving.value" @save="pending.save"
+      @cancel="cancelChanges" />
+    <LeaveConfirmModal :open="leaveGuard.showLeaveModal.value" @save-and-leave="leaveGuard.saveAndLeave"
+      @discard-and-leave="leaveGuard.discardAndLeave" @stay="leaveGuard.stay" />
   </main>
 </template>
 
@@ -117,9 +122,13 @@ import NewsItem from '../components/NewsItem.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
+import UnsavedChangesBar from '../components/UnsavedChangesBar.vue'
+import LeaveConfirmModal from '../components/LeaveConfirmModal.vue'
 import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
 import { useAdminMode } from '../composables/useAdminMode'
 import { useEscapeKey } from '../composables/useEscapeKey'
+import { usePendingChanges } from '../composables/usePendingChanges'
+import { useLeaveGuard } from '../composables/useLeaveGuard'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { checkRequired } from '../utils/validate'
@@ -129,8 +138,23 @@ import newsDataRaw from '../data/news.json'
 const { news, loading, error } = useNews(200)
 const { isAdmin } = useAdminMode()
 
-// 로컬 news.json 사본. 어드민 편집은 이 배열을 고치고 저장 API로 파일에 반영합니다.
+// 로컬 news.json 사본. 어드민 편집은 이 배열을 고치고, 페이지 상단 Save를 눌러야 파일에 반영됩니다.
 const localNews = ref<NewsItemType[]>([...(newsDataRaw as NewsItemType[])])
+
+const pending = usePendingChanges(
+  () => localNews.value,
+  (state) => saveJsonFile('news.json', state)
+)
+
+function cancelChanges() {
+  localNews.value = pending.cancel()
+}
+
+const leaveGuard = useLeaveGuard(
+  () => pending.isDirty.value,
+  () => pending.save(),
+  () => cancelChanges()
+)
 
 // Firestore에 실제 데이터가 있으면 그 목록을 그대로 보여주고 편집은 막습니다 —
 // 이 화면의 저장 기능은 로컬 news.json으로만 반영되기 때문입니다.
@@ -223,13 +247,11 @@ async function saveEdit() {
     }
   }
   editingId.value = null
-  await saveJsonFile('news.json', localNews.value)
 }
 
 async function deleteItem(item: NewsItemType) {
   localNews.value = localNews.value.filter((n) => n.id !== item.id)
   if (item.image) await deleteImage(item.image)
-  await saveJsonFile('news.json', localNews.value)
 }
 
 // displayNews는 localNews를 뒤집은(최신순) 배열이고, pagedNews는 그걸 또 페이지 단위로 자른 것이라
@@ -244,7 +266,7 @@ function newsOnDragOver(e: DragEvent) {
   e.preventDefault()
 }
 
-async function newsOnDrop(targetIndexInPage: number) {
+function newsOnDrop(targetIndexInPage: number) {
   const from = draggedNewsIndex.value
   draggedNewsIndex.value = null
   if (from === null || from === targetIndexInPage) return
@@ -256,7 +278,6 @@ async function newsOnDrop(targetIndexInPage: number) {
 
   const [moved] = localNews.value.splice(fromLocal, 1)
   localNews.value.splice(toLocal, 0, moved)
-  await saveJsonFile('news.json', localNews.value)
 }
 
 function newsOnDragEnd() {
@@ -309,7 +330,8 @@ watch([pageSize, displayNews], () => {
 })
 
 useEscapeKey(() => {
-  if (editingId.value) cancelEdit()
+  if (leaveGuard.showLeaveModal.value) leaveGuard.stay()
+  else if (editingId.value) cancelEdit()
 })
 </script>
 

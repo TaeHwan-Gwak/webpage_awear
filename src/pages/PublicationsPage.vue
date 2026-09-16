@@ -87,6 +87,11 @@
         </div>
       </div>
     </div>
+
+    <UnsavedChangesBar :dirty="pending.isDirty.value" :saving="pending.isSaving.value" @save="pending.save"
+      @cancel="cancelChanges" />
+    <LeaveConfirmModal :open="leaveGuard.showLeaveModal.value" @save-and-leave="leaveGuard.saveAndLeave"
+      @discard-and-leave="leaveGuard.discardAndLeave" @stay="leaveGuard.stay" />
   </main>
 </template>
 
@@ -98,8 +103,12 @@ import SignalDivider from '../components/SignalDivider.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
+import UnsavedChangesBar from '../components/UnsavedChangesBar.vue'
+import LeaveConfirmModal from '../components/LeaveConfirmModal.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { useEscapeKey } from '../composables/useEscapeKey'
+import { usePendingChanges } from '../composables/usePendingChanges'
+import { useLeaveGuard } from '../composables/useLeaveGuard'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { checkRequired } from '../utils/validate'
@@ -121,6 +130,22 @@ const { isAdmin } = useAdminMode()
 // 원본 순서 그대로 유지되는 로컬 사본. 화면 표시는 이걸 뒤집어서(최신순) 보여줍니다.
 const localPubs = reactive<Publication[]>(JSON.parse(JSON.stringify(publicationsDataRaw)))
 const publications = computed(() => [...localPubs].reverse())
+
+const pending = usePendingChanges(
+  () => localPubs,
+  (state) => saveJsonFile('publications.json', state)
+)
+
+function cancelChanges() {
+  const restored = pending.cancel()
+  localPubs.splice(0, localPubs.length, ...restored)
+}
+
+const leaveGuard = useLeaveGuard(
+  () => pending.isDirty.value,
+  () => pending.save(),
+  () => cancelChanges()
+)
 
 watchEffect(() => {
   setStructuredData({
@@ -246,14 +271,12 @@ async function saveEdit() {
   }
 
   cancelEdit()
-  await saveJsonFile('publications.json', localPubs)
 }
 
 async function deletePub(pub: Publication) {
   const idx = localPubs.findIndex((p) => p.id === pub.id)
   if (idx !== -1) localPubs.splice(idx, 1)
   await Promise.all((pub.images ?? []).map((src) => deleteImage(src)))
-  await saveJsonFile('publications.json', localPubs)
 }
 
 // publications는 localPubs를 뒤집은(최신순) 배열이라, 드래그로 옮긴 위치를
@@ -269,7 +292,7 @@ function pubOnDragOver(e: DragEvent) {
   e.preventDefault()
 }
 
-async function pubOnDrop(targetIndex: number) {
+function pubOnDrop(targetIndex: number) {
   const from = draggedPubIndex.value
   draggedPubIndex.value = null
   if (from === null || from === targetIndex || selectedYear.value !== 'all') return
@@ -280,7 +303,6 @@ async function pubOnDrop(targetIndex: number) {
 
   const [moved] = localPubs.splice(fromLocal, 1)
   localPubs.splice(toLocal, 0, moved)
-  await saveJsonFile('publications.json', localPubs)
 }
 
 function pubOnDragEnd() {
@@ -288,7 +310,8 @@ function pubOnDragEnd() {
 }
 
 useEscapeKey(() => {
-  if (editingId.value) cancelEdit()
+  if (leaveGuard.showLeaveModal.value) leaveGuard.stay()
+  else if (editingId.value) cancelEdit()
 })
 </script>
 

@@ -137,6 +137,11 @@
         </div>
       </div>
     </div>
+
+    <UnsavedChangesBar :dirty="pending.isDirty.value" :saving="pending.isSaving.value" @save="pending.save"
+      @cancel="cancelChanges" />
+    <LeaveConfirmModal :open="leaveGuard.showLeaveModal.value" @save-and-leave="leaveGuard.saveAndLeave"
+      @discard-and-leave="leaveGuard.discardAndLeave" @stay="leaveGuard.stay" />
   </main>
 </template>
 
@@ -149,9 +154,13 @@ import AlumniItem from '../components/AlumniItem.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
+import UnsavedChangesBar from '../components/UnsavedChangesBar.vue'
+import LeaveConfirmModal from '../components/LeaveConfirmModal.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { useDragReorder } from '../composables/useDragReorder'
 import { useEscapeKey } from '../composables/useEscapeKey'
+import { usePendingChanges } from '../composables/usePendingChanges'
+import { useLeaveGuard } from '../composables/useLeaveGuard'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { checkRequired, isValidEmail } from '../utils/validate'
@@ -172,6 +181,27 @@ const { isAdmin } = useAdminMode()
 
 const form = reactive(JSON.parse(JSON.stringify(membersDataRaw)) as typeof membersDataRaw)
 
+const pending = usePendingChanges(
+  () => form,
+  (state) => saveJsonFile('members.json', state)
+)
+
+function cancelChanges() {
+  const restored = pending.cancel()
+  Object.assign(form.pi, restored.pi)
+  form.groupTitle = restored.groupTitle
+  form.alumniTitle = restored.alumniTitle
+  form.postdocs.splice(0, form.postdocs.length, ...restored.postdocs)
+  form.members.splice(0, form.members.length, ...restored.members)
+  form.alumni.splice(0, form.alumni.length, ...restored.alumni)
+}
+
+const leaveGuard = useLeaveGuard(
+  () => pending.isDirty.value,
+  () => pending.save(),
+  () => cancelChanges()
+)
+
 watchEffect(() => {
   setStructuredData({
     '@context': 'https://schema.org',
@@ -190,9 +220,9 @@ watchEffect(() => {
 
 onBeforeUnmount(removeStructuredData)
 
-const postdocDrag = useDragReorder(form.postdocs, () => saveJsonFile('members.json', form))
-const memberDrag = useDragReorder(form.members, () => saveJsonFile('members.json', form))
-const alumniDrag = useDragReorder(form.alumni, () => saveJsonFile('members.json', form))
+const postdocDrag = useDragReorder(form.postdocs, () => {})
+const memberDrag = useDragReorder(form.members, () => {})
+const alumniDrag = useDragReorder(form.alumni, () => {})
 
 type GroupKey = 'postdocs' | 'members' | 'alumni'
 
@@ -301,7 +331,6 @@ async function saveMember() {
   }
 
   cancelEdit()
-  await saveJsonFile('members.json', form)
 }
 
 async function deleteMember(group: GroupKey, member: Member) {
@@ -309,7 +338,6 @@ async function deleteMember(group: GroupKey, member: Member) {
   const idx = list.findIndex((m) => m.id === member.id)
   if (idx !== -1) list.splice(idx, 1)
   if (member.photo) await deleteImage(member.photo)
-  await saveJsonFile('members.json', form)
 }
 
 // Alumni는 최근 졸업자가 맨 위(배열 앞쪽)에 오도록 관리하고 있어서, 새로 졸업한
@@ -331,8 +359,6 @@ async function graduateMember(member: Member) {
     role: member.role,
     note: member.note ?? '',
   })
-
-  await saveJsonFile('members.json', form)
 }
 
 // 실수로 졸업 처리했을 때 되돌리는 용도. 그 사이에 다른 졸업/삭제/순서변경이 있었을
@@ -353,8 +379,6 @@ async function ungraduateMember(alum: Member) {
     interests: '',
     photo: '',
   })
-
-  await saveJsonFile('members.json', form)
 }
 
 const graduateTarget = ref<Member | null>(null)
@@ -428,11 +452,11 @@ async function savePI() {
   form.pi.email = piDraft.email
   form.pi.photo = piDraft.photo
   editingPI.value = false
-  await saveJsonFile('members.json', form)
 }
 
 useEscapeKey(() => {
-  if (graduateTarget.value) cancelGraduate()
+  if (leaveGuard.showLeaveModal.value) leaveGuard.stay()
+  else if (graduateTarget.value) cancelGraduate()
   else if (editingGroup.value) cancelEdit()
   else if (editingPI.value) cancelEditPI()
 })

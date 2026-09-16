@@ -1,0 +1,73 @@
+.unsaved-bar {
+  position: fixed;
+  top: 110px;
+  right: 24px;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid var(--orange);
+  box-shadow: 0 12px 28px rgba(32, 24, 16, 0.14);
+
+  @media (max-width: 720px) {
+    top: auto;
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+  }
+}
+
+.unsaved-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--orange-deep);
+  white-space: nowrap;
+}
+
+.cancel-btn,
+.save-btn {
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.cancel-btn {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+
+  &:hover:not(:disabled) {
+    border-color: var(--text-muted);
+    color: var(--text);
+  }
+}
+
+.save-btn {
+  border: none;
+  background: var(--orange);
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: var(--orange-deep);
+  }
+}
+
+.unsaved-fade-enter-active,
+.unsaved-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.unsaved-fade-enter-from,
+.unsaved-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}

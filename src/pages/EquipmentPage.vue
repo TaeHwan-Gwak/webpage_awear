@@ -47,6 +47,11 @@
         </div>
       </div>
     </div>
+
+    <UnsavedChangesBar :dirty="pending.isDirty.value" :saving="pending.isSaving.value" @save="pending.save"
+      @cancel="cancelChanges" />
+    <LeaveConfirmModal :open="leaveGuard.showLeaveModal.value" @save-and-leave="leaveGuard.saveAndLeave"
+      @discard-and-leave="leaveGuard.discardAndLeave" @stay="leaveGuard.stay" />
   </main>
 </template>
 
@@ -57,9 +62,13 @@ import SignalDivider from '../components/SignalDivider.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
+import UnsavedChangesBar from '../components/UnsavedChangesBar.vue'
+import LeaveConfirmModal from '../components/LeaveConfirmModal.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { useDragReorder } from '../composables/useDragReorder'
 import { useEscapeKey } from '../composables/useEscapeKey'
+import { usePendingChanges } from '../composables/usePendingChanges'
+import { useLeaveGuard } from '../composables/useLeaveGuard'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { checkRequired } from '../utils/validate'
@@ -75,7 +84,23 @@ const { isAdmin } = useAdminMode()
 
 const equipment = reactive<Equipment[]>(JSON.parse(JSON.stringify(equipmentDataRaw)))
 const brokenIds = reactive(new Set<string>())
-const equipmentDrag = useDragReorder(equipment, () => saveJsonFile('equipment.json', equipment))
+const equipmentDrag = useDragReorder(equipment, () => {})
+
+const pending = usePendingChanges(
+  () => equipment,
+  (state) => saveJsonFile('equipment.json', state)
+)
+
+function cancelChanges() {
+  const restored = pending.cancel()
+  equipment.splice(0, equipment.length, ...restored)
+}
+
+const leaveGuard = useLeaveGuard(
+  () => pending.isDirty.value,
+  () => pending.save(),
+  () => cancelChanges()
+)
 
 const editingId = ref<string | null>(null)
 const isNewEquipment = ref(false)
@@ -145,18 +170,17 @@ async function saveEdit() {
   }
 
   cancelEdit()
-  await saveJsonFile('equipment.json', equipment)
 }
 
 async function deleteEquipment(item: Equipment) {
   const idx = equipment.findIndex((e) => e.id === item.id)
   if (idx !== -1) equipment.splice(idx, 1)
   if (item.image) await deleteImage(item.image)
-  await saveJsonFile('equipment.json', equipment)
 }
 
 useEscapeKey(() => {
-  if (editingId.value) cancelEdit()
+  if (leaveGuard.showLeaveModal.value) leaveGuard.stay()
+  else if (editingId.value) cancelEdit()
 })
 </script>
 
