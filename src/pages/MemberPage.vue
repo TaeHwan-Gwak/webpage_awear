@@ -18,6 +18,7 @@
             <span>Photo</span>
             <div v-if="piDraft.photo" class="photo-preview">
               <img :src="piDraft.photo" alt="" />
+              <button type="button" class="edit-image-btn" aria-label="Edit photo" @click="editExistingPIPhoto">✎</button>
               <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removePIPhoto">✕</button>
             </div>
             <label class="upload-btn">
@@ -108,6 +109,7 @@
           <span>Photo</span>
           <div v-if="draft.photo" class="photo-preview">
             <img :src="draft.photo" alt="" />
+            <button type="button" class="edit-image-btn" aria-label="Edit photo" @click="editExistingMemberPhoto">✎</button>
             <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removeMemberPhoto">✕</button>
           </div>
           <label class="upload-btn">
@@ -138,6 +140,9 @@
       </div>
     </div>
 
+    <ImageComposer :open="composerOpen" :initial-file="composerFile" :initial-url="composerUrl" :aspect-ratio="1"
+      @use="onComposedImage" @cancel="composerOpen = false" />
+
     <UnsavedChangesBar :dirty="pending.isDirty.value" :saving="pending.isSaving.value" @save="pending.save"
       @cancel="cancelChanges" />
     <LeaveConfirmModal :open="leaveGuard.showLeaveModal.value" @save-and-leave="leaveGuard.saveAndLeave"
@@ -154,6 +159,7 @@ import AlumniItem from '../components/AlumniItem.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
+import ImageComposer from '../components/ImageComposer.vue'
 import UnsavedChangesBar from '../components/UnsavedChangesBar.vue'
 import LeaveConfirmModal from '../components/LeaveConfirmModal.vue'
 import { useAdminMode } from '../composables/useAdminMode'
@@ -273,19 +279,27 @@ function cancelEdit() {
   formError.value = null
 }
 
-async function onMemberPhotoSelected(e: Event) {
+const composerOpen = ref(false)
+const composerFile = ref<File | null>(null)
+const composerUrl = ref<string | null>(null)
+const composerTarget = ref<'member' | 'pi' | null>(null)
+
+function onMemberPhotoSelected(e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   input.value = ''
-  if (!file || !editingId.value) return
+  if (!file) return
+  composerFile.value = file
+  composerUrl.value = null
+  composerTarget.value = 'member'
+  composerOpen.value = true
+}
 
-  uploadingPhoto.value = true
-  const ext = file.name.split('.').pop() || 'jpg'
-  const path = await uploadImage('member', `${editingId.value}.${ext}`, file)
-  uploadingPhoto.value = false
-
-  if (path) draft.photo = path
-  else alert('Photo upload failed. Is the local dev server running?')
+function editExistingMemberPhoto() {
+  composerFile.value = null
+  composerUrl.value = draft.photo
+  composerTarget.value = 'member'
+  composerOpen.value = true
 }
 
 async function removeMemberPhoto() {
@@ -416,19 +430,43 @@ function cancelEditPI() {
   piFormError.value = null
 }
 
-async function onPIPhotoSelected(e: Event) {
+function onPIPhotoSelected(e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   input.value = ''
   if (!file) return
+  composerFile.value = file
+  composerUrl.value = null
+  composerTarget.value = 'pi'
+  composerOpen.value = true
+}
 
-  uploadingPIPhoto.value = true
-  const ext = file.name.split('.').pop() || 'jpg'
-  const path = await uploadImage('member', `pi.${ext}`, file)
-  uploadingPIPhoto.value = false
+function editExistingPIPhoto() {
+  composerFile.value = null
+  composerUrl.value = piDraft.photo
+  composerTarget.value = 'pi'
+  composerOpen.value = true
+}
 
-  if (path) piDraft.photo = path
-  else alert('Photo upload failed. Is the local dev server running?')
+async function onComposedImage(blob: Blob) {
+  composerOpen.value = false
+  const target = composerTarget.value
+  composerTarget.value = null
+
+  if (target === 'member') {
+    if (!editingId.value) return
+    uploadingPhoto.value = true
+    const path = await uploadImage('member', `${editingId.value}.jpg`, blob)
+    uploadingPhoto.value = false
+    if (path) draft.photo = path
+    else alert('Photo upload failed. Is the local dev server running?')
+  } else if (target === 'pi') {
+    uploadingPIPhoto.value = true
+    const path = await uploadImage('member', 'pi.jpg', blob)
+    uploadingPIPhoto.value = false
+    if (path) piDraft.photo = path
+    else alert('Photo upload failed. Is the local dev server running?')
+  }
 }
 
 async function removePIPhoto() {

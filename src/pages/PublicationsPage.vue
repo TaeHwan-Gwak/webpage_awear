@@ -71,6 +71,7 @@
           <div class="image-list">
             <div v-for="src in draft.images" :key="src" class="image-thumb">
               <img :src="src" alt="" />
+              <button type="button" class="edit-image-btn" aria-label="Edit image" @click="editExistingImage(src)">✎</button>
               <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeImage(src)">✕</button>
             </div>
           </div>
@@ -88,6 +89,9 @@
       </div>
     </div>
 
+    <ImageComposer :open="composerOpen" :initial-file="composerFile" :initial-url="composerUrl" :aspect-ratio="4 / 3"
+      @use="onComposedImage" @cancel="composerOpen = false" />
+
     <UnsavedChangesBar :dirty="pending.isDirty.value" :saving="pending.isSaving.value" @save="pending.save"
       @cancel="cancelChanges" />
     <LeaveConfirmModal :open="leaveGuard.showLeaveModal.value" @save-and-leave="leaveGuard.saveAndLeave"
@@ -103,6 +107,7 @@ import SignalDivider from '../components/SignalDivider.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
+import ImageComposer from '../components/ImageComposer.vue'
 import UnsavedChangesBar from '../components/UnsavedChangesBar.vue'
 import LeaveConfirmModal from '../components/LeaveConfirmModal.vue'
 import { useAdminMode } from '../composables/useAdminMode'
@@ -220,20 +225,58 @@ function cancelEdit() {
   formError.value = null
 }
 
-async function onFileSelected(e: Event) {
+const composerOpen = ref(false)
+const composerFile = ref<File | null>(null)
+const composerUrl = ref<string | null>(null)
+const composerEditingSrc = ref<string | null>(null)
+
+function onFileSelected(e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   input.value = ''
-  if (!file || !editingId.value) return
+  if (!file) return
+  composerFile.value = file
+  composerUrl.value = null
+  composerEditingSrc.value = null
+  composerOpen.value = true
+}
+
+function editExistingImage(src: string) {
+  composerFile.value = null
+  composerUrl.value = src
+  composerEditingSrc.value = src
+  composerOpen.value = true
+}
+
+async function onComposedImage(blob: Blob) {
+  composerOpen.value = false
+  if (!editingId.value) return
 
   uploading.value = true
-  const ext = file.name.split('.').pop() || 'jpg'
-  const filename = `${editingId.value}-${draft.images.length + 1}.${ext}`
-  const path = await uploadImage('publications', filename, file)
-  uploading.value = false
 
-  if (path) draft.images.push(path)
-  else alert('Image upload failed. Is the local dev server running?')
+  if (composerEditingSrc.value) {
+    // 기존 이미지 재편집: 같은 파일명으로 덮어써서 그 자리에 그대로 반영합니다.
+    const editingSrc = composerEditingSrc.value
+    const filename = editingSrc.split('/').pop()!
+    const path = await uploadImage('publications', filename, blob)
+    uploading.value = false
+
+    if (path) {
+      const idx = draft.images.indexOf(editingSrc)
+      if (idx !== -1) draft.images[idx] = path
+    } else {
+      alert('Image upload failed. Is the local dev server running?')
+    }
+  } else {
+    const filename = `${editingId.value}-${draft.images.length + 1}.jpg`
+    const path = await uploadImage('publications', filename, blob)
+    uploading.value = false
+
+    if (path) draft.images.push(path)
+    else alert('Image upload failed. Is the local dev server running?')
+  }
+
+  composerEditingSrc.value = null
 }
 
 async function removeImage(src: string) {

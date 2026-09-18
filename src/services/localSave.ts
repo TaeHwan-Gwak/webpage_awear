@@ -14,7 +14,7 @@ export async function saveJsonFile(file: SavableFile, data: unknown): Promise<bo
   }
 }
 
-function fileToDataUrl(file: File): Promise<string> {
+function fileToDataUrl(file: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => resolve(reader.result as string)
@@ -27,7 +27,7 @@ function fileToDataUrl(file: File): Promise<string> {
 export async function uploadImage(
   folder: ImageFolder,
   filename: string,
-  file: File
+  file: Blob
 ): Promise<string | null> {
   try {
     const dataUrl = await fileToDataUrl(file)

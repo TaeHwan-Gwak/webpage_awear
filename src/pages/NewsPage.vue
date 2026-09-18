@@ -45,6 +45,7 @@
             <div class="image-field">
               <div v-if="draft.image" class="photo-preview">
                 <img :src="draft.image" alt="" />
+                <button type="button" class="edit-image-btn" aria-label="Edit image" @click="editExistingImage">✎</button>
                 <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeNewsImage">✕</button>
               </div>
               <label class="upload-btn">
@@ -68,6 +69,7 @@
               <div class="image-field">
                 <div v-if="draft.image" class="photo-preview">
                   <img :src="draft.image" alt="" />
+                  <button type="button" class="edit-image-btn" aria-label="Edit image" @click="editExistingImage">✎</button>
                   <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeNewsImage">✕</button>
                 </div>
                 <label class="upload-btn">
@@ -107,6 +109,9 @@
       </nav>
     </section>
 
+    <ImageComposer :open="composerOpen" :initial-file="composerFile" :initial-url="composerUrl" :aspect-ratio="4 / 3"
+      @use="onComposedImage" @cancel="composerOpen = false" />
+
     <UnsavedChangesBar :dirty="pending.isDirty.value" :saving="pending.isSaving.value" @save="pending.save"
       @cancel="cancelChanges" />
     <LeaveConfirmModal :open="leaveGuard.showLeaveModal.value" @save-and-leave="leaveGuard.saveAndLeave"
@@ -122,6 +127,7 @@ import NewsItem from '../components/NewsItem.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
+import ImageComposer from '../components/ImageComposer.vue'
 import UnsavedChangesBar from '../components/UnsavedChangesBar.vue'
 import LeaveConfirmModal from '../components/LeaveConfirmModal.vue'
 import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
@@ -198,15 +204,32 @@ function cancelEdit() {
   formError.value = null
 }
 
-async function onImageSelected(e: Event) {
+const composerOpen = ref(false)
+const composerFile = ref<File | null>(null)
+const composerUrl = ref<string | null>(null)
+
+function onImageSelected(e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   input.value = ''
-  if (!file || !editingId.value) return
+  if (!file) return
+  composerFile.value = file
+  composerUrl.value = null
+  composerOpen.value = true
+}
+
+function editExistingImage() {
+  composerFile.value = null
+  composerUrl.value = draft.image
+  composerOpen.value = true
+}
+
+async function onComposedImage(blob: Blob) {
+  composerOpen.value = false
+  if (!editingId.value) return
 
   uploadingImage.value = true
-  const ext = file.name.split('.').pop() || 'jpg'
-  const path = await uploadImage('news', `${editingId.value}.${ext}`, file)
+  const path = await uploadImage('news', `${editingId.value}.jpg`, blob)
   uploadingImage.value = false
 
   if (path) draft.image = path
