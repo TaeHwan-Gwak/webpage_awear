@@ -22,8 +22,8 @@
               <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removePIPhoto">✕</button>
             </div>
             <label class="upload-btn">
-              + Upload photo
-              <input type="file" accept="image/*" @change="onPIPhotoSelected" />
+              {{ uploadingPIPhoto ? 'Uploading…' : '+ Upload photo' }}
+              <input type="file" accept="image/*" :disabled="uploadingPIPhoto" @change="onPIPhotoSelected" />
             </label>
           </div>
           <p v-if="piFormError" class="form-error">{{ piFormError }}</p>
@@ -113,8 +113,8 @@
             <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removeMemberPhoto">✕</button>
           </div>
           <label class="upload-btn">
-            + Upload photo
-            <input type="file" accept="image/*" @change="onMemberPhotoSelected" />
+            {{ uploadingPhoto ? 'Uploading…' : '+ Upload photo' }}
+            <input type="file" accept="image/*" :disabled="uploadingPhoto" @change="onMemberPhotoSelected" />
           </label>
         </div>
         <p v-if="formError" class="form-error">{{ formError }}</p>
@@ -142,11 +142,6 @@
 
     <ImageComposer :open="composerOpen" :initial-file="composerFile" :initial-url="composerUrl" :aspect-ratio="1"
       @use="onComposedImage" @cancel="composerOpen = false" />
-
-    <UnsavedChangesBar :dirty="pending.isDirty.value" :saving="pending.isSaving.value" @save="pending.save"
-      @cancel="cancelChanges" />
-    <LeaveConfirmModal :open="leaveGuard.showLeaveModal.value" @save-and-leave="leaveGuard.saveAndLeave"
-      @discard-and-leave="leaveGuard.discardAndLeave" @stay="leaveGuard.stay" />
   </main>
 </template>
 
@@ -160,15 +155,10 @@ import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
 import ImageComposer from '../components/ImageComposer.vue'
-import UnsavedChangesBar from '../components/UnsavedChangesBar.vue'
-import LeaveConfirmModal from '../components/LeaveConfirmModal.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { useDragReorder } from '../composables/useDragReorder'
 import { useEscapeKey } from '../composables/useEscapeKey'
-import { usePendingChanges } from '../composables/usePendingChanges'
-import { usePendingUploads } from '../composables/usePendingUploads'
-import { useLeaveGuard } from '../composables/useLeaveGuard'
-import { saveJsonFile } from '../services/localSave'
+import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { checkRequired, isValidEmail } from '../utils/validate'
 import { setStructuredData, removeStructuredData } from '../utils/structuredData'
@@ -188,37 +178,6 @@ const { isAdmin } = useAdminMode()
 
 const form = reactive(JSON.parse(JSON.stringify(membersDataRaw)) as typeof membersDataRaw)
 
-const pendingUploads = usePendingUploads()
-
-const pending = usePendingChanges(() => form, async (state) => {
-  const resolved = await pendingUploads.flush()
-  if (state.pi.photo && resolved.has(state.pi.photo)) state.pi.photo = resolved.get(state.pi.photo)!
-  for (const m of state.postdocs) {
-    if (m.photo && resolved.has(m.photo)) m.photo = resolved.get(m.photo)!
-  }
-  for (const m of state.members) {
-    if (m.photo && resolved.has(m.photo)) m.photo = resolved.get(m.photo)!
-  }
-  return saveJsonFile('members.json', state)
-})
-
-function cancelChanges() {
-  pendingUploads.discard()
-  const restored = pending.cancel()
-  Object.assign(form.pi, restored.pi)
-  form.groupTitle = restored.groupTitle
-  form.alumniTitle = restored.alumniTitle
-  form.postdocs.splice(0, form.postdocs.length, ...restored.postdocs)
-  form.members.splice(0, form.members.length, ...restored.members)
-  form.alumni.splice(0, form.alumni.length, ...restored.alumni)
-}
-
-const leaveGuard = useLeaveGuard(
-  () => pending.isDirty.value,
-  () => pending.save(),
-  () => cancelChanges()
-)
-
 watchEffect(() => {
   setStructuredData({
     '@context': 'https://schema.org',
@@ -237,9 +196,9 @@ watchEffect(() => {
 
 onBeforeUnmount(removeStructuredData)
 
-const postdocDrag = useDragReorder(form.postdocs, () => {})
-const memberDrag = useDragReorder(form.members, () => {})
-const alumniDrag = useDragReorder(form.alumni, () => {})
+const postdocDrag = useDragReorder(form.postdocs, () => saveJsonFile('members.json', form))
+const memberDrag = useDragReorder(form.members, () => saveJsonFile('members.json', form))
+const alumniDrag = useDragReorder(form.alumni, () => saveJsonFile('members.json', form))
 
 type GroupKey = 'postdocs' | 'members' | 'alumni'
 
@@ -252,6 +211,7 @@ const FALLBACK_PREFIX: Record<GroupKey, string> = {
 const editingGroup = ref<GroupKey | null>(null)
 const editingId = ref<string | null>(null)
 const isNewMember = ref(false)
+const uploadingPhoto = ref(false)
 const formError = ref<string | null>(null)
 const draft = reactive({ name: '', role: '', note: '', email: '', interests: '', photo: '' })
 
@@ -312,8 +272,8 @@ function editExistingMemberPhoto() {
   composerOpen.value = true
 }
 
-function removeMemberPhoto() {
-  pendingUploads.queueDelete(draft.photo)
+async function removeMemberPhoto() {
+  if (draft.photo) await deleteImage(draft.photo)
   draft.photo = ''
 }
 
@@ -355,23 +315,25 @@ async function saveMember() {
   }
 
   cancelEdit()
+  await saveJsonFile('members.json', form)
 }
 
-function deleteMember(group: GroupKey, member: Member) {
+async function deleteMember(group: GroupKey, member: Member) {
   const list = form[group] as Member[]
   const idx = list.findIndex((m) => m.id === member.id)
   if (idx !== -1) list.splice(idx, 1)
-  pendingUploads.queueDelete(member.photo)
+  if (member.photo) await deleteImage(member.photo)
+  await saveJsonFile('members.json', form)
 }
 
 // Alumni는 최근 졸업자가 맨 위(배열 앞쪽)에 오도록 관리하고 있어서, 새로 졸업한
 // 사람도 그 자리(unshift)에 넣고, 사진은 Alumni 목록에서 안 쓰니 삭제합니다.
-function graduateMember(member: Member) {
+async function graduateMember(member: Member) {
   const idx = form.members.findIndex((m) => m.id === member.id)
   if (idx === -1) return
   form.members.splice(idx, 1)
 
-  pendingUploads.queueDelete(member.photo)
+  if (member.photo) await deleteImage(member.photo)
 
   const newId = nextSequentialId(
     form.alumni.map((a) => a.id),
@@ -383,12 +345,14 @@ function graduateMember(member: Member) {
     role: member.role,
     note: member.note ?? '',
   })
+
+  await saveJsonFile('members.json', form)
 }
 
 // 실수로 졸업 처리했을 때 되돌리는 용도. 그 사이에 다른 졸업/삭제/순서변경이 있었을
 // 수 있어서 "원래 자리"를 복원하는 건 오히려 꼬일 수 있으므로, 그냥 Graduate
 // Students 맨 끝(=새 id)에 추가합니다. 위치가 마음에 안 들면 드래그로 옮기면 됩니다.
-function ungraduateMember(alum: Member) {
+async function ungraduateMember(alum: Member) {
   const idx = form.alumni.findIndex((a) => a.id === alum.id)
   if (idx === -1) return
   form.alumni.splice(idx, 1)
@@ -403,6 +367,8 @@ function ungraduateMember(alum: Member) {
     interests: '',
     photo: '',
   })
+
+  await saveJsonFile('members.json', form)
 }
 
 const graduateTarget = ref<Member | null>(null)
@@ -415,13 +381,14 @@ function cancelGraduate() {
   graduateTarget.value = null
 }
 
-function doGraduate() {
+async function doGraduate() {
   if (!graduateTarget.value) return
-  graduateMember(graduateTarget.value)
+  await graduateMember(graduateTarget.value)
   graduateTarget.value = null
 }
 
 const editingPI = ref(false)
+const uploadingPIPhoto = ref(false)
 const piFormError = ref<string | null>(null)
 const piDraft = reactive({ name: '', role: '', email: '', photo: '' })
 
@@ -457,23 +424,29 @@ function editExistingPIPhoto() {
   composerOpen.value = true
 }
 
-function onComposedImage(blob: Blob) {
+async function onComposedImage(blob: Blob) {
   composerOpen.value = false
   const target = composerTarget.value
   composerTarget.value = null
 
   if (target === 'member') {
     if (!editingId.value) return
-    if (draft.photo?.startsWith('blob:')) pendingUploads.queueDelete(draft.photo)
-    draft.photo = pendingUploads.queueUpload('member', `${editingId.value}.jpg`, blob)
+    uploadingPhoto.value = true
+    const path = await uploadImage('member', `${editingId.value}.jpg`, blob)
+    uploadingPhoto.value = false
+    if (path) draft.photo = path
+    else alert('Photo upload failed. Is the local dev server running?')
   } else if (target === 'pi') {
-    if (piDraft.photo?.startsWith('blob:')) pendingUploads.queueDelete(piDraft.photo)
-    piDraft.photo = pendingUploads.queueUpload('member', 'pi.jpg', blob)
+    uploadingPIPhoto.value = true
+    const path = await uploadImage('member', 'pi.jpg', blob)
+    uploadingPIPhoto.value = false
+    if (path) piDraft.photo = path
+    else alert('Photo upload failed. Is the local dev server running?')
   }
 }
 
-function removePIPhoto() {
-  pendingUploads.queueDelete(piDraft.photo)
+async function removePIPhoto() {
+  if (piDraft.photo) await deleteImage(piDraft.photo)
   piDraft.photo = ''
 }
 
@@ -493,11 +466,11 @@ async function savePI() {
   form.pi.email = piDraft.email
   form.pi.photo = piDraft.photo
   editingPI.value = false
+  await saveJsonFile('members.json', form)
 }
 
 useEscapeKey(() => {
-  if (leaveGuard.showLeaveModal.value) leaveGuard.stay()
-  else if (graduateTarget.value) cancelGraduate()
+  if (graduateTarget.value) cancelGraduate()
   else if (editingGroup.value) cancelEdit()
   else if (editingPI.value) cancelEditPI()
 })

@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { exec } from 'node:child_process'
 import type { Plugin, Connect } from 'vite'
 
 const ALLOWED_FILES = new Set(['members.json', 'news.json', 'publications.json', 'equipment.json'])
@@ -161,9 +162,76 @@ function handleImageDelete(publicDir: string): Connect.NextHandleFunction {
   }
 }
 
+function run(cmd: string, cwd: string): Promise<{ ok: boolean; output: string }> {
+  return new Promise((resolve) => {
+    exec(cmd, { cwd }, (error, stdout, stderr) => {
+      const output = [stdout, stderr].filter(Boolean).join('\n').trim()
+      resolve({ ok: !error, output })
+    })
+  })
+}
+
+function handleGitPush(projectRoot: string): Connect.NextHandleFunction {
+  return (req, res, next) => {
+    if (req.url !== '/api/git-push') {
+      next()
+      return
+    }
+    if (req.method !== 'POST') {
+      res.statusCode = 405
+      res.end('Method not allowed')
+      return
+    }
+
+    readBody(req).then(async (body) => {
+      res.setHeader('Content-Type', 'application/json')
+      try {
+        const { message } = JSON.parse(body || '{}') as { message?: string }
+        const commitMessage = (message && message.trim()) || `Update content via admin panel (${new Date().toISOString()})`
+
+        const add = await run('git add -A', projectRoot)
+        if (!add.ok) {
+          res.statusCode = 500
+          res.end(JSON.stringify({ ok: false, step: 'add', output: add.output }))
+          return
+        }
+
+        const commit = await run(`git commit -m ${JSON.stringify(commitMessage)}`, projectRoot)
+        // "nothing to commit" isn't a real failure - everything was already committed.
+        const nothingToCommit = /nothing to commit/i.test(commit.output)
+        if (!commit.ok && !nothingToCommit) {
+          res.statusCode = 500
+          res.end(JSON.stringify({ ok: false, step: 'commit', output: commit.output }))
+          return
+        }
+
+        const push = await run('git push', projectRoot)
+        if (!push.ok) {
+          res.statusCode = 500
+          res.end(JSON.stringify({ ok: false, step: 'push', output: push.output }))
+          return
+        }
+
+        res.statusCode = 200
+        res.end(
+          JSON.stringify({
+            ok: true,
+            committed: !nothingToCommit,
+            output: [add.output, commit.output, push.output].filter(Boolean).join('\n'),
+          })
+        )
+      } catch (e) {
+        res.statusCode = 500
+        res.end(JSON.stringify({ ok: false, error: String(e) }))
+      }
+    })
+  }
+}
+
 export function localSavePlugin(): Plugin {
   const dataDir = path.resolve(process.cwd(), 'src/data')
   const publicDir = path.resolve(process.cwd(), 'public')
+  const projectRoot = process.cwd()
 
   return {
     name: 'local-save-plugin',
@@ -171,11 +239,13 @@ export function localSavePlugin(): Plugin {
       server.middlewares.use(handleLocalSave(dataDir))
       server.middlewares.use(handleImageUpload(publicDir))
       server.middlewares.use(handleImageDelete(publicDir))
+      server.middlewares.use(handleGitPush(projectRoot))
     },
     configurePreviewServer(server) {
       server.middlewares.use(handleLocalSave(dataDir))
       server.middlewares.use(handleImageUpload(publicDir))
       server.middlewares.use(handleImageDelete(publicDir))
+      server.middlewares.use(handleGitPush(projectRoot))
     },
   }
 }

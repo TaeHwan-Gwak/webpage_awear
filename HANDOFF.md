@@ -35,23 +35,28 @@ Claude 채팅에서 VS Code Claude 익스텐션으로 작업을 옮기면서 정
 - 로그인 상태면 News/Member/Publications/Equipment 페이지에 **수정(✎)/삭제(✕)/추가(+ Add)/드래그 순서변경(≡)** 버튼이 바로 나타남
 - **admin 상태는 `useAdminMode()` 컴포저블로 전역 공유** (반응형이라 로그인/로그아웃 즉시 모든 컴포넌트에 반영됨)
 
-### 편집은 "바로 저장" 아니라 "임시 반영 후 페이지 단위로 Save" 방식
+### 편집은 즉시 반영됨 (임시저장 아님)
 
-- 수정/삭제/추가/드래그재정렬 하나하나는 **메모리(화면)에만 반영**되고, 바로 파일에 저장되지 않음
-- 뭔가 바뀌면 화면 우측 상단(모바일은 하단)에 **"Unsaved changes" + Cancel/Save 버튼**이 뜸 (`UnsavedChangesBar.vue`, `usePendingChanges.ts`)
-- **Save** 누르면 그제서야 `src/data/*.json`에 실제로 반영됨. **Cancel**은 마지막 저장 상태로 전부 되돌림
-- 다른 페이지로 이동하려 하는데 저장 안 된 변경사항이 있으면 **모달**이 뜸 ("Save & Leave" / "Discard & Leave" / "Stay") — `LeaveConfirmModal.vue`, `useLeaveGuard.ts`. 바뀐 게 없으면 그냥 바로 이동
-- 사진 업로드/삭제는 예외 — 파일 자체를 서버에 바로 쓰는 동작이라 즉시 실행됨 (Cancel 눌러도 이미 올라간 파일은 디스크에 남을 수 있음, 참조만 사라짐)
+- 수정/삭제/추가/드래그재정렬 하나하나가 **그 즉시 `src/data/*.json` 파일에 실제로 저장**돼요. 페이지별 Cancel/Save 임시저장 방식은 한 번 만들었다가 의도적으로 되돌렸음 — **다시 만들지 말 것** (`usePendingChanges`, `usePendingUploads`, `UnsavedChangesBar`, `LeaveConfirmModal` 전부 삭제된 상태)
+- 사진 업로드/삭제도 마찬가지로 즉시 실행됨
+
+### nav의 "Save" 버튼 = Git push 전용
+
+- admin 로그인 시 nav에 **Logout 옆에 "Save" 버튼**이 있음 — 이건 위의 즉시 저장된 로컬 파일 변경사항을 **Git에 commit + push**하는 용도임 (`POST /api/git-push`, `vite-local-save-plugin.ts`)
+- 내부적으로 `git add -A && git commit -m "..." && git push` 실행. "nothing to commit"은 실패로 안 취급함
+- 버튼 옆에 결과 메시지가 잠깐 떴다 사라짐 ("Pushed to GitHub ✓" / "Nothing to push" / "Push failed (단계)")
+- 로컬 컴퓨터에 이미 설정된 git 계정/인증정보를 그대로 사용함 (별도 토큰 설정 필요 없음)
 
 ### ⚠️ 저장은 "로컬 개발 서버에서만" 동작함
 
-- `npm run dev`로 로컬에서 켜놓고 있을 때만 저장/사진 업로드가 실제로 동작해요
-- `vite-local-save-plugin.ts`가 로컬 전용 엔드포인트 3개를 제공함:
+- `npm run dev`로 로컬에서 켜놓고 있을 때만 저장/사진 업로드/Git push가 실제로 동작해요
+- `vite-local-save-plugin.ts`가 로컬 전용 엔드포인트 4개를 제공함:
   - `POST /api/local-save` — `src/data/*.json` 파일에 직접 씀
   - `POST /api/upload-image` — `public/<폴더>/<파일명>`에 base64 이미지 저장
   - `POST /api/delete-image` — 해당 파일 삭제
-- **배포된 사이트(Vercel)에서는 로그인은 되지만 저장 버튼 누르면 실패함** — 이 엔드포인트들이 존재하지 않기 때문 (의도된 동작, 버그 아님)
-- **현재 워크플로우**: 로컬에서 admin으로 수정 → 페이지 상단 Save → `git commit` → `git push` → Vercel 자동 재배포
+  - `POST /api/git-push` — `git add -A && commit && push`
+- **배포된 사이트(Vercel)에서는 로그인은 되지만 수정 버튼 자체가 동작 안 함** — 이 엔드포인트들이 존재하지 않기 때문 (의도된 동작, 버그 아님)
+- **현재 워크플로우**: 로컬에서 admin으로 수정(즉시 파일 반영) → nav의 **Save 버튼**으로 Git push → Vercel 자동 재배포
 
 ### 앞으로 할 일로 남겨둔 것
 
@@ -120,3 +125,5 @@ npx vue-tsc --noEmit  # 타입체크만
 - `previousId`/`previousIndex` 같은 "위치 복원" 로직은 의도적으로 제거했음 — 다시 만들지 말 것
 - 드래그 재정렬 시 id/파일명 재부여하는 로직도 의도적으로 제거했음 — 다시 만들지 말 것
 - Admin 저장은 로컬 전용이 원래 의도임 — "배포 사이트에서 저장 안 됨"은 버그 리포트 아님
+- **"페이지 단위 임시저장(Cancel/Save) + 페이지 이동 시 확인 모달" 방식은 한 번 만들었다가 명시적으로 되돌렸음** — 수정은 항상 즉시 반영되어야 하고, "Save"는 오직 Git push 용도. 이 staged-changes 패턴 다시 만들지 말 것
+- `ImageComposer.vue`: 캔버스에 선택 테두리/리사이즈 핸들을 그리는 로직이 있는데, `useImage()`(내보내기)에서 `draw(false)`로 그 오버레이 없이 한 번 다시 그린 다음 `toBlob()` 해야 함 — 안 그러면 주황 테두리가 최종 이미지에 그대로 박힘. 배경은 흰색(`#ffffff`)이 맞음, 다른 색으로 바꾸지 말 것

@@ -61,3 +61,25 @@ export async function deleteImage(imagePath: string): Promise<boolean> {
     return false
   }
 }
+
+export interface GitPushResult {
+  ok: boolean
+  committed?: boolean
+  step?: string
+  output?: string
+  error?: string
+}
+
+/** Commits whatever's currently changed in the project and pushes it (git add -A && commit && push). */
+export async function gitPush(message?: string): Promise<GitPushResult> {
+  try {
+    const res = await fetch('/api/git-push', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message }),
+    })
+    return (await res.json()) as GitPushResult
+  } catch (e) {
+    return { ok: false, error: String(e) }
+  }
+}

@@ -19,7 +19,13 @@
         </div>
       </nav>
 
-      <button v-if="isAdmin" type="button" class="logout-btn" @click="onLogout">Logout</button>
+      <div v-if="isAdmin" class="admin-actions">
+        <span v-if="pushResult" class="push-result" :class="{ error: !pushResult.ok }">{{ pushResult.message }}</span>
+        <button type="button" class="save-btn" :disabled="pushing" @click="onSave">
+          {{ pushing ? 'Pushing…' : 'Save' }}
+        </button>
+        <button type="button" class="logout-btn" @click="onLogout">Logout</button>
+      </div>
 
       <button class="burger" :aria-expanded="open" aria-label="Open menu" @click="open = !open">
         <span /><span /><span />
@@ -35,7 +41,13 @@
             {{ child.label }}
           </router-link>
         </template>
-        <button v-if="isAdmin" type="button" class="logout-btn mobile" @click="onLogout">Logout</button>
+        <div v-if="isAdmin" class="admin-actions mobile">
+          <span v-if="pushResult" class="push-result" :class="{ error: !pushResult.ok }">{{ pushResult.message }}</span>
+          <button type="button" class="save-btn mobile" :disabled="pushing" @click="onSave">
+            {{ pushing ? 'Pushing…' : 'Save' }}
+          </button>
+          <button type="button" class="logout-btn mobile" @click="onLogout">Logout</button>
+        </div>
       </nav>
     </transition>
   </header>
@@ -46,6 +58,7 @@ import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAdminMode } from '../composables/useAdminMode'
 import { logoutAdmin } from '../composables/useAdminAuth'
+import { gitPush } from '../services/localSave'
 
 const route = useRoute()
 const router = useRouter()
@@ -57,6 +70,25 @@ function onLogout() {
   refresh()
   open.value = false
   router.push('/')
+}
+
+const pushing = ref(false)
+const pushResult = ref<{ ok: boolean; message: string } | null>(null)
+
+async function onSave() {
+  pushing.value = true
+  pushResult.value = null
+
+  const result = await gitPush()
+  pushing.value = false
+
+  pushResult.value = result.ok
+    ? { ok: true, message: result.committed ? 'Pushed to GitHub ✓' : 'Nothing to push' }
+    : { ok: false, message: `Push failed${result.step ? ` (${result.step})` : ''}. Is the local dev server running?` }
+
+  setTimeout(() => {
+    pushResult.value = null
+  }, 6000)
 }
 
 const activeDropdown = ref<string | null>(null)

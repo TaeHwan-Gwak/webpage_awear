@@ -128,19 +128,19 @@ async function onAddLayer(e: Event) {
   await addLayerFromFile(file)
 }
 
-function draw() {
+function draw(showChrome = true) {
   const canvas = canvasEl.value
   if (!canvas) return
   const ctx = canvas.getContext('2d')
   if (!ctx) return
 
   ctx.clearRect(0, 0, outputWidth, outputHeight)
-  ctx.fillStyle = '#f3ede6'
+  ctx.fillStyle = '#ffffff'
   ctx.fillRect(0, 0, outputWidth, outputHeight)
 
   layers.value.forEach((layer, i) => {
     ctx.drawImage(layer.img, layer.x, layer.y, layer.width, layer.height)
-    if (i === activeIndex.value) {
+    if (showChrome && i === activeIndex.value) {
       ctx.strokeStyle = '#ff5a1f'
       ctx.lineWidth = 3
       ctx.strokeRect(layer.x, layer.y, layer.width, layer.height)
@@ -247,8 +247,10 @@ onBeforeUnmount(detachMoveListeners)
 function useImage() {
   const canvas = canvasEl.value
   if (!canvas) return
+  draw(false)
   canvas.toBlob(
     (blob) => {
+      draw(true)
       if (blob) emit('use', blob)
     },
     'image/jpeg',

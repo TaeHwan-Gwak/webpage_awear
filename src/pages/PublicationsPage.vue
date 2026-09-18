@@ -76,8 +76,8 @@
             </div>
           </div>
           <label class="upload-btn">
-            + Upload image
-            <input type="file" accept="image/*" @change="onFileSelected" />
+            {{ uploading ? 'Uploading…' : '+ Upload image' }}
+            <input type="file" accept="image/*" :disabled="uploading" @change="onFileSelected" />
           </label>
         </div>
 
@@ -91,11 +91,6 @@
 
     <ImageComposer :open="composerOpen" :initial-file="composerFile" :initial-url="composerUrl" :aspect-ratio="4 / 3"
       @use="onComposedImage" @cancel="composerOpen = false" />
-
-    <UnsavedChangesBar :dirty="pending.isDirty.value" :saving="pending.isSaving.value" @save="pending.save"
-      @cancel="cancelChanges" />
-    <LeaveConfirmModal :open="leaveGuard.showLeaveModal.value" @save-and-leave="leaveGuard.saveAndLeave"
-      @discard-and-leave="leaveGuard.discardAndLeave" @stay="leaveGuard.stay" />
   </main>
 </template>
 
@@ -108,14 +103,9 @@ import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
 import ImageComposer from '../components/ImageComposer.vue'
-import UnsavedChangesBar from '../components/UnsavedChangesBar.vue'
-import LeaveConfirmModal from '../components/LeaveConfirmModal.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { useEscapeKey } from '../composables/useEscapeKey'
-import { usePendingChanges } from '../composables/usePendingChanges'
-import { usePendingUploads } from '../composables/usePendingUploads'
-import { useLeaveGuard } from '../composables/useLeaveGuard'
-import { saveJsonFile } from '../services/localSave'
+import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { checkRequired } from '../utils/validate'
 import { setStructuredData, removeStructuredData } from '../utils/structuredData'
@@ -136,29 +126,6 @@ const { isAdmin } = useAdminMode()
 // 원본 순서 그대로 유지되는 로컬 사본. 화면 표시는 이걸 뒤집어서(최신순) 보여줍니다.
 const localPubs = reactive<Publication[]>(JSON.parse(JSON.stringify(publicationsDataRaw)))
 const publications = computed(() => [...localPubs].reverse())
-
-const pendingUploads = usePendingUploads()
-
-const pending = usePendingChanges(() => localPubs, async (state) => {
-  const resolved = await pendingUploads.flush()
-  for (const pub of state) {
-    if (!pub.images) continue
-    pub.images = pub.images.map((src) => resolved.get(src) ?? src)
-  }
-  return saveJsonFile('publications.json', state)
-})
-
-function cancelChanges() {
-  pendingUploads.discard()
-  const restored = pending.cancel()
-  localPubs.splice(0, localPubs.length, ...restored)
-}
-
-const leaveGuard = useLeaveGuard(
-  () => pending.isDirty.value,
-  () => pending.save(),
-  () => cancelChanges()
-)
 
 watchEffect(() => {
   setStructuredData({
@@ -199,6 +166,7 @@ const selectYear = (y: string) => {
 
 const editingId = ref<string | null>(null)
 const isNew = ref(false)
+const uploading = ref(false)
 const formError = ref<string | null>(null)
 const draft = reactive({ year: '', title: '', authors: '', venue: '', link: '', images: [] as string[] })
 
@@ -255,35 +223,40 @@ function editExistingImage(src: string) {
   composerOpen.value = true
 }
 
-function onComposedImage(blob: Blob) {
+async function onComposedImage(blob: Blob) {
   composerOpen.value = false
   if (!editingId.value) return
 
+  uploading.value = true
+
   if (composerEditingSrc.value) {
     // 기존 이미지 재편집: 같은 파일명으로 덮어써서 그 자리에 그대로 반영합니다.
-    // (아직 저장 전인 pending 이미지를 다시 편집하는 경우엔, 그때 정해둔 파일명을 그대로 재사용합니다.)
     const editingSrc = composerEditingSrc.value
-    const pendingTarget = pendingUploads.getPendingTarget(editingSrc)
-    const filename = pendingTarget?.filename ?? editingSrc.split('/').pop()!.split('?')[0]
+    const filename = editingSrc.split('/').pop()!.split('?')[0]
+    const path = await uploadImage('publications', filename, blob)
+    uploading.value = false
 
-    // pending(blob:)이었을 때만 정리합니다 - 이미 저장된 실제 경로는 같은 파일명으로
-    // 덮어쓸 거라 삭제 큐에 넣으면 안 됩니다(flush에서 방금 올린 파일을 지워버리게 됨).
-    if (pendingTarget) pendingUploads.queueDelete(editingSrc)
-
-    const previewUrl = pendingUploads.queueUpload('publications', filename, blob)
-    const idx = draft.images.indexOf(editingSrc)
-    if (idx !== -1) draft.images[idx] = previewUrl
+    if (path) {
+      const idx = draft.images.indexOf(editingSrc)
+      if (idx !== -1) draft.images[idx] = path
+    } else {
+      alert('Image upload failed. Is the local dev server running?')
+    }
   } else {
     const filename = `${editingId.value}-${draft.images.length + 1}.jpg`
-    draft.images.push(pendingUploads.queueUpload('publications', filename, blob))
+    const path = await uploadImage('publications', filename, blob)
+    uploading.value = false
+
+    if (path) draft.images.push(path)
+    else alert('Image upload failed. Is the local dev server running?')
   }
 
   composerEditingSrc.value = null
 }
 
-function removeImage(src: string) {
+async function removeImage(src: string) {
   draft.images = draft.images.filter((s) => s !== src)
-  pendingUploads.queueDelete(src)
+  await deleteImage(src)
 }
 
 async function saveEdit() {
@@ -316,12 +289,14 @@ async function saveEdit() {
   }
 
   cancelEdit()
+  await saveJsonFile('publications.json', localPubs)
 }
 
-function deletePub(pub: Publication) {
+async function deletePub(pub: Publication) {
   const idx = localPubs.findIndex((p) => p.id === pub.id)
   if (idx !== -1) localPubs.splice(idx, 1)
-  for (const src of pub.images ?? []) pendingUploads.queueDelete(src)
+  await Promise.all((pub.images ?? []).map((src) => deleteImage(src)))
+  await saveJsonFile('publications.json', localPubs)
 }
 
 // publications는 localPubs를 뒤집은(최신순) 배열이라, 드래그로 옮긴 위치를
@@ -337,7 +312,7 @@ function pubOnDragOver(e: DragEvent) {
   e.preventDefault()
 }
 
-function pubOnDrop(targetIndex: number) {
+async function pubOnDrop(targetIndex: number) {
   const from = draggedPubIndex.value
   draggedPubIndex.value = null
   if (from === null || from === targetIndex || selectedYear.value !== 'all') return
@@ -348,6 +323,7 @@ function pubOnDrop(targetIndex: number) {
 
   const [moved] = localPubs.splice(fromLocal, 1)
   localPubs.splice(toLocal, 0, moved)
+  await saveJsonFile('publications.json', localPubs)
 }
 
 function pubOnDragEnd() {
@@ -355,8 +331,7 @@ function pubOnDragEnd() {
 }
 
 useEscapeKey(() => {
-  if (leaveGuard.showLeaveModal.value) leaveGuard.stay()
-  else if (editingId.value) cancelEdit()
+  if (editingId.value) cancelEdit()
 })
 </script>
 
