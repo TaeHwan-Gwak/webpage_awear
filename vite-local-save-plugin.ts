@@ -132,7 +132,9 @@ function handleImageDelete(publicDir: string): Connect.NextHandleFunction {
     readBody(req).then((body) => {
       res.setHeader('Content-Type', 'application/json')
       try {
-        const { imagePath } = JSON.parse(body) as { imagePath?: string }
+        const { imagePath: rawImagePath } = JSON.parse(body) as { imagePath?: string }
+        const imagePath = rawImagePath?.split('?')[0]
+
         if (!imagePath || imagePath.includes('..') || !imagePath.startsWith('/')) {
           res.statusCode = 400
           res.end(JSON.stringify({ ok: false, error: 'Invalid path' }))

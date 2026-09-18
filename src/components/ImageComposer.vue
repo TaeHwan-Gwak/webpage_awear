@@ -92,8 +92,9 @@ function loadImageUrl(url: string): Promise<HTMLImageElement> {
 }
 
 function fitLayer(img: HTMLImageElement): Layer {
-  // Start the image covering the frame (like object-fit: cover), centered.
-  const scale = Math.max(outputWidth / img.width, outputHeight / img.height)
+  // Fit the image so its longer side lands exactly on the frame edge (like
+  // object-fit: contain), centered - the whole image starts visible.
+  const scale = Math.min(outputWidth / img.width, outputHeight / img.height)
   const width = img.width * scale
   const height = img.height * scale
   return {
@@ -173,6 +174,7 @@ function hitTestLayer(layer: Layer, x: number, y: number): boolean {
 }
 
 function onPointerDown(e: MouseEvent | TouchEvent) {
+  e.preventDefault()
   const { x, y } = toCanvasCoords(e)
 
   // Check the active layer's resize handle first.
@@ -257,9 +259,14 @@ function useImage() {
 watch(
   () => props.open,
   async (isOpen) => {
-    if (!isOpen) return
+    if (!isOpen) {
+      dragMode = null
+      detachMoveListeners()
+      return
+    }
     layers.value = []
     activeIndex.value = null
+    dragMode = null
     await nextTick()
     if (props.initialFile) {
       await addLayerFromFile(props.initialFile)

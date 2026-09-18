@@ -38,7 +38,11 @@ export async function uploadImage(
     })
     if (!res.ok) return null
     const json = (await res.json()) as { ok: boolean; path?: string }
-    return json.path ?? null
+    if (!json.path) return null
+    // Cache-bust: overwriting an existing filename (re-editing a photo) keeps the
+    // same URL, so without this the browser just shows the old cached bytes.
+    // Harmless to keep in the stored path too - static file servers ignore the query string.
+    return `${json.path}?v=${Date.now()}`
   } catch {
     return null
   }
