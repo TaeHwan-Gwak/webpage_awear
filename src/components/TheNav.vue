@@ -50,6 +50,11 @@
         </div>
       </nav>
     </transition>
+
+    <ConfirmModal :open="showLogoutConfirm" title="Log out without saving?"
+      message="You have unsaved changes that haven't been pushed yet. If you log out now, they'll be lost."
+      confirm-label="Log out anyway" cancel-label="Keep editing" @confirm="doLogout"
+      @cancel="showLogoutConfirm = false" />
   </header>
 </template>
 
@@ -59,6 +64,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAdminMode } from '../composables/useAdminMode'
 import { logoutAdmin } from '../composables/useAdminAuth'
 import { gitPush, flushPendingChanges, hasPendingChanges } from '../services/localSave'
+import ConfirmModal from './ConfirmModal.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -66,17 +72,21 @@ const open = ref(false)
 const { isAdmin, refresh } = useAdminMode()
 const isDev = import.meta.env.DEV
 
+const showLogoutConfirm = ref(false)
+
 function onLogout() {
   if (hasPendingChanges()) {
-    const proceed = window.confirm(
-      "You have unsaved changes that haven't been pushed yet. Log out anyway? They'll be lost."
-    )
-    if (!proceed) return
+    showLogoutConfirm.value = true
+    return
   }
+  doLogout()
+}
 
+function doLogout() {
   logoutAdmin()
   refresh()
   open.value = false
+  showLogoutConfirm.value = false
   router.push('/')
 }
 
