@@ -133,5 +133,13 @@
     "tag": "Press",
     "desc": "GIST, 일어나기 등 일상 동작만으로 근감소증 추적 AI 기술 개발",
     "link": "https://n.news.naver.com/article/030/0003435675?sid=102"
+  },
+  {
+    "id": "n20",
+    "date": "2026.09",
+    "tag": "test",
+    "desc": "test",
+    "link": "test",
+    "image": ""
   }
 ]
