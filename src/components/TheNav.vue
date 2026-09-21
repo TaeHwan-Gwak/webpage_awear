@@ -20,12 +20,10 @@
       </nav>
 
       <div v-if="isAdmin" class="admin-actions">
-        <template v-if="isDev">
-          <span v-if="pushResult" class="push-result" :class="{ error: !pushResult.ok }">{{ pushResult.message }}</span>
-          <button type="button" class="save-btn" :disabled="pushing" @click="onSave">
-            {{ pushing ? 'Pushing…' : 'Save' }}
-          </button>
-        </template>
+        <span v-if="pushResult" class="push-result" :class="{ error: !pushResult.ok }">{{ pushResult.message }}</span>
+        <button type="button" class="save-btn" :disabled="pushing" @click="onSave">
+          {{ pushing ? 'Pushing…' : 'Save' }}
+        </button>
         <button type="button" class="logout-btn" @click="onLogout">Logout</button>
       </div>
 
@@ -44,12 +42,10 @@
           </router-link>
         </template>
         <div v-if="isAdmin" class="admin-actions mobile">
-          <template v-if="isDev">
-            <span v-if="pushResult" class="push-result" :class="{ error: !pushResult.ok }">{{ pushResult.message }}</span>
-            <button type="button" class="save-btn mobile" :disabled="pushing" @click="onSave">
-              {{ pushing ? 'Pushing…' : 'Save' }}
-            </button>
-          </template>
+          <span v-if="pushResult" class="push-result" :class="{ error: !pushResult.ok }">{{ pushResult.message }}</span>
+          <button type="button" class="save-btn mobile" :disabled="pushing" @click="onSave">
+            {{ pushing ? 'Pushing…' : 'Save' }}
+          </button>
           <button type="button" class="logout-btn mobile" @click="onLogout">Logout</button>
         </div>
       </nav>
@@ -62,7 +58,7 @@ import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAdminMode } from '../composables/useAdminMode'
 import { logoutAdmin } from '../composables/useAdminAuth'
-import { gitPush } from '../services/localSave'
+import { gitPush, flushPendingChanges } from '../services/localSave'
 
 const route = useRoute()
 const router = useRouter()
@@ -84,12 +80,15 @@ async function onSave() {
   pushing.value = true
   pushResult.value = null
 
-  const result = await gitPush()
+  const result = isDev ? await gitPush() : await flushPendingChanges()
   pushing.value = false
 
   pushResult.value = result.ok
     ? { ok: true, message: result.committed ? 'Pushed to GitHub ✓' : 'Nothing to push' }
-    : { ok: false, message: `Push failed${result.step ? ` (${result.step})` : ''}. Is the local dev server running?` }
+    : {
+        ok: false,
+        message: `Push failed${result.step ? ` (${result.step})` : ''}.${isDev ? ' Is the local dev server running?' : ''}`,
+      }
 
   setTimeout(() => {
     pushResult.value = null

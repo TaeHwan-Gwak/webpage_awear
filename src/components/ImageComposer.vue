@@ -42,7 +42,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  use: [blob: Blob]
+  use: [blob: Blob, ext: string]
   cancel: []
 }>()
 
@@ -251,9 +251,13 @@ function useImage() {
   canvas.toBlob(
     (blob) => {
       draw(true)
-      if (blob) emit('use', blob)
+      if (!blob) return
+      // 일부 브라우저(Safari 등)는 webp를 요청해도 에러 없이 다른 포맷으로 대신
+      // 만들어주기 때문에, 실제로 뭐가 나왔는지 확인해서 확장자를 맞춥니다.
+      const ext = blob.type === 'image/webp' ? 'webp' : blob.type === 'image/png' ? 'png' : 'jpg'
+      emit('use', blob, ext)
     },
-    'image/jpeg',
+    'image/webp',
     0.9
   )
 }

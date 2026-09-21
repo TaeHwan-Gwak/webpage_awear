@@ -16,8 +16,8 @@
           <label class="field"><span>Email</span><input v-model="piDraft.email" /></label>
           <div class="field">
             <span>Photo</span>
-            <div v-if="piDraft.photo" class="photo-preview">
-              <img :src="piDraft.photo" alt="" />
+            <div v-if="piDraft.photo && !piPreviewBroken" class="photo-preview">
+              <img :src="piDraft.photo" alt="" @error="piPreviewBroken = true" />
               <button type="button" class="edit-image-btn" aria-label="Edit photo" @click="editExistingPIPhoto">✎</button>
               <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removePIPhoto">✕</button>
             </div>
@@ -107,8 +107,8 @@
         <label v-if="editingGroup !== 'alumni'" class="field"><span>Interests</span><input v-model="draft.interests" /></label>
         <div v-if="editingGroup !== 'alumni'" class="field">
           <span>Photo</span>
-          <div v-if="draft.photo" class="photo-preview">
-            <img :src="draft.photo" alt="" />
+          <div v-if="draft.photo && !memberPreviewBroken" class="photo-preview">
+            <img :src="draft.photo" alt="" @error="memberPreviewBroken = true" />
             <button type="button" class="edit-image-btn" aria-label="Edit photo" @click="editExistingMemberPhoto">✎</button>
             <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removeMemberPhoto">✕</button>
           </div>
@@ -146,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, reactive, ref, watchEffect } from 'vue'
+import { onBeforeUnmount, reactive, ref, watch, watchEffect } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import MemberCard from '../components/MemberCard.vue'
@@ -214,6 +214,14 @@ const isNewMember = ref(false)
 const uploadingPhoto = ref(false)
 const formError = ref<string | null>(null)
 const draft = reactive({ name: '', role: '', note: '', email: '', interests: '', photo: '' })
+const memberPreviewBroken = ref(false)
+
+watch(
+  () => draft.photo,
+  () => {
+    memberPreviewBroken.value = false
+  }
+)
 
 function startEdit(group: GroupKey, member: Member) {
   editingGroup.value = group
@@ -391,6 +399,14 @@ const editingPI = ref(false)
 const uploadingPIPhoto = ref(false)
 const piFormError = ref<string | null>(null)
 const piDraft = reactive({ name: '', role: '', email: '', photo: '' })
+const piPreviewBroken = ref(false)
+
+watch(
+  () => piDraft.photo,
+  () => {
+    piPreviewBroken.value = false
+  }
+)
 
 function startEditPI() {
   piDraft.name = form.pi.name
@@ -424,24 +440,38 @@ function editExistingPIPhoto() {
   composerOpen.value = true
 }
 
-async function onComposedImage(blob: Blob) {
+async function onComposedImage(blob: Blob, ext: string) {
   composerOpen.value = false
   const target = composerTarget.value
   composerTarget.value = null
 
   if (target === 'member') {
     if (!editingId.value) return
+    const oldPhoto = draft.photo
     uploadingPhoto.value = true
-    const path = await uploadImage('member', `${editingId.value}.jpg`, blob)
+    const path = await uploadImage('member', `${editingId.value}.${ext}`, blob)
     uploadingPhoto.value = false
-    if (path) draft.photo = path
-    else alert('Photo upload failed. Is the local dev server running?')
+    if (path) {
+      draft.photo = path
+      if (oldPhoto && !oldPhoto.startsWith('blob:') && oldPhoto.split('?')[0] !== path.split('?')[0]) {
+        await deleteImage(oldPhoto)
+      }
+    } else {
+      alert('Photo upload failed. Is the local dev server running?')
+    }
   } else if (target === 'pi') {
+    const oldPhoto = piDraft.photo
     uploadingPIPhoto.value = true
-    const path = await uploadImage('member', 'pi.jpg', blob)
+    const path = await uploadImage('member', `pi.${ext}`, blob)
     uploadingPIPhoto.value = false
-    if (path) piDraft.photo = path
-    else alert('Photo upload failed. Is the local dev server running?')
+    if (path) {
+      piDraft.photo = path
+      if (oldPhoto && !oldPhoto.startsWith('blob:') && oldPhoto.split('?')[0] !== path.split('?')[0]) {
+        await deleteImage(oldPhoto)
+      }
+    } else {
+      alert('Photo upload failed. Is the local dev server running?')
+    }
   }
 }
 

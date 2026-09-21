@@ -42,49 +42,104 @@ export function getClientIp(req: { headers: Record<string, string | string[] | u
   return 'unknown'
 }
 
-/** Fetches a file's current sha (needed to update/delete it), or null if it doesn't exist yet. */
-export async function getFileSha(path: string): Promise<string | null> {
+/* ------------------------------------------------------------------ *
+ * Git Data API - lets several file changes land in exactly ONE commit
+ * (the old Contents API approach always made one commit per file, which
+ * is why it's not used anymore - see commitBatch below).
+ * ------------------------------------------------------------------ */
+
+async function getBranchHeadSha(): Promise<string> {
   const { owner, repo, branch, token } = repoConfig()
-  const res = await fetch(
-    `${GITHUB_API}/repos/${owner}/${repo}/contents/${path}?ref=${encodeURIComponent(branch)}`,
-    { headers: headers(token) }
-  )
-  if (res.status === 404) return null
-  if (!res.ok) throw new Error(`GitHub GET ${path} failed: ${res.status} ${await res.text()}`)
+  const res = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/git/ref/heads/${branch}`, { headers: headers(token) })
+  if (!res.ok) throw new Error(`GitHub GET ref failed: ${res.status} ${await res.text()}`)
+  const json = (await res.json()) as { object: { sha: string } }
+  return json.object.sha
+}
+
+async function getCommitTreeSha(commitSha: string): Promise<string> {
+  const { owner, repo, token } = repoConfig()
+  const res = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/git/commits/${commitSha}`, { headers: headers(token) })
+  if (!res.ok) throw new Error(`GitHub GET commit failed: ${res.status} ${await res.text()}`)
+  const json = (await res.json()) as { tree: { sha: string } }
+  return json.tree.sha
+}
+
+async function createBlob(base64Content: string): Promise<string> {
+  const { owner, repo, token } = repoConfig()
+  const res = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/git/blobs`, {
+    method: 'POST',
+    headers: { ...headers(token), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content: base64Content, encoding: 'base64' }),
+  })
+  if (!res.ok) throw new Error(`GitHub create blob failed: ${res.status} ${await res.text()}`)
   const json = (await res.json()) as { sha: string }
   return json.sha
 }
 
-/** Creates or updates a file with the given base64 content, committing directly to the branch. */
-export async function putFile(path: string, base64Content: string, message: string): Promise<void> {
-  const { owner, repo, branch, token } = repoConfig()
-  const sha = await getFileSha(path)
-
-  const res = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/contents/${path}`, {
-    method: 'PUT',
+async function createTree(baseTreeSha: string, entries: { path: string; sha: string | null }[]): Promise<string> {
+  const { owner, repo, token } = repoConfig()
+  const res = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/git/trees`, {
+    method: 'POST',
     headers: { ...headers(token), 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      message,
-      content: base64Content,
-      branch,
-      ...(sha ? { sha } : {}),
+      base_tree: baseTreeSha,
+      tree: entries.map((e) => ({ path: e.path, mode: '100644', type: 'blob', sha: e.sha })),
     }),
   })
-
-  if (!res.ok) throw new Error(`GitHub PUT ${path} failed: ${res.status} ${await res.text()}`)
+  if (!res.ok) throw new Error(`GitHub create tree failed: ${res.status} ${await res.text()}`)
+  const json = (await res.json()) as { sha: string }
+  return json.sha
 }
 
-/** Deletes a file. No-ops (does not throw) if the file doesn't exist. */
-export async function deleteFile(path: string, message: string): Promise<void> {
-  const { owner, repo, branch, token } = repoConfig()
-  const sha = await getFileSha(path)
-  if (!sha) return // already gone
-
-  const res = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/contents/${path}`, {
-    method: 'DELETE',
+async function createCommitObject(treeSha: string, parentSha: string, message: string): Promise<string> {
+  const { owner, repo, token } = repoConfig()
+  const res = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/git/commits`, {
+    method: 'POST',
     headers: { ...headers(token), 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message, sha, branch }),
+    body: JSON.stringify({ message, tree: treeSha, parents: [parentSha] }),
   })
+  if (!res.ok) throw new Error(`GitHub create commit failed: ${res.status} ${await res.text()}`)
+  const json = (await res.json()) as { sha: string }
+  return json.sha
+}
 
-  if (!res.ok) throw new Error(`GitHub DELETE ${path} failed: ${res.status} ${await res.text()}`)
+async function updateBranchRef(commitSha: string): Promise<void> {
+  const { owner, repo, branch, token } = repoConfig()
+  const res = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/git/refs/heads/${branch}`, {
+    method: 'PATCH',
+    headers: { ...headers(token), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sha: commitSha }),
+  })
+  if (!res.ok) throw new Error(`GitHub update ref failed: ${res.status} ${await res.text()}`)
+}
+
+/**
+ * Writes/updates `files` and removes `deletions`, all landing in a single commit
+ * that gets pushed to the branch head. Returns the new commit sha, or null if
+ * there was nothing to do.
+ */
+export async function commitBatch(
+  files: { path: string; base64Content: string }[],
+  deletions: string[],
+  message: string
+): Promise<string | null> {
+  if (files.length === 0 && deletions.length === 0) return null
+
+  const headSha = await getBranchHeadSha()
+  const baseTreeSha = await getCommitTreeSha(headSha)
+
+  const entries: { path: string; sha: string | null }[] = []
+  for (const file of files) {
+    const sha = await createBlob(file.base64Content)
+    entries.push({ path: file.path, sha })
+  }
+  for (const path of deletions) {
+    entries.push({ path, sha: null })
+  }
+
+  const newTreeSha = await createTree(baseTreeSha, entries)
+  const newCommitSha = await createCommitObject(newTreeSha, headSha, message)
+  await updateBranchRef(newCommitSha)
+
+  return newCommitSha
 }

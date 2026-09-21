@@ -43,8 +43,8 @@
             <textarea v-model="draft.desc" rows="3" placeholder="Description"></textarea>
             <input v-model="draft.link" placeholder="Link (optional)" />
             <div class="image-field">
-              <div v-if="draft.image" class="photo-preview">
-                <img :src="draft.image" alt="" />
+              <div v-if="draft.image && !previewBroken" class="photo-preview">
+                <img :src="draft.image" alt="" @error="previewBroken = true" />
                 <button type="button" class="edit-image-btn" aria-label="Edit image" @click="editExistingImage">✎</button>
                 <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeNewsImage">✕</button>
               </div>
@@ -67,8 +67,8 @@
               <textarea v-model="draft.desc" rows="3" placeholder="Description"></textarea>
               <input v-model="draft.link" placeholder="Link (optional)" />
               <div class="image-field">
-                <div v-if="draft.image" class="photo-preview">
-                  <img :src="draft.image" alt="" />
+                <div v-if="draft.image && !previewBroken" class="photo-preview">
+                  <img :src="draft.image" alt="" @error="previewBroken = true" />
                   <button type="button" class="edit-image-btn" aria-label="Edit image" @click="editExistingImage">✎</button>
                   <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeNewsImage">✕</button>
                 </div>
@@ -151,6 +151,14 @@ const isNewItem = ref(false)
 const uploadingImage = ref(false)
 const formError = ref<string | null>(null)
 const draft = reactive({ date: '', tag: '', desc: '', link: '', image: '' })
+const previewBroken = ref(false)
+
+watch(
+  () => draft.image,
+  () => {
+    previewBroken.value = false
+  }
+)
 
 function startEdit(item: NewsItemType) {
   editingId.value = item.id ?? null
@@ -177,6 +185,7 @@ function startAdd() {
 
 function cancelEdit() {
   editingId.value = null
+  isNewItem.value = false
   formError.value = null
 }
 
@@ -200,16 +209,23 @@ function editExistingImage() {
   composerOpen.value = true
 }
 
-async function onComposedImage(blob: Blob) {
+async function onComposedImage(blob: Blob, ext: string) {
   composerOpen.value = false
   if (!editingId.value) return
 
+  const oldImage = draft.image
   uploadingImage.value = true
-  const path = await uploadImage('news', `${editingId.value}.jpg`, blob)
+  const path = await uploadImage('news', `${editingId.value}.${ext}`, blob)
   uploadingImage.value = false
 
-  if (path) draft.image = path
-  else alert('Image upload failed. Is the local dev server running?')
+  if (path) {
+    draft.image = path
+    if (oldImage && !oldImage.startsWith('blob:') && oldImage.split('?')[0] !== path.split('?')[0]) {
+      await deleteImage(oldImage)
+    }
+  } else {
+    alert('Image upload failed. Is the local dev server running?')
+  }
 }
 
 async function removeNewsImage() {
@@ -245,7 +261,7 @@ async function saveEdit() {
       target.image = draft.image
     }
   }
-  editingId.value = null
+  cancelEdit()
   await saveJsonFile('news.json', localNews.value)
 }
 

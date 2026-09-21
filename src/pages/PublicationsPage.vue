@@ -70,8 +70,10 @@
           <span>Images</span>
           <div class="image-list">
             <div v-for="src in draft.images" :key="src" class="image-thumb">
-              <img :src="src" alt="" />
-              <button type="button" class="edit-image-btn" aria-label="Edit image" @click="editExistingImage(src)">✎</button>
+              <img v-if="!brokenPreviews.has(src)" :src="src" alt="" @error="brokenPreviews.add(src)" />
+              <span v-else class="ph-label">✕</span>
+              <button v-if="!brokenPreviews.has(src)" type="button" class="edit-image-btn" aria-label="Edit image"
+                @click="editExistingImage(src)">✎</button>
               <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeImage(src)">✕</button>
             </div>
           </div>
@@ -169,6 +171,7 @@ const isNew = ref(false)
 const uploading = ref(false)
 const formError = ref<string | null>(null)
 const draft = reactive({ year: '', title: '', authors: '', venue: '', link: '', images: [] as string[] })
+const brokenPreviews = reactive(new Set<string>())
 
 function startEdit(pub: Publication) {
   editingId.value = pub.id
@@ -223,27 +226,33 @@ function editExistingImage(src: string) {
   composerOpen.value = true
 }
 
-async function onComposedImage(blob: Blob) {
+async function onComposedImage(blob: Blob, ext: string) {
   composerOpen.value = false
   if (!editingId.value) return
 
   uploading.value = true
 
   if (composerEditingSrc.value) {
-    // 기존 이미지 재편집: 같은 파일명으로 덮어써서 그 자리에 그대로 반영합니다.
+    // 기존 이미지 재편집: 같은 기본 파일명으로 덮어써서 그 자리에 그대로 반영합니다.
+    // 캔버스 출력 포맷이 브라우저마다 다를 수 있어서(webp 요청해도 Safari는 png를
+    // 줄 수 있음), 예전에 다른 확장자로 저장돼 있었으면 파일명이 바뀌는 셈이라
+    // 예전 파일은 따로 지워줍니다.
     const editingSrc = composerEditingSrc.value
-    const filename = editingSrc.split('/').pop()!.split('?')[0]
+    const oldFilename = editingSrc.split('/').pop()!.split('?')[0]
+    const baseName = oldFilename.replace(/\.[^./]+$/, '')
+    const filename = `${baseName}.${ext}`
     const path = await uploadImage('publications', filename, blob)
     uploading.value = false
 
     if (path) {
       const idx = draft.images.indexOf(editingSrc)
       if (idx !== -1) draft.images[idx] = path
+      if (filename !== oldFilename) await deleteImage(editingSrc)
     } else {
       alert('Image upload failed. Is the local dev server running?')
     }
   } else {
-    const filename = `${editingId.value}-${draft.images.length + 1}.jpg`
+    const filename = `${editingId.value}-${draft.images.length + 1}.${ext}`
     const path = await uploadImage('publications', filename, blob)
     uploading.value = false
 
@@ -256,6 +265,7 @@ async function onComposedImage(blob: Blob) {
 
 async function removeImage(src: string) {
   draft.images = draft.images.filter((s) => s !== src)
+  brokenPreviews.delete(src)
   await deleteImage(src)
 }
 

@@ -31,8 +31,8 @@
         <label class="field"><span>Name</span><input v-model="draft.name" /></label>
         <div class="field">
           <span>Image</span>
-          <div v-if="draft.image" class="photo-preview">
-            <img :src="draft.image" alt="" />
+          <div v-if="draft.image && !previewBroken" class="photo-preview">
+            <img :src="draft.image" alt="" @error="previewBroken = true" />
             <button type="button" class="edit-image-btn" aria-label="Edit image" @click="editExistingImage">✎</button>
             <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeImage">✕</button>
           </div>
@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
@@ -86,7 +86,15 @@ const editingId = ref<string | null>(null)
 const isNewEquipment = ref(false)
 const uploading = ref(false)
 const formError = ref<string | null>(null)
+const previewBroken = ref(false)
 const draft = reactive({ name: '', image: '' })
+
+watch(
+  () => draft.image,
+  () => {
+    previewBroken.value = false
+  }
+)
 
 function startEdit(item: Equipment) {
   editingId.value = item.id
@@ -130,16 +138,24 @@ function editExistingImage() {
   composerOpen.value = true
 }
 
-async function onComposedImage(blob: Blob) {
+async function onComposedImage(blob: Blob, ext: string) {
   composerOpen.value = false
   if (!editingId.value) return
 
+  const oldImage = draft.image
   uploading.value = true
-  const path = await uploadImage('equipment', `${editingId.value}.jpg`, blob)
+  const path = await uploadImage('equipment', `${editingId.value}.${ext}`, blob)
   uploading.value = false
 
-  if (path) draft.image = path
-  else alert('Image upload failed. Is the local dev server running?')
+  if (path) {
+    draft.image = path
+    // 예전에 다른 확장자(.jpg 등)로 저장돼 있었으면, 이름이 바뀐 거라 예전 파일이 남게 되므로 지웁니다.
+    if (oldImage && !oldImage.startsWith('blob:') && oldImage.split('?')[0] !== path.split('?')[0]) {
+      await deleteImage(oldImage)
+    }
+  } else {
+    alert('Image upload failed. Is the local dev server running?')
+  }
 }
 
 async function removeImage() {
