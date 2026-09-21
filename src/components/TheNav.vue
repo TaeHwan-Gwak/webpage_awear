@@ -58,7 +58,7 @@ import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAdminMode } from '../composables/useAdminMode'
 import { logoutAdmin } from '../composables/useAdminAuth'
-import { gitPush, flushPendingChanges } from '../services/localSave'
+import { gitPush, flushPendingChanges, hasPendingChanges } from '../services/localSave'
 
 const route = useRoute()
 const router = useRouter()
@@ -67,6 +67,13 @@ const { isAdmin, refresh } = useAdminMode()
 const isDev = import.meta.env.DEV
 
 function onLogout() {
+  if (hasPendingChanges()) {
+    const proceed = window.confirm(
+      "You have unsaved changes that haven't been pushed yet. Log out anyway? They'll be lost."
+    )
+    if (!proceed) return
+  }
+
   logoutAdmin()
   refresh()
   open.value = false
