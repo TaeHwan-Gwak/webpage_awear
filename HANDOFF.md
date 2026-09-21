@@ -47,20 +47,46 @@ Claude 채팅에서 VS Code Claude 익스텐션으로 작업을 옮기면서 정
 - 버튼 옆에 결과 메시지가 잠깐 떴다 사라짐 ("Pushed to GitHub ✓" / "Nothing to push" / "Push failed (단계)")
 - 로컬 컴퓨터에 이미 설정된 git 계정/인증정보를 그대로 사용함 (별도 토큰 설정 필요 없음)
 
-### ⚠️ 저장은 "로컬 개발 서버에서만" 동작함
+### 저장 방식이 로컬 dev와 배포 환경에서 서로 다름 (이제 둘 다 실제로 동작함)
 
-- `npm run dev`로 로컬에서 켜놓고 있을 때만 저장/사진 업로드/Git push가 실제로 동작해요
-- `vite-local-save-plugin.ts`가 로컬 전용 엔드포인트 4개를 제공함:
+**로컬 dev (`npm run dev`)**: `vite-local-save-plugin.ts`가 제공하는 로컬 전용 엔드포인트가 그대로 처리
   - `POST /api/local-save` — `src/data/*.json` 파일에 직접 씀
   - `POST /api/upload-image` — `public/<폴더>/<파일명>`에 base64 이미지 저장
   - `POST /api/delete-image` — 해당 파일 삭제
-  - `POST /api/git-push` — `git add -A && commit && push`
-- **배포된 사이트(Vercel)에서는 로그인은 되지만 수정 버튼 자체가 동작 안 함** — 이 엔드포인트들이 존재하지 않기 때문 (의도된 동작, 버그 아님)
-- **현재 워크플로우**: 로컬에서 admin으로 수정(즉시 파일 반영) → nav의 **Save 버튼**으로 Git push → Vercel 자동 재배포
+  - `POST /api/git-push` — `git add -A && commit && push` (nav의 "Save" 버튼, **로컬 dev에서만 보임**)
+
+**배포 환경 (Vercel)**: 같은 URL(`/api/local-save`, `/api/upload-image`, `/api/delete-image`)을 이제 `api/` 폴더의 **Vercel 서버리스 함수**가 처리함 (`api/local-save.ts`, `api/upload-image.ts`, `api/delete-image.ts`, 공용 로직은 `api/_github.ts`). 로컬 파일시스템이나 git CLI 대신 **GitHub Contents API**를 PAT로 직접 호출해서, **수정 하나하나가 바로 GitHub에 커밋됨** — 그래서 배포 환경엔 별도 "Save/push" 버튼이 필요 없고 안 보임(`TheNav.vue`의 `isDev` 체크). 커밋 메시지에 요청자 IP까지 남겨서(`api/_github.ts`의 `getClientIp()`) 커밋 히스토리 자체가 활동 로그 역할을 함
+
+- 어느 경로로 가는지는 클라이언트 코드가 신경 안 써도 됨 — `src/services/localSave.ts`는 URL 그대로 두고, 로컬이면 Vite 플러그인이, 배포면 Vercel 함수가 알아서 그 요청을 가로챔
+- 인증은 `x-admin-password` 헤더로 함 (`localSave.ts`의 `authHeaders()`) — 서버 쪽(`api/_github.ts`의 `isAuthorized()`)에서 `process.env.VITE_ADMIN_PASSWORD`랑 비교함. Vercel Function은 `VITE_` 접두사 여부 상관없이 프로젝트에 등록된 모든 환경변수를 `process.env`로 읽을 수 있어서, 별도 서버 전용 비밀번호 변수를 안 만들어도 됨
+- **⚠️ `vercel.json`의 SPA catch-all rewrite가 `/api/*`까지 삼켜버리는 실제 버그가 있었어서 고쳐둠** — `"source": "/(.*)"` → `"source": "/((?!api(?:/|$)).*)"`. 이 정규식 다시 원래대로 되돌리면 배포 환경에서 API 함수가 전부 안 먹힘
+
+**배포 환경에서 이 기능이 실제로 동작하려면 Vercel에 아래 4개 환경변수를 등록해야 함** (Settings → Environment Variables):
+  - `GITHUB_TOKEN` — GitHub Personal Access Token. Classic PAT면 `repo` 스코프, Fine-grained PAT면 이 저장소에 "Contents: Read and write" 권한
+  - `GITHUB_OWNER` — `TaeHwan-Gwak`
+  - `GITHUB_REPO` — `webpage_awear`
+  - `GITHUB_BRANCH` — (선택, 기본값 `main`이라 안 넣어도 됨)
+  - 이 값들 다 Type을 "Secret"으로 등록해도 됨 — 서버 전용이라 브라우저에 노출 안 됨 (`VITE_ADMIN_PASSWORD`랑 다름)
+
+이 4개 환경변수를 안 넣으면, 배포 환경에서 저장 시도 시 `api/_github.ts`의 `env()` 헬퍼가 에러를 던지고 500 응답이 나감 (기능이 조용히 실패하는 게 아니라 명확히 실패함)
+
+**아직 안 한 것**: 저장 실패 시 화면에 명확한 에러 피드백을 주는 부분이 페이지마다 다 되어있진 않음 (일부 `alert()`만 있음) — GitHub API 호출은 로컬 파일쓰기보다 실패 가능성이 높으니(네트워크, 토큰 만료 등), 나중에 보강하면 좋음
+
+### 관리자 활동 로그 (로컬 dev 전용, 화면에는 안 보임, GitHub엔 올라감)
+
+- `logs/admin-activity.log`에 요청자 IP + SAVE/UPLOAD/DELETE/GIT-PUSH가 타임스탬프와 함께 한 줄씩 쌓임 (예: `[2026-09-21T05:21:28.608Z] [127.0.0.1] UPLOAD equipment/ip-test.jpg`) — **로컬 dev에서만 기록됨**, 배포 환경은 위에서 설명한 대로 커밋 히스토리 자체가 로그 역할
+- **의도적으로 `.gitignore`에서 이 파일만 예외 처리해서 커밋됨** (`!logs/admin-activity.log`) — 다른 사람들이 누가 뭘 언제 수정했는지 볼 수 있게 하려는 목적. 다른 잡다한 `*.log` 파일들은 여전히 무시됨
+- nav의 "Save" 버튼(Git push, 로컬 dev 전용)을 누르면 `git add -A`가 이 로그 파일 변경분도 같이 커밋해감
+- 로깅 로직은 `vite-local-save-plugin.ts`의 `logAction()`/`getClientIp()` 함수
+
+### tsconfig 관련 주의사항
+
+- **`vue-tsc --noEmit`만으로는 `tsconfig.node.json`/`api/`가 제대로 체크 안 될 수 있음** (project reference를 안 따라감). 진짜 검증하려면 `npx vue-tsc -b` (필요하면 `--force`로 캐시 무시)로 확인할 것. `npm run build`는 정상적으로 `vue-tsc -b`를 쓰니 괜찮음
+- `tsconfig.node.json`의 `include`에 `api/**/*.ts` 추가해둠 — 새 api 파일 만들 때 이 include에서 안 빠지는지 확인
+- `api/` 안의 상대 import는 `nodenext` 모듈 해석 때문에 **확장자(`.js`)를 명시해야 함** (예: `from './_github.js'`, 실제 파일은 `.ts`여도 이렇게 씀) — 안 그러면 로컬 타입체크는 통과해도 `-b` 빌드에서 에러남
 
 ### 앞으로 할 일로 남겨둔 것
 
-**GitHub PAT + Vercel 서버리스 함수 방식으로 저장 기능을 실제 배포 사이트에서도 되게 하기로 결정했었음** (Firestore 대신 이 방식 선택). 아직 구현 안 함. 이유: GitHub PAT를 프론트엔드에 직접 노출하면 안 되니, Vercel Function이 서버 사이드에서 PAT로 커밋하고, 그 함수 자체는 별도의 서버 전용 secret(`ADMIN_SAVE_SECRET`, `VITE_` 접두사 아님)으로 보호해야 함.
 
 **추가로 논의된 아이디어 (아직 설계만, 구현 안 함)**: **로그아웃하는 시점에 그동안 로컬에 쌓인 변경사항을 GitHub에 자동으로 push하는 로직**도 같이 고려하기로 함. 지금 admin 페이지들은 "페이지 이동 시 저장/취소 확인" 방식(`usePendingChanges`, `useLeaveGuard`)으로 로컬 JSON 파일까지는 저장하는데, 그 다음 단계인 "로컬 저장 → 실제 배포 반영"을 로그아웃 액션에 연결하는 아이디어. 구현 시 고려할 것:
 - 로그아웃 시점에 아직 저장 안 된 변경사항(`usePendingChanges`의 dirty 상태)이 있으면 어떻게 할지 (자동 저장 후 push? 경고하고 취소 옵션?)
@@ -108,7 +134,7 @@ Claude 채팅에서 VS Code Claude 익스텐션으로 작업을 옮기면서 정
 3. **관리자 인증 강화** — 지금은 단순 비밀번호 하나. 배포 전에 Firebase Auth(Google 로그인) 등으로 교체 예정이라고 논의했었음
 4. **커스텀 도메인 연결** — `awearlab.com`을 Wix에서 Vercel로 DNS 전환. 연결되면 `robots.txt`/`sitemap.xml`/`index.html`/`router/updateHead.ts`의 도메인 값도 다 바꿔야 함
 5. **Google Search Console 등록** — 아직 안 함
-6. **Analytics 연동** — Vercel Analytics 또는 GA4 중 선택 필요. `/admin/stats` 탭이 지금은 외부 대시보드 링크만 보여줌
+6. **Analytics 연동** — `@vercel/analytics` 패키지 코드는 넣어뒀음(`App.vue`). **Vercel 대시보드에서 프로젝트 → Analytics 탭 → Enable만 누르면 바로 수집 시작됨** (dev 모드에선 데이터 안 쌓임, 배포 환경에서만 동작). `/admin/stats` 탭은 여전히 외부 대시보드 링크만 보여줌
 7. **콘텐츠 채우기** — Home 페이지에 "Headline", "Section title" 같은 placeholder 텍스트 여전히 남아있음
 
 ## 자주 쓰는 명령어
@@ -124,6 +150,7 @@ npx vue-tsc --noEmit  # 타입체크만
 
 - `previousId`/`previousIndex` 같은 "위치 복원" 로직은 의도적으로 제거했음 — 다시 만들지 말 것
 - 드래그 재정렬 시 id/파일명 재부여하는 로직도 의도적으로 제거했음 — 다시 만들지 말 것
-- Admin 저장은 로컬 전용이 원래 의도임 — "배포 사이트에서 저장 안 됨"은 버그 리포트 아님
-- **"페이지 단위 임시저장(Cancel/Save) + 페이지 이동 시 확인 모달" 방식은 한 번 만들었다가 명시적으로 되돌렸음** — 수정은 항상 즉시 반영되어야 하고, "Save"는 오직 Git push 용도. 이 staged-changes 패턴 다시 만들지 말 것
+- **"배포 사이트에서 저장 안 됨"은 이제 옛날 얘기임** — `api/*.ts` + GitHub Contents API로 실제 동작하게 만들어뒀음 (위 섹션 참고). Vercel에 4개 환경변수(`GITHUB_TOKEN`/`GITHUB_OWNER`/`GITHUB_REPO`/`GITHUB_BRANCH`) 등록 안 했으면 그것부터 확인할 것 — 코드 문제가 아닐 가능성이 큼
+- **`vercel.json`의 rewrite 정규식(`/((?!api(?:/|$)).*)`)을 단순 `/(.*)`로 되돌리지 말 것** — 그러면 `/api/*` 요청이 SPA로 흡수돼서 배포 환경 저장 기능이 통째로 죽음
+- **"페이지 단위 임시저장(Cancel/Save) + 페이지 이동 시 확인 모달" 방식은 한 번 만들었다가 명시적으로 되돌렸음** — 수정은 항상 즉시 반영되어야 하고, 로컬 dev의 "Save" 버튼은 오직 Git push 용도(배포 환경엔 이 버튼 자체가 없음, 매 수정이 바로 커밋되니까). 이 staged-changes 패턴 다시 만들지 말 것
 - `ImageComposer.vue`: 캔버스에 선택 테두리/리사이즈 핸들을 그리는 로직이 있는데, `useImage()`(내보내기)에서 `draw(false)`로 그 오버레이 없이 한 번 다시 그린 다음 `toBlob()` 해야 함 — 안 그러면 주황 테두리가 최종 이미지에 그대로 박힘. 배경은 흰색(`#ffffff`)이 맞음, 다른 색으로 바꾸지 말 것

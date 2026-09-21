@@ -13,5 +13,5 @@
     "moduleDetection": "force",
     "noEmit": true
   },
-  "include": ["vite.config.ts", "vite-local-save-plugin.ts"]
+  "include": ["vite.config.ts", "vite-local-save-plugin.ts", "api/**/*.ts"]
 }

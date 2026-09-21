@@ -20,10 +20,12 @@
       </nav>
 
       <div v-if="isAdmin" class="admin-actions">
-        <span v-if="pushResult" class="push-result" :class="{ error: !pushResult.ok }">{{ pushResult.message }}</span>
-        <button type="button" class="save-btn" :disabled="pushing" @click="onSave">
-          {{ pushing ? 'Pushing…' : 'Save' }}
-        </button>
+        <template v-if="isDev">
+          <span v-if="pushResult" class="push-result" :class="{ error: !pushResult.ok }">{{ pushResult.message }}</span>
+          <button type="button" class="save-btn" :disabled="pushing" @click="onSave">
+            {{ pushing ? 'Pushing…' : 'Save' }}
+          </button>
+        </template>
         <button type="button" class="logout-btn" @click="onLogout">Logout</button>
       </div>
 
@@ -42,10 +44,12 @@
           </router-link>
         </template>
         <div v-if="isAdmin" class="admin-actions mobile">
-          <span v-if="pushResult" class="push-result" :class="{ error: !pushResult.ok }">{{ pushResult.message }}</span>
-          <button type="button" class="save-btn mobile" :disabled="pushing" @click="onSave">
-            {{ pushing ? 'Pushing…' : 'Save' }}
-          </button>
+          <template v-if="isDev">
+            <span v-if="pushResult" class="push-result" :class="{ error: !pushResult.ok }">{{ pushResult.message }}</span>
+            <button type="button" class="save-btn mobile" :disabled="pushing" @click="onSave">
+              {{ pushing ? 'Pushing…' : 'Save' }}
+            </button>
+          </template>
           <button type="button" class="logout-btn mobile" @click="onLogout">Logout</button>
         </div>
       </nav>
@@ -64,6 +68,7 @@ const route = useRoute()
 const router = useRouter()
 const open = ref(false)
 const { isAdmin, refresh } = useAdminMode()
+const isDev = import.meta.env.DEV
 
 function onLogout() {
   logoutAdmin()

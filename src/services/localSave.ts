@@ -1,11 +1,20 @@
 export type SavableFile = 'members.json' | 'news.json' | 'publications.json' | 'equipment.json'
 export type ImageFolder = 'publications' | 'member' | 'news' | 'equipment'
 
+// 로컬 dev든(Vite 플러그인) 배포 환경이든(Vercel Function + GitHub API) 이 헤더로 인증합니다.
+// 배포 환경에서는 서버가 같은 값(VITE_ADMIN_PASSWORD)과 비교해서 확인합니다.
+function authHeaders(): Record<string, string> {
+  return {
+    'Content-Type': 'application/json',
+    'x-admin-password': import.meta.env.VITE_ADMIN_PASSWORD ?? '',
+  }
+}
+
 export async function saveJsonFile(file: SavableFile, data: unknown): Promise<boolean> {
   try {
     const res = await fetch('/api/local-save', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders(),
       body: JSON.stringify({ file, data }),
     })
     return res.ok
@@ -33,7 +42,7 @@ export async function uploadImage(
     const dataUrl = await fileToDataUrl(file)
     const res = await fetch('/api/upload-image', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders(),
       body: JSON.stringify({ folder, filename, dataUrl }),
     })
     if (!res.ok) return null
@@ -53,7 +62,7 @@ export async function deleteImage(imagePath: string): Promise<boolean> {
   try {
     const res = await fetch('/api/delete-image', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders(),
       body: JSON.stringify({ imagePath }),
     })
     return res.ok
