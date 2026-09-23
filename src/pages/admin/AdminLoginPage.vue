@@ -105,8 +105,8 @@ function enterAdmin() {
 }
 
 /** Tries the password, and moves to the request flow when the seat is taken. */
-function tryEnter() {
-  const result = loginAdmin(password.value)
+async function tryEnter() {
+  const result = await loginAdmin(password.value)
 
   if (result.ok) {
     enterAdmin()
@@ -115,6 +115,11 @@ function tryEnter() {
 
   if (result.reason === 'bad-password') {
     error.value = true
+    return
+  }
+
+  if (result.reason === 'ip-blocked') {
+    notice.value = 'Admin access is not available from this network.'
     return
   }
 

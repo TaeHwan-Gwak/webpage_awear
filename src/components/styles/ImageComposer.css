@@ -87,6 +87,21 @@
   }
 }
 
+.remove-layer-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 13px;
+  color: #d3452c;
+  background: transparent;
+  transition: border-color 0.18s ease, background 0.18s ease;
+
+  &:hover {
+    border-color: #d3452c;
+    background: rgba(211, 69, 44, 0.06);
+  }
+}
+
 .layer-hint {
   font-size: 12px;
   color: var(--text-faint);

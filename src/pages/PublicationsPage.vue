@@ -72,8 +72,6 @@
             <div v-for="src in draft.images" :key="src" class="image-thumb">
               <img v-if="!brokenPreviews.has(src)" :src="src" alt="" @error="brokenPreviews.add(src)" />
               <span v-else class="ph-label">✕</span>
-              <button v-if="!brokenPreviews.has(src)" type="button" class="edit-image-btn" aria-label="Edit image"
-                @click="editExistingImage(src)">✎</button>
               <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeImage(src)">✕</button>
             </div>
           </div>
@@ -90,9 +88,6 @@
         </div>
       </div>
     </div>
-
-    <ImageComposer :open="composerOpen" :initial-file="composerFile" :initial-url="composerUrl" :aspect-ratio="4 / 3"
-      @use="onComposedImage" @cancel="composerOpen = false" />
   </main>
 </template>
 
@@ -104,7 +99,6 @@ import SignalDivider from '../components/SignalDivider.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
-import ImageComposer from '../components/ImageComposer.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { useEscapeKey } from '../composables/useEscapeKey'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
@@ -203,64 +197,20 @@ function cancelEdit() {
   formError.value = null
 }
 
-const composerOpen = ref(false)
-const composerFile = ref<File | null>(null)
-const composerUrl = ref<string | null>(null)
-const composerEditingSrc = ref<string | null>(null)
-
-function onFileSelected(e: Event) {
+async function onFileSelected(e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   input.value = ''
-  if (!file) return
-  composerFile.value = file
-  composerUrl.value = null
-  composerEditingSrc.value = null
-  composerOpen.value = true
-}
-
-function editExistingImage(src: string) {
-  composerFile.value = null
-  composerUrl.value = src
-  composerEditingSrc.value = src
-  composerOpen.value = true
-}
-
-async function onComposedImage(blob: Blob, ext: string) {
-  composerOpen.value = false
-  if (!editingId.value) return
+  if (!file || !editingId.value) return
 
   uploading.value = true
+  const ext = file.name.split('.').pop() || 'jpg'
+  const filename = `${editingId.value}-${draft.images.length + 1}.${ext}`
+  const path = await uploadImage('publications', filename, file)
+  uploading.value = false
 
-  if (composerEditingSrc.value) {
-    // 기존 이미지 재편집: 같은 기본 파일명으로 덮어써서 그 자리에 그대로 반영합니다.
-    // 캔버스 출력 포맷이 브라우저마다 다를 수 있어서(webp 요청해도 Safari는 png를
-    // 줄 수 있음), 예전에 다른 확장자로 저장돼 있었으면 파일명이 바뀌는 셈이라
-    // 예전 파일은 따로 지워줍니다.
-    const editingSrc = composerEditingSrc.value
-    const oldFilename = editingSrc.split('/').pop()!.split('?')[0]
-    const baseName = oldFilename.replace(/\.[^./]+$/, '')
-    const filename = `${baseName}.${ext}`
-    const path = await uploadImage('publications', filename, blob)
-    uploading.value = false
-
-    if (path) {
-      const idx = draft.images.indexOf(editingSrc)
-      if (idx !== -1) draft.images[idx] = path
-      if (filename !== oldFilename) await deleteImage(editingSrc)
-    } else {
-      alert('Image upload failed. Is the local dev server running?')
-    }
-  } else {
-    const filename = `${editingId.value}-${draft.images.length + 1}.${ext}`
-    const path = await uploadImage('publications', filename, blob)
-    uploading.value = false
-
-    if (path) draft.images.push(path)
-    else alert('Image upload failed. Is the local dev server running?')
-  }
-
-  composerEditingSrc.value = null
+  if (path) draft.images.push(path)
+  else alert('Image upload failed. Is the local dev server running?')
 }
 
 async function removeImage(src: string) {

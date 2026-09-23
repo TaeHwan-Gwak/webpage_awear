@@ -153,6 +153,34 @@ npm run build         # 프로덕션 빌드 (vue-tsc -b && vite build)
 npx vue-tsc --noEmit  # 타입체크만
 ```
 
+## 사진 편집기 - Equipment만 남음
+
+- `ImageComposer.vue`(드래그로 위치/크기 조절)는 이제 **Equipment에서만 씀**. News/Member/Publications는 예전처럼 파일 선택하면 그대로 바로 업로드되고, 화면에서 `object-fit`/`max-width` 등으로 알아서 크기가 맞춰짐 (별도 크롭 UI 없음)
+
+## Equipment - 사진 여러 장을 "각자 파일"로 저장 (합성 이미지 아님)
+
+- 예전엔 사진 2장을 편집기에서 합쳐서 **파일 1개**(캔버스 결과물)로 저장했음 - 재편집하려면 원본을 다시 찾아야 하는 문제가 있었음
+- 지금은 `equipment.json`의 각 항목이 `layers?: { src, x, y, width, height }[]`를 가짐 - **사진마다 자기 파일 그대로** 저장되고(원본 그대로, 재인코딩 안 함), 위치/크기는 프레임 기준 비율(0~1)로만 따로 저장됨
+- `ImageComposer.vue`가 이제 blob 하나 대신 **레이어 배열**을 emit함(`use: [layers: LayerResult[], removedSrcs: string[]]`) - 각 레이어는 기존 파일이면 `{src, x, y, width, height}`(재업로드 안 함), 새 파일이면 `{blob, ext, x, y, width, height}`(그때 처음 업로드)
+- 재편집 시 위치만 옮기고 내용은 안 바꾼 레이어는 **재업로드 자체를 안 함** - `src`만 그대로 두고 좌표만 갱신
+- 화면 표시는 새 컴포넌트 `LayeredImage.vue`가 담당 - `position:relative` 컨테이너 안에 각 파일을 절대좌표(%)로 배치. 컨테이너의 aspect-ratio가 컴포저 프레임과 같아야(Equipment는 4:3) 비율이 안 깨짐
+- **예전 데이터(단일 `image` 필드)와 호환됨** - `layers`가 없으면 `image`로 표시. 편집 열면 그 `image`를 layer 1개짜리로 자동 변환해서 편집기에 띄움. 저장하면 `layers`로 넘어가고 `image`는 비움
+- 컴포저 안에 "Remove selected image" 버튼 추가함 - 레이어 하나만 골라서 뺄 수 있음. 전부 빼고 "Use this layout" 눌러도 됨(빈 레이아웃 = 사진 없음, 정상 케이스라 버튼 disabled 안 걸어둠)
+
+## Member - 카드형 아래에 리스트형 비교 섹션 추가
+
+- 기존 카드 그리드는 그대로 두고, Alumni 아래에 **"Alternate Layout (for comparison)"** 섹션을 새로 추가함 - Postdocs+Members를 `MemberListRow.vue`(사진 왼쪽, 정보 오른쪽)로 다시 보여줌
+- 둘 중 뭘 실제로 쓸지 정해지면, 안 쓰는 쪽(카드 grid 섹션 전체 또는 이 비교 섹션)을 지우면 됨 - 지금은 비교용으로 둘 다 남아있는 임시 상태
+
+## Admin 로그인 - IP 제한 + superAdmin 비밀번호 (코드만 구현됨, 아직 미배포/미테스트)
+
+- **왜 `middleware.ts`(루트, 예전부터 있던 IP 제한 스캐폴딩) 대신 새로 만들었는지**: 그 미들웨어는 `/admin/*` 라우트 자체를 IP로 막는 방식인데, 그러면 superAdmin도 로그인 페이지 자체에 못 들어가서 비밀번호를 입력할 방법이 없음. 그래서 **로그인 페이지는 누구나 열리게 두고, 비밀번호 검증 단계에서** IP를 확인하는 방식으로 바꿈. `middleware.ts`는 그대로 `ENABLE_IP_RESTRICTION = false` 유지 - 다시 켜면 안 됨(superAdmin 우회가 막힘)
+- 새 서버리스 함수 `api/verify-admin.ts`: 비밀번호가 `SUPER_ADMIN_PASSWORD`(새 서버 전용 env var)와 일치하면 **IP 상관없이 통과**. `VITE_ADMIN_PASSWORD`(기존 일반 admin 비밀번호)와 일치하면 **요청 IP가 허용 목록에 있어야만** 통과. 허용 목록(`EXACT_IPS`/`ALLOWED_SUBNET_PREFIXES`)은 `middleware.ts`와 같은 방식으로 파일 안에 하드코딩되어 있음(값 바꾸려면 코드 수정 + 재배포 필요) - **두 파일의 목록이 서로 다르게 벌어지지 않게 같이 관리할 것**
+- `useAdminAuth.ts`의 `loginAdmin()`이 이제 **비동기**로 바뀜: 로컬 dev는 예전처럼 클라이언트에서 바로 비밀번호만 비교(IP 의미 없으니), 배포 환경은 `/api/verify-admin`을 호출해서 서버가 검증. `LoginResult`에 `'ip-blocked'` 사유 추가됨
+- `AdminLoginPage.vue`의 `tryEnter()`도 async로 바뀜, `ip-blocked`일 때 "Admin access is not available from this network." 안내 문구 표시
+- **필요한 새 환경변수**: Vercel에 `SUPER_ADMIN_PASSWORD` 추가 필요 (Secret 타입) - 교수님이 이 비밀번호로 로그인하면 IP 상관없이 들어감
+- **아직 안 한 것**: `EXACT_IPS`/`ALLOWED_SUBNET_PREFIXES`에 실제 허용할 IP/서브넷을 안 채워둠(둘 다 빈 배열) - 지금 이대로 배포하면 **일반 admin 비밀번호로는 아무도 못 들어감**(허용 목록이 비어있어서). 실제 사용 전에 GIST 캠퍼스 IP 대역 등을 채워 넣어야 함. `api/verify-admin.ts`를 실제 배포된 상태에서 로그인 테스트도 아직 안 해봄(Vercel Function이라 로컬 dev 서버로는 테스트 불가 - 로직만 Node 스크립트로 시뮬레이션해서 확인함)
+
 ## 이번 세션에서 특히 주의할 점
 
 - `previousId`/`previousIndex` 같은 "위치 복원" 로직은 의도적으로 제거했음 — 다시 만들지 말 것

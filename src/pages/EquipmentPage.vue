@@ -15,7 +15,8 @@
           <DragHandle class="handle" />
           <figure class="equipment-card">
             <div class="thumb">
-              <img v-if="item.image && !brokenIds.has(item.id)" :src="item.image" :alt="item.name" loading="lazy"
+              <LayeredImage v-if="item.layers?.length" :layers="item.layers" :alt="item.name" />
+              <img v-else-if="item.image && !brokenIds.has(item.id)" :src="item.image" :alt="item.name" loading="lazy"
                 @error="brokenIds.add(item.id)" />
               <span v-else class="ph-label">Image</span>
             </div>
@@ -31,14 +32,12 @@
         <label class="field"><span>Name</span><input v-model="draft.name" /></label>
         <div class="field">
           <span>Image</span>
-          <div v-if="draft.image && !previewBroken" class="photo-preview">
-            <img :src="draft.image" alt="" @error="previewBroken = true" />
-            <button type="button" class="edit-image-btn" aria-label="Edit image" @click="editExistingImage">✎</button>
-            <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeImage">✕</button>
+          <div v-if="draft.layers.length" class="photo-preview">
+            <LayeredImage :layers="draft.layers" />
+            <button type="button" class="remove-image-btn" aria-label="Remove all images" @click="removeAllImages">✕</button>
           </div>
-          <label class="upload-btn">
-            {{ uploading ? 'Uploading…' : '+ Upload image' }}
-            <input type="file" accept="image/*" :disabled="uploading" @change="onImageSelected" />
+          <label class="upload-btn" @click.prevent="composerOpen = true">
+            {{ draft.layers.length ? 'Edit images' : '+ Upload image' }}
           </label>
         </div>
         <p v-if="formError" class="form-error">{{ formError }}</p>
@@ -49,19 +48,20 @@
       </div>
     </div>
 
-    <ImageComposer :open="composerOpen" :initial-file="composerFile" :initial-url="composerUrl" :aspect-ratio="4 / 3"
-      @use="onComposedImage" @cancel="composerOpen = false" />
+    <ImageComposer :open="composerOpen" :initial-layers="draft.layers" :aspect-ratio="4 / 3" @use="onComposedLayers"
+      @cancel="composerOpen = false" />
   </main>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue'
+import { reactive, ref } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
-import ImageComposer from '../components/ImageComposer.vue'
+import ImageComposer, { type LayerResult } from '../components/ImageComposer.vue'
+import LayeredImage, { type ImageLayer } from '../components/LayeredImage.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { useDragReorder } from '../composables/useDragReorder'
 import { useEscapeKey } from '../composables/useEscapeKey'
@@ -74,6 +74,7 @@ interface Equipment {
   id: string
   name: string
   image?: string
+  layers?: ImageLayer[]
 }
 
 const { isAdmin } = useAdminMode()
@@ -84,24 +85,20 @@ const equipmentDrag = useDragReorder(equipment, () => saveJsonFile('equipment.js
 
 const editingId = ref<string | null>(null)
 const isNewEquipment = ref(false)
-const uploading = ref(false)
 const formError = ref<string | null>(null)
-const previewBroken = ref(false)
-const draft = reactive({ name: '', image: '' })
-
-watch(
-  () => draft.image,
-  () => {
-    previewBroken.value = false
-  }
-)
+const draft = reactive<{ name: string; layers: ImageLayer[] }>({ name: '', layers: [] })
 
 function startEdit(item: Equipment) {
   editingId.value = item.id
   isNewEquipment.value = false
   formError.value = null
   draft.name = item.name
-  draft.image = item.image ?? ''
+  // 예전 방식(사진 1장 합성본)으로 저장된 항목은 그걸 layer 1개짜리로 취급해서 편집기에 그대로 띄웁니다.
+  draft.layers = item.layers?.length
+    ? [...item.layers]
+    : item.image
+      ? [{ src: item.image, x: 0, y: 0, width: 1, height: 1 }]
+      : []
 }
 
 function startAdd() {
@@ -110,7 +107,7 @@ function startAdd() {
   isNewEquipment.value = true
   formError.value = null
   draft.name = ''
-  draft.image = ''
+  draft.layers = []
 }
 
 function cancelEdit() {
@@ -119,48 +116,37 @@ function cancelEdit() {
 }
 
 const composerOpen = ref(false)
-const composerFile = ref<File | null>(null)
-const composerUrl = ref<string | null>(null)
 
-function onImageSelected(e: Event) {
-  const input = e.target as HTMLInputElement
-  const file = input.files?.[0]
-  input.value = ''
-  if (!file) return
-  composerFile.value = file
-  composerUrl.value = null
-  composerOpen.value = true
+async function removeAllImages() {
+  for (const layer of draft.layers) await deleteImage(layer.src)
+  draft.layers = []
 }
 
-function editExistingImage() {
-  composerFile.value = null
-  composerUrl.value = draft.image
-  composerOpen.value = true
-}
-
-async function onComposedImage(blob: Blob, ext: string) {
+async function onComposedLayers(results: LayerResult[], removedSrcs: string[]) {
   composerOpen.value = false
   if (!editingId.value) return
 
-  const oldImage = draft.image
-  uploading.value = true
-  const path = await uploadImage('equipment', `${editingId.value}.${ext}`, blob)
-  uploading.value = false
+  const newLayers: ImageLayer[] = []
 
-  if (path) {
-    draft.image = path
-    // 예전에 다른 확장자(.jpg 등)로 저장돼 있었으면, 이름이 바뀐 거라 예전 파일이 남게 되므로 지웁니다.
-    if (oldImage && !oldImage.startsWith('blob:') && oldImage.split('?')[0] !== path.split('?')[0]) {
-      await deleteImage(oldImage)
+  for (let i = 0; i < results.length; i++) {
+    const r = results[i]
+    if (r.src) {
+      newLayers.push({ src: r.src, x: r.x, y: r.y, width: r.width, height: r.height })
+    } else if (r.blob && r.ext) {
+      const path = await uploadImage('equipment', `${editingId.value}-${i}.${r.ext}`, r.blob)
+      if (!path) {
+        alert('Image upload failed. Is the local dev server running?')
+        return
+      }
+      newLayers.push({ src: path, x: r.x, y: r.y, width: r.width, height: r.height })
     }
-  } else {
-    alert('Image upload failed. Is the local dev server running?')
   }
-}
 
-async function removeImage() {
-  if (draft.image) await deleteImage(draft.image)
-  draft.image = ''
+  for (const src of removedSrcs) {
+    await deleteImage(src)
+  }
+
+  draft.layers = newLayers
 }
 
 async function saveEdit() {
@@ -173,12 +159,13 @@ async function saveEdit() {
   }
 
   if (isNewEquipment.value) {
-    equipment.push({ id: editingId.value, name: draft.name, image: draft.image })
+    equipment.push({ id: editingId.value, name: draft.name, layers: draft.layers })
   } else {
     const target = equipment.find((e) => e.id === editingId.value)
     if (target) {
       target.name = draft.name
-      target.image = draft.image
+      target.layers = draft.layers
+      target.image = undefined // 레이어 방식으로 넘어갔으니 예전 단일 이미지 필드는 비웁니다.
     }
   }
 
@@ -189,6 +176,7 @@ async function saveEdit() {
 async function deleteEquipment(item: Equipment) {
   const idx = equipment.findIndex((e) => e.id === item.id)
   if (idx !== -1) equipment.splice(idx, 1)
+  for (const layer of item.layers ?? []) await deleteImage(layer.src)
   if (item.image) await deleteImage(item.image)
   await saveJsonFile('equipment.json', equipment)
 }

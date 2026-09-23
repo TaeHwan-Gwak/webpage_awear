@@ -142,14 +142,17 @@ export function getAdminToken(): string | null {
  * 'locked' means the password was right but another admin holds the session -
  * only then can access be requested. Checking the password first keeps people
  * who do not know it from spamming requests.
+ * 'ip-blocked' means the regular admin password was correct, but the request's
+ * network isn't on the allowlist - only the superAdmin password bypasses that.
  */
 export type LoginResult =
   | { ok: true }
   | { ok: false; reason: 'no-password-configured' }
   | { ok: false; reason: 'bad-password' }
+  | { ok: false; reason: 'ip-blocked' }
   | { ok: false; reason: 'locked'; heldBy: SessionLock }
 
-export function loginAdmin(password: string): LoginResult {
+export async function loginAdmin(password: string): Promise<LoginResult> {
   const correctPassword = import.meta.env.VITE_ADMIN_PASSWORD
 
   if (!correctPassword) {
@@ -157,8 +160,28 @@ export function loginAdmin(password: string): LoginResult {
     return { ok: false, reason: 'no-password-configured' }
   }
 
-  if (password !== correctPassword) {
-    return { ok: false, reason: 'bad-password' }
+  if (import.meta.env.DEV) {
+    // 로컬 dev는 항상 이 컴퓨터에서 접속하는 거라 IP 제한이 의미가 없으니,
+    // 예전처럼 비밀번호만 클라이언트에서 바로 확인합니다.
+    if (password !== correctPassword) {
+      return { ok: false, reason: 'bad-password' }
+    }
+  } else {
+    // 배포 환경: 서버에서 비밀번호를 확인하고, 일반 admin 비밀번호라면 IP까지 확인합니다.
+    // (superAdmin 비밀번호는 IP 상관없이 통과 - api/verify-admin.ts)
+    try {
+      const res = await fetch('/api/verify-admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      })
+      const json = (await res.json()) as { ok: boolean; reason?: string }
+      if (!json.ok) {
+        return { ok: false, reason: json.reason === 'ip-blocked' ? 'ip-blocked' : 'bad-password' }
+      }
+    } catch {
+      return { ok: false, reason: 'bad-password' }
+    }
   }
 
   const lock = acquireLock(getSessionId(), ADMIN_LABEL)

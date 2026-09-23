@@ -18,7 +18,6 @@
             <span>Photo</span>
             <div v-if="piDraft.photo && !piPreviewBroken" class="photo-preview">
               <img :src="piDraft.photo" alt="" @error="piPreviewBroken = true" />
-              <button type="button" class="edit-image-btn" aria-label="Edit photo" @click="editExistingPIPhoto">✎</button>
               <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removePIPhoto">✕</button>
             </div>
             <label class="upload-btn">
@@ -98,6 +97,19 @@
       <AdminAddButton v-if="isAdmin" label="Add alumnus" @add="startAdd('alumni')" />
     </section>
 
+    <SignalDivider />
+
+    <section class="group alt-layout section">
+      <h2 class="group-title">Alternate Layout (for comparison)</h2>
+      <p class="alt-layout-note">Same postdocs and members shown as a list instead of cards — for comparing which
+        looks better.</p>
+      <ul class="member-list">
+        <MemberListRow v-for="member in [...form.postdocs, ...form.members]" :key="member.id" :name="member.name"
+          :role="member.role" :note="member.note" :email="member.email" :interests="member.interests"
+          :photo="member.photo" />
+      </ul>
+    </section>
+
     <div v-if="editingGroup" class="edit-modal-backdrop" @click.self="cancelEdit">
       <div class="edit-modal">
         <label class="field"><span>Name</span><input v-model="draft.name" /></label>
@@ -109,7 +121,6 @@
           <span>Photo</span>
           <div v-if="draft.photo && !memberPreviewBroken" class="photo-preview">
             <img :src="draft.photo" alt="" @error="memberPreviewBroken = true" />
-            <button type="button" class="edit-image-btn" aria-label="Edit photo" @click="editExistingMemberPhoto">✎</button>
             <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removeMemberPhoto">✕</button>
           </div>
           <label class="upload-btn">
@@ -139,9 +150,6 @@
         </div>
       </div>
     </div>
-
-    <ImageComposer :open="composerOpen" :initial-file="composerFile" :initial-url="composerUrl" :aspect-ratio="1"
-      @use="onComposedImage" @cancel="composerOpen = false" />
   </main>
 </template>
 
@@ -150,11 +158,11 @@ import { onBeforeUnmount, reactive, ref, watch, watchEffect } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import MemberCard from '../components/MemberCard.vue'
+import MemberListRow from '../components/MemberListRow.vue'
 import AlumniItem from '../components/AlumniItem.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
 import DragHandle from '../components/DragHandle.vue'
-import ImageComposer from '../components/ImageComposer.vue'
 import { useAdminMode } from '../composables/useAdminMode'
 import { useDragReorder } from '../composables/useDragReorder'
 import { useEscapeKey } from '../composables/useEscapeKey'
@@ -257,27 +265,26 @@ function cancelEdit() {
   formError.value = null
 }
 
-const composerOpen = ref(false)
-const composerFile = ref<File | null>(null)
-const composerUrl = ref<string | null>(null)
-const composerTarget = ref<'member' | 'pi' | null>(null)
-
-function onMemberPhotoSelected(e: Event) {
+async function onMemberPhotoSelected(e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   input.value = ''
-  if (!file) return
-  composerFile.value = file
-  composerUrl.value = null
-  composerTarget.value = 'member'
-  composerOpen.value = true
-}
+  if (!file || !editingId.value) return
 
-function editExistingMemberPhoto() {
-  composerFile.value = null
-  composerUrl.value = draft.photo
-  composerTarget.value = 'member'
-  composerOpen.value = true
+  const oldPhoto = draft.photo
+  uploadingPhoto.value = true
+  const ext = file.name.split('.').pop() || 'jpg'
+  const path = await uploadImage('member', `${editingId.value}.${ext}`, file)
+  uploadingPhoto.value = false
+
+  if (path) {
+    draft.photo = path
+    if (oldPhoto && !oldPhoto.startsWith('blob:') && oldPhoto.split('?')[0] !== path.split('?')[0]) {
+      await deleteImage(oldPhoto)
+    }
+  } else {
+    alert('Photo upload failed. Is the local dev server running?')
+  }
 }
 
 async function removeMemberPhoto() {
@@ -422,56 +429,25 @@ function cancelEditPI() {
   piFormError.value = null
 }
 
-function onPIPhotoSelected(e: Event) {
+async function onPIPhotoSelected(e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   input.value = ''
   if (!file) return
-  composerFile.value = file
-  composerUrl.value = null
-  composerTarget.value = 'pi'
-  composerOpen.value = true
-}
 
-function editExistingPIPhoto() {
-  composerFile.value = null
-  composerUrl.value = piDraft.photo
-  composerTarget.value = 'pi'
-  composerOpen.value = true
-}
+  const oldPhoto = piDraft.photo
+  uploadingPIPhoto.value = true
+  const ext = file.name.split('.').pop() || 'jpg'
+  const path = await uploadImage('member', `pi.${ext}`, file)
+  uploadingPIPhoto.value = false
 
-async function onComposedImage(blob: Blob, ext: string) {
-  composerOpen.value = false
-  const target = composerTarget.value
-  composerTarget.value = null
-
-  if (target === 'member') {
-    if (!editingId.value) return
-    const oldPhoto = draft.photo
-    uploadingPhoto.value = true
-    const path = await uploadImage('member', `${editingId.value}.${ext}`, blob)
-    uploadingPhoto.value = false
-    if (path) {
-      draft.photo = path
-      if (oldPhoto && !oldPhoto.startsWith('blob:') && oldPhoto.split('?')[0] !== path.split('?')[0]) {
-        await deleteImage(oldPhoto)
-      }
-    } else {
-      alert('Photo upload failed. Is the local dev server running?')
+  if (path) {
+    piDraft.photo = path
+    if (oldPhoto && !oldPhoto.startsWith('blob:') && oldPhoto.split('?')[0] !== path.split('?')[0]) {
+      await deleteImage(oldPhoto)
     }
-  } else if (target === 'pi') {
-    const oldPhoto = piDraft.photo
-    uploadingPIPhoto.value = true
-    const path = await uploadImage('member', `pi.${ext}`, blob)
-    uploadingPIPhoto.value = false
-    if (path) {
-      piDraft.photo = path
-      if (oldPhoto && !oldPhoto.startsWith('blob:') && oldPhoto.split('?')[0] !== path.split('?')[0]) {
-        await deleteImage(oldPhoto)
-      }
-    } else {
-      alert('Photo upload failed. Is the local dev server running?')
-    }
+  } else {
+    alert('Photo upload failed. Is the local dev server running?')
   }
 }
 

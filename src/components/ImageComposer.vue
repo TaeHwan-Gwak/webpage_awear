@@ -1,8 +1,9 @@
 <template>
   <div v-if="open" class="composer-backdrop" @click.self="$emit('cancel')">
     <div class="composer-modal">
-      <h3>Adjust image</h3>
-      <p class="hint">Drag to move. Drag the corner handle to resize. Anything outside the frame is cropped away.</p>
+      <h3>Arrange images</h3>
+      <p class="hint">Drag to move. Drag the corner handle to resize. Anything outside the frame is cropped away.
+        Each image is kept as its own file - only the layout is saved.</p>
 
       <div class="canvas-wrap">
         <canvas ref="canvasEl" :width="outputWidth" :height="outputHeight" @mousedown="onPointerDown"
@@ -10,15 +11,19 @@
       </div>
 
       <div class="composer-toolbar">
-        <label class="add-layer-btn" :class="{ disabled: layers.length >= 2 }">
-          + Add second image
-          <input type="file" accept="image/*" :disabled="layers.length >= 2" @change="onAddLayer" />
+        <label class="add-layer-btn" :class="{ disabled: layers.length >= maxLayers }">
+          + Add {{ layers.length ? 'another' : 'an' }} image
+          <input type="file" accept="image/*" :disabled="layers.length >= maxLayers" @change="onAddLayer" />
         </label>
-        <span v-if="layers.length" class="layer-hint">Click an image to select it, then use the corner handle to resize.</span>
+        <button v-if="activeIndex !== null" type="button" class="remove-layer-btn" @click="removeActiveLayer">
+          Remove selected image
+        </button>
+        <span v-if="layers.length" class="layer-hint">Click an image to select it, then use the corner handle to
+          resize.</span>
       </div>
 
       <div class="composer-actions">
-        <button type="button" class="use-btn" :disabled="!layers.length" @click="useImage">Use this image</button>
+        <button type="button" class="use-btn" @click="useLayers">Use this layout</button>
         <button type="button" class="cancel-btn" @click="$emit('cancel')">Cancel</button>
       </div>
     </div>
@@ -28,21 +33,44 @@
 <script setup lang="ts">
 import { ref, watch, nextTick, onBeforeUnmount } from 'vue'
 
+interface LayerInput {
+  src: string
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
 const props = withDefaults(
   defineProps<{
     open: boolean
-    /** Initial image to load as the first layer, when opened - a freshly picked file. */
+    /** A freshly picked file to load as the first layer, when opened. */
     initialFile?: File | null
-    /** Or, to re-edit an already-saved image, its existing public path/URL. */
-    initialUrl?: string | null
+    /** Existing saved layers (their own files + saved position, as fractions of the frame) to re-edit. */
+    initialLayers?: LayerInput[]
     /** width / height of the output frame. 1 = square, 4/3 = landscape, etc. */
     aspectRatio?: number
+    /** Max number of images that can be arranged at once. */
+    maxLayers?: number
   }>(),
-  { aspectRatio: 1, initialFile: null, initialUrl: null }
+  { aspectRatio: 1, initialFile: null, initialLayers: () => [], maxLayers: 2 }
 )
 
+export interface LayerResult {
+  /** Present when this layer's file is unchanged - just save the new position. */
+  src?: string
+  /** Present when this layer needs uploading (a freshly added image). */
+  blob?: Blob
+  ext?: string
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
 const emit = defineEmits<{
-  use: [blob: Blob, ext: string]
+  /** layers to save (in order), and the src of any existing layer the person removed. */
+  use: [layers: LayerResult[], removedSrcs: string[]]
   cancel: []
 }>()
 
@@ -56,11 +84,14 @@ interface Layer {
   y: number
   width: number
   height: number
+  existingSrc?: string
+  file?: File
 }
 
 const canvasEl = ref<HTMLCanvasElement | null>(null)
 const layers = ref<Layer[]>([])
 const activeIndex = ref<number | null>(null)
+const removedSrcs = ref<string[]>([])
 
 const HANDLE_SIZE = 28
 
@@ -91,41 +122,49 @@ function loadImageUrl(url: string): Promise<HTMLImageElement> {
   })
 }
 
-function fitLayer(img: HTMLImageElement): Layer {
+function fitLayer(img: HTMLImageElement): { x: number; y: number; width: number; height: number } {
   // Fit the image so its longer side lands exactly on the frame edge (like
   // object-fit: contain), centered - the whole image starts visible.
   const scale = Math.min(outputWidth / img.width, outputHeight / img.height)
   const width = img.width * scale
   const height = img.height * scale
-  return {
-    img,
-    width,
-    height,
-    x: (outputWidth - width) / 2,
-    y: (outputHeight - height) / 2,
-  }
+  return { width, height, x: (outputWidth - width) / 2, y: (outputHeight - height) / 2 }
 }
 
 async function addLayerFromFile(file: File) {
   const img = await loadImageFile(file)
-  layers.value.push(fitLayer(img))
+  layers.value.push({ img, file, ...fitLayer(img) })
   activeIndex.value = layers.value.length - 1
   draw()
 }
 
-async function addLayerFromUrl(url: string) {
-  const img = await loadImageUrl(url)
-  layers.value.push(fitLayer(img))
-  activeIndex.value = layers.value.length - 1
-  draw()
+async function addLayerFromExisting(input: LayerInput) {
+  const img = await loadImageUrl(input.src)
+  layers.value.push({
+    img,
+    existingSrc: input.src,
+    x: input.x * outputWidth,
+    y: input.y * outputHeight,
+    width: input.width * outputWidth,
+    height: input.height * outputHeight,
+  })
 }
 
 async function onAddLayer(e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   input.value = ''
-  if (!file || layers.value.length >= 2) return
+  if (!file || layers.value.length >= props.maxLayers) return
   await addLayerFromFile(file)
+}
+
+function removeActiveLayer() {
+  if (activeIndex.value === null) return
+  const layer = layers.value[activeIndex.value]
+  if (layer.existingSrc) removedSrcs.value.push(layer.existingSrc)
+  layers.value.splice(activeIndex.value, 1)
+  activeIndex.value = null
+  draw()
 }
 
 function draw(showChrome = true) {
@@ -244,22 +283,28 @@ function detachMoveListeners() {
 
 onBeforeUnmount(detachMoveListeners)
 
-function useImage() {
-  const canvas = canvasEl.value
-  if (!canvas) return
-  draw(false)
-  canvas.toBlob(
-    (blob) => {
-      draw(true)
-      if (!blob) return
-      // 일부 브라우저(Safari 등)는 webp를 요청해도 에러 없이 다른 포맷으로 대신
-      // 만들어주기 때문에, 실제로 뭐가 나왔는지 확인해서 확장자를 맞춥니다.
-      const ext = blob.type === 'image/webp' ? 'webp' : blob.type === 'image/png' ? 'png' : 'jpg'
-      emit('use', blob, ext)
-    },
-    'image/webp',
-    0.9
-  )
+function detectExt(file: File): string {
+  const fromName = file.name.split('.').pop()
+  if (fromName && fromName.length <= 5) return fromName.toLowerCase()
+  if (file.type === 'image/png') return 'png'
+  if (file.type === 'image/webp') return 'webp'
+  return 'jpg'
+}
+
+function useLayers() {
+  const results: LayerResult[] = layers.value.map((layer) => {
+    const x = layer.x / outputWidth
+    const y = layer.y / outputHeight
+    const width = layer.width / outputWidth
+    const height = layer.height / outputHeight
+
+    if (layer.existingSrc) {
+      return { src: layer.existingSrc, x, y, width, height }
+    }
+    return { blob: layer.file!, ext: detectExt(layer.file!), x, y, width, height }
+  })
+
+  emit('use', results, removedSrcs.value)
 }
 
 watch(
@@ -272,12 +317,17 @@ watch(
     }
     layers.value = []
     activeIndex.value = null
+    removedSrcs.value = []
     dragMode = null
     await nextTick()
-    if (props.initialFile) {
+    if (props.initialLayers.length) {
+      for (const input of props.initialLayers) {
+        await addLayerFromExisting(input)
+      }
+      activeIndex.value = null
+      draw()
+    } else if (props.initialFile) {
       await addLayerFromFile(props.initialFile)
-    } else if (props.initialUrl) {
-      await addLayerFromUrl(props.initialUrl)
     } else {
       draw()
     }

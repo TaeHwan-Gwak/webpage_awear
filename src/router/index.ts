@@ -113,6 +113,22 @@ const router = createRouter({
 
 router.afterEach((to) => {
   updateHeadForRoute(to)
+  // 새로고침 이후 정상적으로 페이지 이동이 성공했다는 뜻이므로, 나중에 또 다른
+  // 배포로 같은 문제가 생겨도 다시 한 번 새로고침할 수 있게 플래그를 풀어둡니다.
+  sessionStorage.removeItem('reloaded-after-chunk-error')
+})
+
+// vite:preloadError(main.ts)로 못 잡는 경우의 안전망 - 페이지 이동 중에 예전 청크
+// 파일을 못 찾아 던져지는 에러도 같은 방식(한 번만 새로고침)으로 처리합니다.
+router.onError((error) => {
+  const message = error instanceof Error ? error.message : String(error)
+  const isChunkLoadError = /Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed/i.test(
+    message
+  )
+  if (!isChunkLoadError) return
+  if (sessionStorage.getItem('reloaded-after-chunk-error')) return
+  sessionStorage.setItem('reloaded-after-chunk-error', '1')
+  window.location.reload()
 })
 
 export default router
