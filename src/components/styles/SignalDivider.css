@@ -1,7 +1,6 @@
 .signal-divider {
   position: relative;
   height: 1px;
-  background: var(--border-soft);
 
   &::before {
     content: "";

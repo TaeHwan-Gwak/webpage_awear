@@ -20,14 +20,23 @@
         <p class="eyebrow">Recent Media</p>
       </header>
 
-      <div class="media-grid">
-        <a v-for="item in recentMedia" :key="item.title" class="media-item" :href="item.link" target="_blank"
-          rel="noopener">
+      <div class="media-feature">
+        <a class="media-main" :href="recentMedia[0].link" target="_blank" rel="noopener">
           <div class="thumb" aria-hidden="true">
             <span class="ph-label">Image</span>
           </div>
-          <p class="media-title">{{ item.title }}</p>
+          <p class="media-title">{{ recentMedia[0].title }}</p>
         </a>
+
+        <div class="media-secondary">
+          <a v-for="item in recentMedia.slice(1)" :key="item.title" class="media-item" :href="item.link"
+            target="_blank" rel="noopener">
+            <div class="thumb" aria-hidden="true">
+              <span class="ph-label">Image</span>
+            </div>
+            <p class="media-title">{{ item.title }}</p>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -73,13 +82,13 @@
         <p class="eyebrow">On-going Projects</p>
       </header>
 
-      <div class="project-grid">
-        <article v-for="item in ongoingProjects" :key="item.title" class="project-card">
+      <div class="projects-grid">
+        <div v-for="item in ongoingProjects" :key="item.title" class="project-card">
           <div class="thumb" aria-hidden="true">
             <span class="ph-label">Image</span>
           </div>
-          <p class="project-title">{{ item.title }}</p>
-        </article>
+          <p class="title">{{ item.title }}</p>
+        </div>
       </div>
     </section>
 
@@ -144,7 +153,7 @@ const recentMedia = [
 ]
 
 const ongoingProjects = [
-  { title: 'AI 최고급 신진연구자 지원사업 (AI 스타펠로우십) — MIND 의료 파운데이션 모델 개발' },
+  { title: 'AI 최고급 신진연구자 지원사업 (AI 스타펠로우십)\nMIND 의료 파운데이션 모델 개발' },
   { title: '침상환자 재활을 위한 필라테스봇, 국립재활원' },
   { title: 'BrainJoystick: 로봇 제어 BCI, 우수신진과제, 연구재단' },
   { title: '파킨슨병환자를 위한 로봇-뉴럴인터페이스, 연구재단 뇌선도' },
@@ -184,16 +193,16 @@ const fallbackNews: NewsItemType[] = [
   { id: 'seed-3', date: 'Date', desc: 'News content', tag: 'Tag' },
 ]
 
-// 로컬 news.json 최신순(날짜 desc) 상위 3개 — 관리자 편집은 News 페이지의 news.json에 반영되므로
+// 로컬 news.json 최신순(날짜 desc) — 관리자 편집은 News 페이지의 news.json에 반영되므로
 // 홈에서도 같은 파일을 읽어 최신 소식이 자동으로 보이게 합니다.
-const localLatestNews = [...(newsDataRaw as NewsItemType[])]
-  .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
-  .slice(0, 3)
+const localLatestNews = [...(newsDataRaw as NewsItemType[])].sort((a, b) =>
+  a.date < b.date ? 1 : a.date > b.date ? -1 : 0
+)
 
 const { news, loading: newsLoading, error: newsError } = useNews(3)
 const displayNews = computed(() => {
   if (news.value.length) return news.value.slice(0, 3)
-  if (localLatestNews.length) return localLatestNews
+  if (localLatestNews.length) return localLatestNews.slice(0, 3)
   return fallbackNews
 })
 

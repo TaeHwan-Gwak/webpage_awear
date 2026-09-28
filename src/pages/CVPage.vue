@@ -4,7 +4,7 @@
       <router-link class="back-link" to="/member">← Back to Member</router-link>
     </div>
 
-    <PageHeader eyebrow="Curriculum Vitae" :title="pi.name" :description="pi.role" />
+    <PageHeader eyebrow="Curriculum Vitae" :title="pi.name" :description="`${pi.role}, ${pi.department}`" />
 
     <section class="cv-content section">
       <div v-for="block in pi.cv" :key="block.section" class="cv-block">

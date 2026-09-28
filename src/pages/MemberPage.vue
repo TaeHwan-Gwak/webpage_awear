@@ -1,30 +1,17 @@
 <template>
   <main class="member-page">
-    <PageHeader eyebrow="Member" title="Page title" description="Page description" />
+    <PageHeader eyebrow="Member" title="Member" description="" />
 
     <SignalDivider />
 
     <section class="pi-feature section">
       <div class="card">
-        <div class="portrait" aria-hidden="true">
-          <img v-if="!editingPI && form.pi.photo" :src="form.pi.photo" alt="" class="portrait-photo" />
-          <span v-else-if="!editingPI" class="ph-label">Image</span>
-        </div>
-        <div v-if="editingPI" class="body edit-form">
+        <div v-if="editingPI" class="edit-form">
           <label class="field"><span>Name</span><input v-model="piDraft.name" /></label>
           <label class="field"><span>Role</span><input v-model="piDraft.role" /></label>
+          <label class="field"><span>Department</span><input v-model="piDraft.department" /></label>
+          <label class="field"><span>Institution</span><input v-model="piDraft.institution" /></label>
           <label class="field"><span>Email</span><input v-model="piDraft.email" /></label>
-          <div class="field">
-            <span>Photo</span>
-            <div v-if="piDraft.photo && !piPreviewBroken" class="photo-preview">
-              <img :src="piDraft.photo" alt="" @error="piPreviewBroken = true" />
-              <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removePIPhoto">✕</button>
-            </div>
-            <label class="upload-btn">
-              {{ uploadingPIPhoto ? 'Uploading…' : '+ Upload photo' }}
-              <input type="file" accept="image/*" :disabled="uploadingPIPhoto" @change="onPIPhotoSelected" />
-            </label>
-          </div>
           <p v-if="piFormError" class="form-error">{{ piFormError }}</p>
           <div class="edit-actions">
             <button type="button" class="save-btn" @click="savePI">Save</button>
@@ -33,27 +20,32 @@
         </div>
         <div v-else class="body">
           <p class="eyebrow">Principal Investigator</p>
-          <h2>{{ form.pi.name }}</h2>
+          <h2>
+            {{ form.pi.name }}
+            <router-link class="inline-link" to="/member/cv">[Link]</router-link>
+          </h2>
           <p class="role">{{ form.pi.role }}</p>
-          <div class="actions">
-            <a class="mail" :href="`mailto:${form.pi.email}`">{{ form.pi.email }}</a>
-            <router-link class="cv-btn" to="/member/cv">View CV →</router-link>
-            <AdminEditControls v-if="isAdmin" hide-delete @edit="startEditPI" />
-          </div>
+          <p class="dept">{{ form.pi.department }}</p>
+          <p class="inst">{{ form.pi.institution }}</p>
+          <a class="mail" :href="`mailto:${form.pi.email}`">{{ form.pi.email }}</a>
+          <AdminEditControls v-if="isAdmin" hide-delete @edit="startEditPI" />
         </div>
       </div>
     </section>
 
-    <section v-if="form.postdocs?.length || isAdmin" class="group section">
+    <section v-if="form.postdocs?.length || isAdmin" class="group postdocs section">
       <h2 class="group-title">Postdoctoral Researchers</h2>
-      <div class="grid">
-        <div v-for="(member, i) in form.postdocs" :key="member.id" class="card-slot"
+      <div class="postdoc-list">
+        <div v-for="(member, i) in form.postdocs" :key="member.id" class="postdoc-row"
           :class="{ dragging: postdocDrag.draggedIndex.value === i }" :draggable="isAdmin"
           @dragstart="postdocDrag.onDragStart(i)" @dragover="postdocDrag.onDragOver(i, $event)"
           @drop="postdocDrag.onDrop(i)" @dragend="postdocDrag.onDragEnd">
-          <DragHandle class="handle" />
-          <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
-            :interests="member.interests" :photo="member.photo" />
+          <DragHandle v-if="isAdmin" class="handle" />
+          <div class="info">
+            <p class="name">{{ member.name }}</p>
+            <p class="role">{{ member.role }}</p>
+          </div>
+          <p class="note">{{ member.note }}</p>
           <AdminEditControls v-if="isAdmin" @edit="startEdit('postdocs', member)" @delete="deleteMember('postdocs', member)" />
         </div>
       </div>
@@ -77,6 +69,22 @@
         </div>
       </div>
       <AdminAddButton v-if="isAdmin" label="Add member" @add="startAdd('members')" />
+    </section>
+
+    <section v-if="form.interns?.length || isAdmin" class="group section">
+      <h2 class="group-title">{{ form.internsTitle ?? 'Undergraduate Interns' }}</h2>
+      <div class="grid">
+        <div v-for="(member, i) in form.interns" :key="member.id" class="card-slot"
+          :class="{ dragging: internDrag.draggedIndex.value === i }" :draggable="isAdmin"
+          @dragstart="internDrag.onDragStart(i)" @dragover="internDrag.onDragOver(i, $event)"
+          @drop="internDrag.onDrop(i)" @dragend="internDrag.onDragEnd">
+          <DragHandle class="handle" />
+          <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
+            :interests="member.interests" :photo="member.photo" />
+          <AdminEditControls v-if="isAdmin" @edit="startEdit('interns', member)" @delete="deleteMember('interns', member)" />
+        </div>
+      </div>
+      <AdminAddButton v-if="isAdmin" label="Add intern" @add="startAdd('interns')" />
     </section>
 
     <section v-if="form.alumni?.length || isAdmin" class="group alumni section">
@@ -192,13 +200,15 @@ onBeforeUnmount(removeStructuredData)
 
 const postdocDrag = useDragReorder(form.postdocs, () => saveJsonFile('members.json', form))
 const memberDrag = useDragReorder(form.members, () => saveJsonFile('members.json', form))
+const internDrag = useDragReorder(form.interns, () => saveJsonFile('members.json', form))
 const alumniDrag = useDragReorder(form.alumni, () => saveJsonFile('members.json', form))
 
-type GroupKey = 'postdocs' | 'members' | 'alumni'
+type GroupKey = 'postdocs' | 'members' | 'interns' | 'alumni'
 
 const FALLBACK_PREFIX: Record<GroupKey, string> = {
   postdocs: 'p',
   members: 'g',
+  interns: 'i',
   alumni: 'a',
 }
 
@@ -389,23 +399,15 @@ async function doGraduate() {
 }
 
 const editingPI = ref(false)
-const uploadingPIPhoto = ref(false)
 const piFormError = ref<string | null>(null)
-const piDraft = reactive({ name: '', role: '', email: '', photo: '' })
-const piPreviewBroken = ref(false)
-
-watch(
-  () => piDraft.photo,
-  () => {
-    piPreviewBroken.value = false
-  }
-)
+const piDraft = reactive({ name: '', role: '', department: '', institution: '', email: '' })
 
 function startEditPI() {
   piDraft.name = form.pi.name
   piDraft.role = form.pi.role
+  piDraft.department = form.pi.department
+  piDraft.institution = form.pi.institution
   piDraft.email = form.pi.email
-  piDraft.photo = form.pi.photo ?? ''
   piFormError.value = null
   editingPI.value = true
 }
@@ -413,33 +415,6 @@ function startEditPI() {
 function cancelEditPI() {
   editingPI.value = false
   piFormError.value = null
-}
-
-async function onPIPhotoSelected(e: Event) {
-  const input = e.target as HTMLInputElement
-  const file = input.files?.[0]
-  input.value = ''
-  if (!file) return
-
-  const oldPhoto = piDraft.photo
-  uploadingPIPhoto.value = true
-  const ext = file.name.split('.').pop() || 'jpg'
-  const path = await uploadImage('member', `pi.${ext}`, file)
-  uploadingPIPhoto.value = false
-
-  if (path) {
-    piDraft.photo = path
-    if (oldPhoto && !oldPhoto.startsWith('blob:') && oldPhoto.split('?')[0] !== path.split('?')[0]) {
-      await deleteImage(oldPhoto)
-    }
-  } else {
-    alert('Photo upload failed. Is the local dev server running?')
-  }
-}
-
-async function removePIPhoto() {
-  if (piDraft.photo) await deleteImage(piDraft.photo)
-  piDraft.photo = ''
 }
 
 async function savePI() {
@@ -455,8 +430,9 @@ async function savePI() {
 
   form.pi.name = piDraft.name
   form.pi.role = piDraft.role
+  form.pi.department = piDraft.department
+  form.pi.institution = piDraft.institution
   form.pi.email = piDraft.email
-  form.pi.photo = piDraft.photo
   editingPI.value = false
   await saveJsonFile('members.json', form)
 }

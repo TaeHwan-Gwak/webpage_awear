@@ -1,7 +1,9 @@
 {
   "pi": {
     "name": "Jiyeon Kang",
-    "role": "Associate Professor, Robotics Program, Dept. of AI Convergence, Gwangju Institute of Science and Technology (GIST)",
+    "role": "Associate Professor",
+    "department": "Department of AI",
+    "institution": "Gwangju Institute of Science and Technology (GIST)",
     "email": "jkangrobot@gist.ac.kr",
     "cv": [
       {
@@ -40,82 +42,82 @@
   "groupTitle": "Graduate Students",
   "members": [
     {
-      "id": "g1",
-      "name": "Souvik Poddar",
-      "role": "Mechanical and Aerospace Engineering",
-      "note": "Student at SUNY Buffalo in the USA",
-      "email": "souvikpoddar@gm.gist.ac.kr",
-      "interests": "",
-      "photo": ""
-    },
-    {
       "id": "g2",
       "name": "Kihyun Kim",
-      "role": "AI Graduate School",
-      "note": "",
+      "role": "Ph.D. Student",
+      "note": "Brain–computer interface (BCI)",
       "email": "kihyunkim@gm.gist.ac.kr",
-      "interests": "",
-      "photo": ""
-    },
-    {
-      "id": "g3",
-      "name": "Seong-Hun Jeong",
-      "role": "School of Integrated Technology, Robotics Program",
-      "note": "",
-      "email": "seonghunjeong@gm.gist.ac.kr",
       "interests": "",
       "photo": ""
     },
     {
       "id": "g4",
       "name": "Ingyun Ahn",
-      "role": "School of Integrated Technology, Robotics Program",
-      "note": "",
+      "role": "Integrated M.S.–Ph.D.",
+      "note": "Cable-driven robotic prosthesis",
       "email": "ingyunahn@gm.gist.ac.kr",
-      "interests": "",
-      "photo": ""
-    },
-    {
-      "id": "g5",
-      "name": "Dae Yeon Kim",
-      "role": "Dept. of AI Convergence, Robotics Program",
-      "note": "",
-      "email": "daekim@gm.gist.ac.kr",
       "interests": "",
       "photo": ""
     },
     {
       "id": "g6",
       "name": "Youngkee Kim",
-      "role": "Dept. of AI Convergence, Robotics Program",
-      "note": "",
+      "role": "Integrated M.S.–Ph.D.",
+      "note": "Brain stimulation and neurofeedback",
       "email": "youngkeekim@gm.gist.ac.kr",
-      "interests": "",
-      "photo": ""
-    },
-    {
-      "id": "g7",
-      "name": "Seohee Jang",
-      "role": "Dept. of AI Convergence, Robotics Program",
-      "note": "",
-      "email": "seoheejang@gm.gist.ac.kr",
       "interests": "",
       "photo": ""
     },
     {
       "id": "g8",
       "name": "Kyungmin Kwon",
-      "role": "Dept. of AI Convergence, Robotics Program",
-      "note": "",
+      "role": "Integrated M.S.–Ph.D.",
+      "note": "Robot-driven neuromodulation",
       "email": "kyungminkwon@gm.gist.ac.kr",
+      "interests": "",
+      "photo": ""
+    },
+    {
+      "id": "g12",
+      "name": "Hyunwon Nam",
+      "role": "Integrated M.S.–Ph.D.",
+      "note": "Neural Interface and simulation",
+      "email": "hyunwonnam@gm.gist.ac.kr",
+      "interests": "",
+      "photo": ""
+    },
+    {
+      "id": "g3",
+      "name": "Seong-Hun Jeong",
+      "role": "M.S. Student",
+      "note": "Pilates-based rehabilitation robot",
+      "email": "seonghunjeong@gm.gist.ac.kr",
+      "interests": "",
+      "photo": ""
+    },
+    {
+      "id": "g5",
+      "name": "Dae Yeon Kim",
+      "role": "M.S. Student",
+      "note": "3D animal pose estimation and behavior analysis",
+      "email": "daekim@gm.gist.ac.kr",
+      "interests": "",
+      "photo": ""
+    },
+    {
+      "id": "g7",
+      "name": "Seohee Jang",
+      "role": "M.S. Student",
+      "note": "Animal EEG and closed-loop brain stimulation",
+      "email": "seoheejang@gm.gist.ac.kr",
       "interests": "",
       "photo": ""
     },
     {
       "id": "g9",
       "name": "Jiye Sohn",
-      "role": "Dept. of AI Convergence, Robotics Program",
-      "note": "",
+      "role": "M.S. Student",
+      "note": "LLM-assisted dysarthric speech recognition",
       "email": "jiyesohn@gm.gist.ac.kr",
       "interests": "",
       "photo": ""
@@ -123,8 +125,8 @@
     {
       "id": "g10",
       "name": "Junghoon Yang",
-      "role": "Dept. of AI Convergence, Robotics Program",
-      "note": "",
+      "role": "M.S. Student",
+      "note": "3D human pose estimation and health monitoring",
       "email": "junghoonyang@gm.gist.ac.kr",
       "interests": "",
       "photo": ""
@@ -132,24 +134,69 @@
     {
       "id": "g11",
       "name": "Taehwan Gwak",
-      "role": "Dept. of AI Convergence, Robotics Program",
-      "note": "",
+      "role": "M.S. Student",
+      "note": "Pilates-based rehabilitation robot",
       "email": "taehwangwak@gm.gist.ac.kr",
+      "interests": "",
+      "photo": ""
+    }
+  ],
+  "internsTitle": "Undergraduate Interns",
+  "interns": [
+    {
+      "id": "i1",
+      "name": "Yujin Choi",
+      "role": "School of Electrical Engineering and Computer Science",
+      "note": "",
+      "email": "",
       "interests": "",
       "photo": ""
     },
     {
-      "id": "g12",
-      "name": "Hyunwon Nam",
-      "role": "Dept. of AI Convergence, Robotics Program",
+      "id": "i2",
+      "name": "Gaeul Park",
+      "role": "School of Electrical Engineering and Computer Science",
       "note": "",
-      "email": "hyunwonnam@gm.gist.ac.kr",
+      "email": "",
+      "interests": "",
+      "photo": ""
+    },
+    {
+      "id": "i3",
+      "name": "Azhymametov Muratbek",
+      "role": "School of Mechanical and Robotics Engineering",
+      "note": "",
+      "email": "",
+      "interests": "",
+      "photo": ""
+    },
+    {
+      "id": "i4",
+      "name": "Minsu Park",
+      "role": "School of Electrical Engineering and Computer Science",
+      "note": "",
+      "email": "",
+      "interests": "",
+      "photo": ""
+    },
+    {
+      "id": "i5",
+      "name": "Sangmin Im",
+      "role": "School of Electrical Engineering and Computer Science",
+      "note": "",
+      "email": "",
       "interests": "",
       "photo": ""
     }
   ],
   "alumniTitle": "Alumni",
   "alumni": [
+    {
+      "id": "a21",
+      "name": "Souvik Poddar",
+      "role": "Ph.D., Dept. of Mechanical and Aerospace Engineering, SUNY Buffalo",
+      "note": "currently InnoCORE fellow at KAIST"
+    },
     {
       "id": "a20",
       "name": "Na Gyeong Ham",
