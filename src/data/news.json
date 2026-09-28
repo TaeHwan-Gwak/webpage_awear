@@ -141,5 +141,19 @@
     "desc": "test",
     "link": "",
     "image": ""
+  },
+  {
+    "id": "n21",
+    "date": "2026.07",
+    "tag": "General",
+    "desc": "AWEAR Lab이 GIST InnoCORE 알츠하이머병 뇌자기자극 가소성 리프로그래밍 REMAP 연구단에 참여합니다.",
+    "link": ""
+  },
+  {
+    "id": "n22",
+    "date": "2026.09",
+    "tag": "Grant",
+    "desc": "AWEAR Lab이 과학기술정보통신부의 2026년도 AI 최고급 신진연구자 지원사업(AI 스타펠로우십)에 선정되어 연구를 수행합니다.",
+    "link": ""
   }
 ]

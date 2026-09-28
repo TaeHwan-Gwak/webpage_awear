@@ -7,8 +7,27 @@
 
       <div class="hero-text section">
         <p class="eyebrow">AI-based WEArable Robotics Lab</p>
-        <h1>Headline</h1>
-        <p class="lede">Intro text</p>
+        <h1>AWEAR Lab</h1>
+        <p class="lede">AWEAR Lab은 GIST AI학과 로봇트랙 소속으로, 기계공학, 전기전자공학, 컴퓨터공학, 의공학 등에서 익힌 전공 지식에 AI를 접목해 사람의 움직임을 돕는 로봇과 헬스케어 기술을 연구합니다. 이를 위해 로봇 의수·재활로봇을 설계하고, 근육·뇌 신호로 로봇의 움직임을 제어하는 Physical AI를 연구하고 있습니다. 또한 뇌–컴퓨터 인터페이스를 통해 사람과 로봇을 연결하는 기술과, 일상 동작 영상으로 근력과 신체 기능의 변화를 분석하는 헬스케어 AI를 개발하고 있습니다.</p>
+        <p class="lede lede-en">Welcome to the AI-based WEArable Robotics (AWEAR) Laboratory at Gwangju Institute of Science and Technology (GIST). Our research combines the design and control of robotic prostheses and rehabilitation robots with AI that interprets muscle and brain signals. We also develop brain–computer interfaces (BCIs) that connect people with robots, and healthcare AI that uses videos of everyday movements to assess muscle strength and changes in physical function.</p>
+      </div>
+    </section>
+
+    <SignalDivider />
+
+    <section id="media" class="media section">
+      <header class="head">
+        <p class="eyebrow">Recent Media</p>
+      </header>
+
+      <div class="media-grid">
+        <a v-for="item in recentMedia" :key="item.title" class="media-item" :href="item.link" target="_blank"
+          rel="noopener">
+          <div class="thumb" aria-hidden="true">
+            <span class="ph-label">Image</span>
+          </div>
+          <p class="media-title">{{ item.title }}</p>
+        </a>
       </div>
     </section>
 
@@ -17,7 +36,7 @@
     <section id="research" class="themes section">
       <header class="head">
         <p class="eyebrow">Research Themes</p>
-        <h2>Section title</h2>
+        <h2>6 research directions — from robotic prosthetics and rehabilitation robots to brain–computer interfaces</h2>
         <router-link class="more-link" to="/research">View Research →</router-link>
       </header>
     </section>
@@ -52,16 +71,14 @@
     <section id="ongoing" class="ongoing section">
       <header class="head">
         <p class="eyebrow">On-going Projects</p>
-        <h2>Section title</h2>
       </header>
 
       <div class="project-grid">
-        <article v-for="i in 3" :key="i" class="project-card">
+        <article v-for="item in ongoingProjects" :key="item.title" class="project-card">
           <div class="thumb" aria-hidden="true">
             <span class="ph-label">Image</span>
           </div>
-          <p class="project-title">Project title</p>
-          <p class="project-desc">Project description</p>
+          <p class="project-title">{{ item.title }}</p>
         </article>
       </div>
     </section>
@@ -71,7 +88,6 @@
     <section id="news" class="news section">
       <header class="head">
         <p class="eyebrow">News</p>
-        <h2>Section title</h2>
       </header>
 
       <p v-if="newsError" class="status">Couldn't load the latest news, showing previous content instead.</p>
@@ -110,6 +126,31 @@ const heroImages = [
   'https://picsum.photos/seed/awear-lab-1/1600/900',
   'https://picsum.photos/seed/awear-lab-2/1600/900',
   'https://picsum.photos/seed/awear-lab-3/1600/900',
+]
+
+const recentMedia = [
+  {
+    title: 'Physics-informed AI를 통한 노인의 근감소증 추적 기술 JCR 상위 2% JNER에 게재',
+    link: 'https://n.news.naver.com/article/030/0003435675?sid=102',
+  },
+  {
+    title: '뇌성마비환자 보행 개선 로봇 재활기술 개발, JCR 상위 2% 이내 IEEE TNSRE 게재',
+    link: 'https://www.irobotnews.com/news/articleView.html?idxno=45239',
+  },
+  {
+    title: "로봇, '맞춤형 의수 설계' 맡는다…손목 동작 정밀 구현 Robotics Automation Letter 게재",
+    link: 'https://v.daum.net/v/Q8SX1H6bWK?f=p',
+  },
+]
+
+const ongoingProjects = [
+  { title: 'AI 최고급 신진연구자 지원사업 (AI 스타펠로우십) — MIND 의료 파운데이션 모델 개발' },
+  { title: '침상환자 재활을 위한 필라테스봇, 국립재활원' },
+  { title: 'BrainJoystick: 로봇 제어 BCI, 우수신진과제, 연구재단' },
+  { title: '파킨슨병환자를 위한 로봇-뉴럴인터페이스, 연구재단 뇌선도' },
+  { title: 'GIST InnoCore 극한환경 피지컬AI - Polar AI' },
+  { title: 'GIST InnoCore 알츠하이머뇌 리포그래밍 REMAP' },
+  { title: '일상재활 자립을 위한 보조기기 개발, 보건복지부' },
 ]
 
 const galleryCount = 5

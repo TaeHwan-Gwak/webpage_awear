@@ -1,6 +1,6 @@
 <template>
   <main class="research-page">
-    <PageHeader eyebrow="Research" title="Page title" description="Page description" />
+    <PageHeader eyebrow="Research" title="Research" description="" />
 
     <SignalDivider />
 
@@ -30,9 +30,36 @@ import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 
 const topics = [
-  { id: 'topic-1', title: 'BCI / Neural Interface', desc: 'Description' },
-  { id: 'topic-2', title: 'Robotics & Prosthetics', desc: 'Description' },
-  { id: 'topic-3', title: 'AI & Vision', desc: 'Description' },
+  {
+    id: 'topic-1',
+    title: '비전 기반 토크 추정 및 고령 인구 근감소증 모니터링 플랫폼 개발',
+    desc: 'We are developing a system for estimating torque through multi-view vision to facilitate ongoing monitoring of the elderly population for potential sarcopenia. A lot of cameras are embedded in our daily living environment (TV, robot vacuum, AC, etc.). Ambient monitoring will be configured using these cameras to monitor the health of the elderly. To calculate joint torque, we employ a biomechanics simulator (OpenSim) combined with AI, aiming to establish a specialized metric for detecting and assessing sarcopenia.',
+  },
+  {
+    id: 'topic-2',
+    title: '다자유도 로봇 의수 에뮬레이터 및 맞춤형 Human-in-the-loop 알고리즘 개발',
+    desc: 'This research develops a prosthetic emulator that allows adjustment of design parameters such as DoF and weight. The cable-actuated emulator features a Human-in-the-loop (HITL) framework to optimize prosthetic designs through quantifiable metrics, focusing on both physical and cognitive user responses. This novel emulator will guide the personalized selection of optimal prostheses for amputee users.',
+  },
+  {
+    id: 'topic-3',
+    title: '로봇 제어를 위한 AI 기반 뇌–컴퓨터 인터페이스(BCI)',
+    desc: 'We develop brain–computer interfaces (BCIs) that use AI to interpret brain signals and translate user intentions into commands for robotic arms and prosthetic hands. Our research combines neural signal processing, machine learning, and robot control to make assistive devices more intuitive and reliable to operate. Through this work, we aim to help people with limited mobility use robotic assistance in everyday life.',
+  },
+  {
+    id: 'topic-4',
+    title: '모듈형 필라테스 재활로봇을 활용한 침상 기반 전신 재활 플랫폼 개발',
+    desc: 'A modular Pilates robot is developed to support bedridden older adults and individuals with neurological movement disorder conditions. The system provides personalized assist-as-needed support through cable-driven actuators and adaptive control algorithms. It enables upper-limb, trunk, and lower-limb exercises in space-constrained settings such as community hospitals and long-term care facilities.',
+  },
+  {
+    id: 'topic-5',
+    title: '뇌손상 환자를 위한 운동능 회복을 위한 뉴럴 인터페이스 개발',
+    desc: 'We aim to develop a platform that applies optimized stimuli based on feedback between the central and peripheral nervous systems. For this, we will create an interface that detects neural signals and induces synchronized stimuli to enhance motor skills of individuals with neurological movement disorders. This neural interface will reactivate and redesign the damaged neural circuits through brain plasticity.',
+  },
+  {
+    id: 'topic-6',
+    title: 'SPINDLE 병렬 로봇을 이용한 환자 맞춤형 Resist-as needed 알고리즘 개발',
+    desc: 'Spherical Parallel INstrument for Daily Living Emulation (SPINDLE) trains daily living tasks of individuals with neurological movement disorders. The system offers personalized resistance levels using a resist-as-needed strategy. A new game-based training approach is proposed to tailor to various intensities, enhancing manual dexterity, and muscle strength of patients with neurological movement disorders.',
+  },
 ]
 </script>
 
