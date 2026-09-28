@@ -10,9 +10,6 @@
 }
 
 .research-nav {
-  position: sticky;
-  top: 120px;
-
   @media (max-width: 860px) {
     display: none;
   }

@@ -42,16 +42,6 @@
 
     <SignalDivider />
 
-    <section id="research" class="themes section">
-      <header class="head">
-        <p class="eyebrow">Research Themes</p>
-        <h2>6 research directions — from robotic prosthetics and rehabilitation robots to brain–computer interfaces</h2>
-        <router-link class="more-link" to="/research">View Research →</router-link>
-      </header>
-    </section>
-
-    <SignalDivider />
-
     <section id="gallery" class="gallery section">
       <header class="head">
         <p class="eyebrow">Gallery</p>
@@ -82,12 +72,29 @@
         <p class="eyebrow">On-going Projects</p>
       </header>
 
-      <div class="projects-grid">
+      <div v-if="!isMobileOngoing" class="projects-grid">
         <div v-for="item in ongoingProjects" :key="item.title" class="project-card">
           <div class="thumb" aria-hidden="true">
             <span class="ph-label">Image</span>
           </div>
           <p class="title">{{ item.title }}</p>
+        </div>
+      </div>
+
+      <div v-else class="projects-feature">
+        <div class="project-main">
+          <div class="thumb" aria-hidden="true">
+            <span class="ph-label">Image</span>
+          </div>
+          <p class="title">{{ ongoingProjects[featuredProject].title }}</p>
+        </div>
+
+        <div class="projects-secondary">
+          <button v-for="entry in otherProjects" :key="entry.item.title" type="button" class="project-mini"
+            @click="selectProject(entry.i)">
+            <span class="thumb-sm" aria-hidden="true"></span>
+            <span class="title-sm">{{ entry.item.title }}</span>
+          </button>
         </div>
       </div>
     </section>
@@ -161,6 +168,27 @@ const ongoingProjects = [
   { title: 'GIST InnoCore 알츠하이머뇌 리포그래밍 REMAP' },
   { title: '일상재활 자립을 위한 보조기기 개발, 보건복지부' },
 ]
+
+const featuredProject = ref(0)
+const otherProjects = computed(() =>
+  ongoingProjects.map((item, i) => ({ item, i })).filter((entry) => entry.i !== featuredProject.value)
+)
+
+function selectProject(i: number) {
+  featuredProject.value = i
+  document.getElementById('ongoing')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+const isMobileOngoing = ref(false)
+
+function updateOngoingLayout() {
+  isMobileOngoing.value = window.innerWidth <= 720
+}
+
+if (typeof window !== 'undefined') {
+  updateOngoingLayout()
+  window.addEventListener('resize', updateOngoingLayout)
+}
 
 const galleryCount = 5
 const galleryVisible = ref(4)

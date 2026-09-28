@@ -27,7 +27,7 @@
         <button type="button" class="logout-btn" @click="onLogout">Logout</button>
       </div>
 
-      <button class="burger" :aria-expanded="open" aria-label="Open menu" @click="open = !open">
+      <button class="burger" :aria-expanded="open" aria-label="Open menu" @click="toggleMobileMenu">
         <span /><span /><span />
       </button>
     </div>
@@ -35,11 +35,20 @@
     <transition name="drop">
       <nav v-if="open" class="mobile-links" aria-label="Main menu (mobile)">
         <template v-for="item in items" :key="item.to">
-          <router-link :to="item.to" @click="open = false">{{ item.label }}</router-link>
-          <router-link v-for="child in item.children" :key="child.to" :to="child.to" class="mobile-sub"
-            @click="open = false">
-            {{ child.label }}
-          </router-link>
+          <div class="mobile-row">
+            <router-link :to="item.to" class="mobile-link" @click="onMobileLinkClick">{{ item.label }}</router-link>
+            <button v-if="item.children" type="button" class="mobile-expand-btn"
+              :aria-expanded="mobileExpanded === item.to" :aria-label="`Toggle ${item.label} submenu`"
+              @click="toggleMobileExpand(item.to)">
+              <span class="chevron" :class="{ open: mobileExpanded === item.to }">▾</span>
+            </button>
+          </div>
+          <div v-if="item.children && mobileExpanded === item.to" class="mobile-sub-list">
+            <router-link v-for="child in item.children" :key="child.to" :to="child.to" class="mobile-sub"
+              @click="onMobileLinkClick">
+              {{ child.label }}
+            </router-link>
+          </div>
         </template>
         <div v-if="isAdmin" class="admin-actions mobile">
           <span v-if="pushResult" class="push-result" :class="{ error: !pushResult.ok }">{{ pushResult.message }}</span>
@@ -110,6 +119,22 @@ async function onSave() {
   setTimeout(() => {
     pushResult.value = null
   }, 6000)
+}
+
+const mobileExpanded = ref<string | null>(null)
+
+function toggleMobileExpand(key: string) {
+  mobileExpanded.value = mobileExpanded.value === key ? null : key
+}
+
+function toggleMobileMenu() {
+  open.value = !open.value
+  mobileExpanded.value = null
+}
+
+function onMobileLinkClick() {
+  open.value = false
+  mobileExpanded.value = null
 }
 
 const activeDropdown = ref<string | null>(null)

@@ -9,14 +9,6 @@
   align-items: start;
 }
 
-/* -----------------------------
-   데스크톱 세로 사이드바
------------------------------ */
-.desktop-sidebar {
-  position: sticky;
-  top: 100px; /* 스크롤 내려도 상단에 고정 */
-}
-
 .sidebar-title {
   display: block;
   font-size: 15px;
