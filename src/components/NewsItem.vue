@@ -11,6 +11,7 @@
         {{ desc }}
         <a v-if="link" :href="link" target="_blank" rel="noopener" class="link">[Link]</a>
       </p>
+      <slot />
     </div>
   </li>
 </template>

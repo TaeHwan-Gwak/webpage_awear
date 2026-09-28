@@ -85,8 +85,9 @@
         </template>
         <template v-else>
           <li v-for="item in displayNews" :key="item.id ?? item.date" class="news-row">
-            <NewsItem :date="item.date" :desc="item.desc" :tag="item.tag" />
-            <a v-if="item.link" class="read-more" :href="item.link" target="_blank" rel="noopener">Read more →</a>
+            <NewsItem :date="item.date" :desc="item.desc" :tag="item.tag">
+              <a v-if="item.link" class="read-more" :href="item.link" target="_blank" rel="noopener">Read more →</a>
+            </NewsItem>
           </li>
         </template>
       </ol>
@@ -103,6 +104,7 @@ import SkeletonLoader from '../components/SkeletonLoader.vue'
 import NewsItem from '../components/NewsItem.vue'
 import HeroCarousel from '../components/HeroCarousel.vue'
 import { useNews, type NewsItem as NewsItemType } from '../composables/useNews'
+import newsDataRaw from '../data/news.json'
 
 const heroImages = [
   'https://picsum.photos/seed/awear-lab-1/1600/900',
@@ -141,8 +143,18 @@ const fallbackNews: NewsItemType[] = [
   { id: 'seed-3', date: 'Date', desc: 'News content', tag: 'Tag' },
 ]
 
+// 로컬 news.json 최신순(날짜 desc) 상위 3개 — 관리자 편집은 News 페이지의 news.json에 반영되므로
+// 홈에서도 같은 파일을 읽어 최신 소식이 자동으로 보이게 합니다.
+const localLatestNews = [...(newsDataRaw as NewsItemType[])]
+  .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+  .slice(0, 3)
+
 const { news, loading: newsLoading, error: newsError } = useNews(3)
-const displayNews = computed(() => (news.value.length ? news.value.slice(0, 3) : fallbackNews))
+const displayNews = computed(() => {
+  if (news.value.length) return news.value.slice(0, 3)
+  if (localLatestNews.length) return localLatestNews
+  return fallbackNews
+})
 
 // TODO: add onMounted to check Admin Auth when entering Home and clear the token
 </script>

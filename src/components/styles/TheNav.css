@@ -43,19 +43,41 @@
         margin-bottom: -12px;
 
         > a {
+          position: relative;
+          display: inline-block;
           font-size: 15px; /* 글자 크기 18px -> 15px로 축소 */
           font-weight: 500;
           letter-spacing: -0.01em;
           color: var(--text-muted);
           transition: color 0.2s ease;
 
+          &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 100%;
+            bottom: -8px;
+            height: 2px;
+            background: var(--signal-gradient);
+            transition: right 0.22s ease;
+            pointer-events: none;
+          }
+
           &:hover {
             color: var(--text);
+
+            &::after {
+              right: 0;
+            }
           }
 
           &.router-link-active {
             color: var(--orange-deep);
             font-weight: 600;
+
+            &::after {
+              right: 0;
+            }
           }
         }
 
@@ -127,11 +149,15 @@
       font-weight: 600;
       color: var(--orange-deep);
       background: transparent;
-      transition: background 0.18s ease, color 0.18s ease;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
 
       &:hover:not(:disabled) {
         background: var(--orange);
         color: #fff;
+      }
+
+      &:active:not(:disabled) {
+        transform: scale(0.96);
       }
 
       &:disabled {
@@ -147,11 +173,15 @@
       font-size: 14px;
       color: var(--text-muted);
       background: transparent;
-      transition: border-color 0.18s ease, color 0.18s ease;
+      transition: border-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
 
       &:hover {
         border-color: #d3452c;
         color: #d3452c;
+      }
+
+      &:active {
+        transform: scale(0.96);
       }
 
       @media (max-width: 860px) {

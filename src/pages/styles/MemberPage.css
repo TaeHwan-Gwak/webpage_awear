@@ -137,21 +137,10 @@
       background: var(--orange-deep);
       transform: translateY(-1px);
     }
-  }
-}
 
-.alt-layout {
-  .alt-layout-note {
-    margin-top: 6px;
-    font-size: 14px;
-    color: var(--text-faint);
-  }
-
-  .member-list {
-    margin-top: 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    &:active {
+      transform: translateY(0) scale(0.97);
+    }
   }
 }
 

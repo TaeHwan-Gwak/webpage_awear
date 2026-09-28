@@ -142,11 +142,21 @@
 
 .apply {
   .panel {
+    position: relative;
+    overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     padding: 48px 44px;
     background: var(--surface);
     max-width: 640px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      background: var(--signal-gradient);
+    }
 
     @media (max-width: 640px) {
       padding: 36px 24px;
@@ -175,20 +185,27 @@
   .btn {
     display: inline-block;
     margin-top: 24px;
-    padding: 13px 26px;
+    padding: 14px 28px;
     border-radius: 999px;
-    border: 1px solid var(--orange);
-    color: var(--orange-deep);
+    border: 1px solid var(--orange-deep);
+    background: var(--orange);
+    color: #fff;
     font-weight: 600;
     font-size: 18px;
+    box-shadow: 0 10px 20px rgba(216, 67, 14, 0.22);
 
     @media (max-width: 720px) {
       font-size: 15px;
     }
-    transition: background 0.18s ease;
+    transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
 
     &:hover {
-      background: rgba(255, 90, 31, 0.08);
+      background: var(--orange-deep);
+      box-shadow: 0 12px 26px rgba(216, 67, 14, 0.3);
+    }
+
+    &:active {
+      transform: scale(0.97);
     }
   }
 }

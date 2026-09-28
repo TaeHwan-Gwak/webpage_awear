@@ -6,10 +6,6 @@
   padding: 24px 0;
   border-top: 1px solid var(--border-soft);
 
-  &:last-child {
-    border-bottom: 1px solid var(--border-soft);
-  }
-
   .year {
     font-family: var(--font-mono);
     font-size: 17px;

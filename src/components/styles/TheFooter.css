@@ -1,7 +1,18 @@
 .footer {
+  position: relative;
   margin-top: 64px;
   border-top: 1px solid var(--border-soft);
   background: var(--bg);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 96px;
+    height: 2px;
+    background: var(--signal-gradient);
+  }
 
   .footer-inner {
     max-width: var(--page-max);

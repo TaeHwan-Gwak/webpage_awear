@@ -97,19 +97,6 @@
       <AdminAddButton v-if="isAdmin" label="Add alumnus" @add="startAdd('alumni')" />
     </section>
 
-    <SignalDivider />
-
-    <section class="group alt-layout section">
-      <h2 class="group-title">Alternate Layout (for comparison)</h2>
-      <p class="alt-layout-note">Same postdocs and members shown as a list instead of cards — for comparing which
-        looks better.</p>
-      <ul class="member-list">
-        <MemberListRow v-for="member in [...form.postdocs, ...form.members]" :key="member.id" :name="member.name"
-          :role="member.role" :note="member.note" :email="member.email" :interests="member.interests"
-          :photo="member.photo" />
-      </ul>
-    </section>
-
     <div v-if="editingGroup" class="edit-modal-backdrop" @click.self="cancelEdit">
       <div class="edit-modal">
         <label class="field"><span>Name</span><input v-model="draft.name" /></label>
@@ -158,7 +145,6 @@ import { onBeforeUnmount, reactive, ref, watch, watchEffect } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import MemberCard from '../components/MemberCard.vue'
-import MemberListRow from '../components/MemberListRow.vue'
 import AlumniItem from '../components/AlumniItem.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
