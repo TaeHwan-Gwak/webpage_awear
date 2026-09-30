@@ -1,0 +1,47 @@
+{
+  "heroEyebrow": "AI-based WEArable Robotics Lab",
+  "heroTitle": "AWEAR Lab",
+  "lede": "AWEAR Lab은 GIST AI학과 로봇트랙 소속으로, 기계공학, 전기전자공학, 컴퓨터공학, 의공학 등에서 익힌 전공 지식에 AI를 접목해 사람의 움직임을 돕는 로봇과 헬스케어 기술을 연구합니다. 이를 위해 로봇 의수·재활로봇을 설계하고, 근육·뇌 신호로 로봇의 움직임을 제어하는 Physical AI를 연구하고 있습니다. 또한 뇌–컴퓨터 인터페이스를 통해 사람과 로봇을 연결하는 기술과, 일상 동작 영상으로 근력과 신체 기능의 변화를 분석하는 헬스케어 AI를 개발하고 있습니다.",
+  "ledeEn": "Welcome to the AI-based WEArable Robotics (AWEAR) Laboratory at Gwangju Institute of Science and Technology (GIST). Our research combines the design and control of robotic prostheses and rehabilitation robots with AI that interprets muscle and brain signals. We also develop brain–computer interfaces (BCIs) that connect people with robots, and healthcare AI that uses videos of everyday movements to assess muscle strength and changes in physical function.",
+  "heroImages": [
+    "https://picsum.photos/seed/awear-lab-1/1600/900",
+    "https://picsum.photos/seed/awear-lab-2/1600/900",
+    "https://picsum.photos/seed/awear-lab-3/1600/900"
+  ],
+  "recentMedia": [
+    {
+      "id": "m1",
+      "title": "Physics-informed AI를 통한 노인의 근감소증 추적 기술 JCR 상위 2% JNER에 게재",
+      "link": "https://n.news.naver.com/article/030/0003435675?sid=102",
+      "image": ""
+    },
+    {
+      "id": "m2",
+      "title": "뇌성마비환자 보행 개선 로봇 재활기술 개발, JCR 상위 2% 이내 IEEE TNSRE 게재",
+      "link": "https://www.irobotnews.com/news/articleView.html?idxno=45239",
+      "image": ""
+    },
+    {
+      "id": "m3",
+      "title": "로봇, '맞춤형 의수 설계' 맡는다…손목 동작 정밀 구현 Robotics Automation Letter 게재",
+      "link": "https://v.daum.net/v/Q8SX1H6bWK?f=p",
+      "image": ""
+    }
+  ],
+  "gallery": [
+    { "id": "gl1", "image": "" },
+    { "id": "gl2", "image": "" },
+    { "id": "gl3", "image": "" },
+    { "id": "gl4", "image": "" },
+    { "id": "gl5", "image": "" }
+  ],
+  "ongoingProjects": [
+    { "id": "p1", "title": "AI 최고급 신진연구자 지원사업 (AI 스타펠로우십)\nMIND 의료 파운데이션 모델 개발", "image": "" },
+    { "id": "p2", "title": "침상환자 재활을 위한 필라테스봇, 국립재활원", "image": "" },
+    { "id": "p3", "title": "BrainJoystick: 로봇 제어 BCI, 우수신진과제, 연구재단", "image": "" },
+    { "id": "p4", "title": "파킨슨병환자를 위한 로봇-뉴럴인터페이스, 연구재단 뇌선도", "image": "" },
+    { "id": "p5", "title": "GIST InnoCore 극한환경 피지컬AI - Polar AI", "image": "" },
+    { "id": "p6", "title": "GIST InnoCore 알츠하이머뇌 리포그래밍 REMAP", "image": "" },
+    { "id": "p7", "title": "일상재활 자립을 위한 보조기기 개발, 보건복지부", "image": "" }
+  ]
+}

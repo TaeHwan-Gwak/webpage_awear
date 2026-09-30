@@ -22,82 +22,215 @@
       </aside>
 
       <div class="topics">
+        <AdminAddButton v-if="isAdmin" label="Add research topic" @add="startTopicAdd" />
+
         <article v-for="(topic, i) in topics" :id="topic.id" :key="topic.id" class="topic" :data-topic="topic.id">
           <div class="topic-head">
             <span class="topic-num">{{ String(i + 1).padStart(2, '0') }}</span>
             <h2>{{ topic.title }}</h2>
+            <AdminEditControls v-if="isAdmin" @edit="startTopicEdit(topic)" @delete="deleteTopic(topic)" />
           </div>
 
-          <div class="figure-gallery" :class="`count-${Math.min(topic.images, 4)}`">
-            <div v-for="n in topic.images" :key="n" class="figure-tile" aria-hidden="true">
-              <span class="ph-label">Image</span>
+          <div class="figure-gallery" :class="`count-${Math.min(topic.images.length, 4)}`">
+            <div v-for="(img, idx) in topic.images" :key="idx" class="figure-tile">
+              <img v-if="img && !brokenKeys.has(`${topic.id}:${idx}`)" :src="img" alt=""
+                @error="brokenKeys.add(`${topic.id}:${idx}`)" />
+              <span v-else class="ph-label">Image</span>
+
+              <template v-if="isAdmin">
+                <label class="tile-upload-btn">
+                  {{ uploadingKey === `${topic.id}:${idx}` ? 'Uploading…' : img ? 'Replace' : '+ Upload' }}
+                  <input type="file" accept="image/*" @change="onTopicImageSelected(topic.id, idx, $event)" />
+                </label>
+                <button type="button" class="tile-remove-btn" aria-label="Remove image slot"
+                  @click="removeTopicImageSlot(topic.id, idx)">✕</button>
+              </template>
             </div>
+
+            <button v-if="isAdmin" type="button" class="figure-tile add-slot" @click="addTopicImageSlot(topic.id)">
+              + Add image
+            </button>
           </div>
 
           <p class="desc">{{ topic.desc }}</p>
         </article>
       </div>
     </div>
+
+    <div v-if="topicEditingId" class="edit-modal-backdrop" @click.self="cancelTopicEdit">
+      <div class="edit-modal">
+        <label class="field"><span>Title (main heading)</span><textarea v-model="topicDraft.title" rows="3"></textarea></label>
+        <label class="field"><span>Short label (sidebar nav)</span><input v-model="topicDraft.short" /></label>
+        <label class="field"><span>Description</span><textarea v-model="topicDraft.desc" rows="6"></textarea></label>
+        <p v-if="topicFormError" class="form-error">{{ topicFormError }}</p>
+        <div class="edit-actions">
+          <button type="button" class="save-btn" @click="saveTopicEdit">Save</button>
+          <button type="button" class="cancel-btn" @click="cancelTopicEdit">Cancel</button>
+        </div>
+      </div>
+    </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
+import AdminEditControls from '../components/AdminEditControls.vue'
+import AdminAddButton from '../components/AdminAddButton.vue'
+import { useAdminMode } from '../composables/useAdminMode'
+import { useEscapeKey } from '../composables/useEscapeKey'
+import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
+import { checkRequired } from '../utils/validate'
+import researchDataRaw from '../data/research.json'
 
-const topics = [
-  {
-    id: 'topic-1',
-    short: 'Vision-based sarcopenia monitoring',
-    title: '비전 기반 토크 추정 및 고령 인구 근감소증 모니터링 플랫폼 개발',
-    desc: 'We are developing a system for estimating torque through multi-view vision to facilitate ongoing monitoring of the elderly population for potential sarcopenia. A lot of cameras are embedded in our daily living environment (TV, robot vacuum, AC, etc.). Ambient monitoring will be configured using these cameras to monitor the health of the elderly. To calculate joint torque, we employ a biomechanics simulator (OpenSim) combined with AI, aiming to establish a specialized metric for detecting and assessing sarcopenia.',
-    images: 3,
-  },
-  {
-    id: 'topic-2',
-    short: 'Prosthetic emulator & HITL design',
-    title: '다자유도 로봇 의수 에뮬레이터 및 맞춤형 Human-in-the-loop 알고리즘 개발',
-    desc: 'This research develops a prosthetic emulator that allows adjustment of design parameters such as DoF and weight. The cable-actuated emulator features a Human-in-the-loop (HITL) framework to optimize prosthetic designs through quantifiable metrics, focusing on both physical and cognitive user responses. This novel emulator will guide the personalized selection of optimal prostheses for amputee users.',
-    images: 2,
-  },
-  {
-    id: 'topic-3',
-    short: 'AI-based brain–computer interface',
-    title: '로봇 제어를 위한 AI 기반 뇌–컴퓨터 인터페이스(BCI)',
-    desc: 'We develop brain–computer interfaces (BCIs) that use AI to interpret brain signals and translate user intentions into commands for robotic arms and prosthetic hands. Our research combines neural signal processing, machine learning, and robot control to make assistive devices more intuitive and reliable to operate. Through this work, we aim to help people with limited mobility use robotic assistance in everyday life.',
-    images: 3,
-  },
-  {
-    id: 'topic-4',
-    short: 'Modular Pilates rehab robot',
-    title: '모듈형 필라테스 재활로봇을 활용한 침상 기반 전신 재활 플랫폼 개발',
-    desc: 'A modular Pilates robot is developed to support bedridden older adults and individuals with neurological movement disorder conditions. The system provides personalized assist-as-needed support through cable-driven actuators and adaptive control algorithms. It enables upper-limb, trunk, and lower-limb exercises in space-constrained settings such as community hospitals and long-term care facilities.',
-    images: 3,
-  },
-  {
-    id: 'topic-5',
-    short: 'Neural interface for motor recovery',
-    title: '뇌손상 환자를 위한 운동능 회복을 위한 뉴럴 인터페이스 개발',
-    desc: 'We aim to develop a platform that applies optimized stimuli based on feedback between the central and peripheral nervous systems. For this, we will create an interface that detects neural signals and induces synchronized stimuli to enhance motor skills of individuals with neurological movement disorders. This neural interface will reactivate and redesign the damaged neural circuits through brain plasticity.',
-    images: 2,
-  },
-  {
-    id: 'topic-6',
-    short: 'SPINDLE resist-as-needed training',
-    title: 'SPINDLE 병렬 로봇을 이용한 환자 맞춤형 Resist-as needed 알고리즘 개발',
-    desc: 'Spherical Parallel INstrument for Daily Living Emulation (SPINDLE) trains daily living tasks of individuals with neurological movement disorders. The system offers personalized resistance levels using a resist-as-needed strategy. A new game-based training approach is proposed to tailor to various intensities, enhancing manual dexterity, and muscle strength of patients with neurological movement disorders.',
-    images: 4,
-  },
-]
+interface Topic {
+  id: string
+  short: string
+  title: string
+  desc: string
+  images: string[]
+}
 
-const activeTopic = ref(topics[0].id)
+const { isAdmin } = useAdminMode()
+
+const topics = reactive<Topic[]>(JSON.parse(JSON.stringify(researchDataRaw.topics)))
+
+function persist() {
+  return saveJsonFile('research.json', { topics })
+}
+
+function nextTopicId(): string {
+  let max = 0
+  for (const t of topics) {
+    const m = /^topic-(\d+)$/.exec(t.id)
+    if (m) max = Math.max(max, parseInt(m[1], 10))
+  }
+  return `topic-${max + 1}`
+}
+
+const topicEditingId = ref<string | null>(null)
+const topicIsNew = ref(false)
+const topicFormError = ref<string | null>(null)
+const topicDraft = reactive({ short: '', title: '', desc: '' })
+
+function startTopicEdit(topic: Topic) {
+  topicEditingId.value = topic.id
+  topicIsNew.value = false
+  topicFormError.value = null
+  topicDraft.short = topic.short
+  topicDraft.title = topic.title
+  topicDraft.desc = topic.desc
+}
+
+function startTopicAdd() {
+  topicEditingId.value = nextTopicId()
+  topicIsNew.value = true
+  topicFormError.value = null
+  topicDraft.short = ''
+  topicDraft.title = ''
+  topicDraft.desc = ''
+}
+
+function cancelTopicEdit() {
+  topicEditingId.value = null
+  topicFormError.value = null
+}
+
+async function saveTopicEdit() {
+  if (!topicEditingId.value) return
+
+  const requiredError = checkRequired({ Title: topicDraft.title, 'Short label': topicDraft.short })
+  if (requiredError) {
+    topicFormError.value = requiredError
+    return
+  }
+
+  if (topicIsNew.value) {
+    topics.push({
+      id: topicEditingId.value,
+      short: topicDraft.short,
+      title: topicDraft.title,
+      desc: topicDraft.desc,
+      images: ['', '', ''],
+    })
+  } else {
+    const target = topics.find((t) => t.id === topicEditingId.value)
+    if (target) {
+      target.short = topicDraft.short
+      target.title = topicDraft.title
+      target.desc = topicDraft.desc
+    }
+  }
+
+  cancelTopicEdit()
+  await persist()
+}
+
+async function deleteTopic(topic: Topic) {
+  const idx = topics.findIndex((t) => t.id === topic.id)
+  if (idx !== -1) topics.splice(idx, 1)
+  for (const img of topic.images) {
+    if (img) await deleteImage(img)
+  }
+  await persist()
+}
+
+const uploadingKey = ref<string | null>(null)
+const brokenKeys = reactive(new Set<string>())
+
+async function onTopicImageSelected(topicId: string, idx: number, e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file) return
+
+  const topic = topics.find((t) => t.id === topicId)
+  if (!topic) return
+
+  const key = `${topicId}:${idx}`
+  const oldImage = topic.images[idx]
+  uploadingKey.value = key
+  const ext = file.name.split('.').pop() || 'jpg'
+  const path = await uploadImage('research', `${topicId}-${idx}-${Date.now()}.${ext}`, file)
+  uploadingKey.value = null
+
+  if (path) {
+    topic.images[idx] = path
+    brokenKeys.delete(key)
+    if (oldImage) await deleteImage(oldImage)
+    await persist()
+  } else {
+    alert('Image upload failed. Is the local dev server running?')
+  }
+}
+
+async function addTopicImageSlot(topicId: string) {
+  const topic = topics.find((t) => t.id === topicId)
+  if (!topic) return
+  topic.images.push('')
+  await persist()
+}
+
+async function removeTopicImageSlot(topicId: string, idx: number) {
+  const topic = topics.find((t) => t.id === topicId)
+  if (!topic) return
+  const [removed] = topic.images.splice(idx, 1)
+  if (removed) await deleteImage(removed)
+  await persist()
+}
+
+useEscapeKey(() => {
+  if (topicEditingId.value) cancelTopicEdit()
+})
+
+const activeTopic = ref(topics[0]?.id ?? '')
 const intersecting = new Set<string>()
 let observer: IntersectionObserver | undefined
 
 function onScroll() {
   const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4
-  if (atBottom) activeTopic.value = topics[topics.length - 1].id
+  if (atBottom && topics.length) activeTopic.value = topics[topics.length - 1].id
 }
 
 onMounted(() => {
