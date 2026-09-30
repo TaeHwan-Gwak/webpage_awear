@@ -1,5 +1,7 @@
 <template>
   <main class="admin-login">
+    <router-link class="back-link" to="/">← Back to site</router-link>
+
     <form class="panel" @submit.prevent="onSubmit">
       <p class="eyebrow">AWEAR Lab</p>
       <h1>Admin</h1>

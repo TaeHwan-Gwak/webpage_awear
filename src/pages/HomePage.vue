@@ -89,7 +89,7 @@
           @click="galleryPrev">‹</button>
 
         <div class="gallery-track-wrap">
-          <div class="gallery-track" :style="{ transform: `translateX(-${galleryIndex * (100 / galleryVisible)}%)` }">
+          <div class="gallery-track" :style="{ transform: `translateX(calc(-${galleryIndex * (100 / galleryVisible)}% - ${galleryIndex * (GALLERY_GAP_PX / galleryVisible)}px))` }">
             <div v-for="(item, i) in form.gallery" :key="item.id" class="gallery-item"
               :class="{ dragging: galleryDrag.draggedIndex.value === i }" :draggable="isAdmin"
               @dragstart="galleryDrag.onDragStart(i)" @dragover="galleryDrag.onDragOver(i, $event)"
@@ -255,7 +255,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, nextTick, reactive, ref } from 'vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import NewsItem from '../components/NewsItem.vue'
@@ -599,9 +599,16 @@ const otherProjects = computed(() =>
   form.ongoingProjects.map((item, i) => ({ item, i })).filter((entry) => entry.i !== featuredProject.value)
 )
 
-function selectProject(i: number) {
+async function selectProject(i: number) {
   featuredProject.value = i
-  document.getElementById('ongoing')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  await nextTick()
+  const el = document.querySelector('#ongoing .project-main')
+  if (!el) return
+  // scrollIntoView({block:'start'}) tends to land the image mid-screen once the
+  // shorter secondary list below it stops adding scrollable height - pin it near
+  // the top (just under the fixed nav) instead, so it reads as "promoted", not centered.
+  const targetY = window.scrollY + el.getBoundingClientRect().top - 90
+  window.scrollTo({ top: targetY, behavior: 'smooth' })
 }
 
 const isMobileOngoing = ref(false)
@@ -616,6 +623,12 @@ if (typeof window !== 'undefined') {
 }
 
 /* ---------------- Gallery slider ---------------- */
+
+// Must match .gallery-track { gap: ... } in HomePage.css - the percentage-based
+// translateX alone doesn't account for the gap between slides, so without this
+// offset each "next" step falls a few pixels short and drifts further off with
+// every click (worst on mobile, where 1 slide = 100% and the gap is the only miss).
+const GALLERY_GAP_PX = 12
 
 const galleryVisible = ref(4)
 const galleryIndex = ref(0)

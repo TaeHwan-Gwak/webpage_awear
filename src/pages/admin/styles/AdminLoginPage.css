@@ -1,10 +1,31 @@
 .admin-login {
+  position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
   background: var(--surface);
+
+  .back-link {
+    position: absolute;
+    top: 28px;
+    left: 28px;
+    font-family: var(--font-mono);
+    font-size: 15px;
+
+    @media (max-width: 720px) {
+      top: 20px;
+      left: 20px;
+      font-size: 13px;
+    }
+    color: var(--text-muted);
+    transition: color 0.18s ease;
+
+    &:hover {
+      color: var(--orange-deep);
+    }
+  }
 
   .panel {
     width: 100%;

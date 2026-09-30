@@ -10,6 +10,9 @@
 }
 
 .research-nav {
+  position: sticky;
+  top: 120px;
+
   @media (max-width: 860px) {
     display: none;
   }
@@ -78,8 +81,11 @@
 
 .topic {
   scroll-margin-top: 132px;
+  display: flex;
+  flex-direction: column;
 
   .topic-head {
+    order: 0;
     display: flex;
     align-items: baseline;
     gap: 16px;
@@ -105,10 +111,15 @@
   }
 
   .figure-gallery {
+    order: 1;
     margin-top: 24px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
+
+    @media (max-width: 720px) {
+      order: 2;
+    }
 
     &.count-1 {
       grid-template-columns: 1fr;
@@ -220,11 +231,13 @@
   }
 
   .desc {
+    order: 2;
     margin-top: 24px;
     font-size: 17px;
 
     @media (max-width: 720px) {
       font-size: 15px;
+      order: 1;
     }
     line-height: 1.75;
     max-width: 72ch;

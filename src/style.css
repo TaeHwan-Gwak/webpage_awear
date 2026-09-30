@@ -57,7 +57,11 @@ body {
 
 #app {
   position: relative;
-  overflow-x: hidden;
+  /* clip (not hidden) - "hidden" makes the browser treat overflow-y as "auto" too,
+     which turns #app into a scroll container and silently breaks every
+     position: sticky element on the site (they'd stick to #app's own phantom
+     scrollport instead of the real page scroll, so effectively never stick). */
+  overflow-x: clip;
   overflow-y: visible;
 }
 
