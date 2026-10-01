@@ -1,7 +1,10 @@
 .cv-header {
-  /* No custom max-width here - inherit the shared .section max-width
-     (var(--page-max)) so this lines up with the nav bar and every other
-     page instead of drifting to its own narrower column. */
+  /* Narrower than the shared .section max-width (var(--page-max)) on
+     purpose: a CV reads better as a tighter column, and it keeps the
+     photo from drifting far away from the text at wide viewports.
+     Still centered via margin: 0 auto from .section, so it stays
+     left-aligned with the nav bar, just doesn't reach its full width. */
+  max-width: 880px;
 
   .back-link {
     display: block;
@@ -26,7 +29,6 @@
     margin-top: 24px;
     display: flex;
     align-items: flex-start;
-    justify-content: space-between;
     gap: 40px;
 
     @media (max-width: 720px) {
@@ -38,6 +40,13 @@
   }
 
   .cv-header-text {
+    /* Fill the space next to the photo instead of shrinking to its own
+       content width - with justify-content: space-between this stayed
+       narrow and the fixed-width photo got pushed to the far edge,
+       opening up a wide empty gap between them. */
+    flex: 1;
+    min-width: 0;
+
     h1 {
       font-size: clamp(28px, 2.2vw + 18px, 40px);
       color: var(--text);
@@ -116,6 +125,11 @@
 }
 
 .cv-content {
+  /* Match .cv-header's narrower column so header and content stay
+     aligned with each other (both centered under .section's auto
+     margins), even though neither reaches the nav bar's full width. */
+  max-width: 880px;
+
   .cv-block {
     margin-top: 36px;
     padding-top: 24px;

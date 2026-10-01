@@ -105,9 +105,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(to) {
+  scrollBehavior(to, _from, savedPosition) {
     if (to.hash) return { el: to.hash, top: 122, behavior: 'smooth' }
-    return { top: 0 }
+    // Back/forward: restore where the user was. Everything else (clicking a
+    // link to a new page): snap to top instantly. Note `behavior: 'auto'`
+    // does NOT mean instant - per spec it means "do whatever the element's
+    // CSS scroll-behavior says", which is `smooth` (html, style.css), so it
+    // would still animate all the way up from the previous page's scroll
+    // position. `instant` is required to actually bypass that.
+    if (savedPosition) return { ...savedPosition, behavior: 'instant' }
+    return { top: 0, behavior: 'instant' }
   },
 })
 
