@@ -1,10 +1,28 @@
 <template>
   <main class="cv-page">
-    <div class="cv-topbar">
+    <header class="cv-header section">
       <router-link class="back-link" to="/member">← Back to Member</router-link>
-    </div>
+      <p class="eyebrow">Curriculum Vitae</p>
 
-    <PageHeader eyebrow="Curriculum Vitae" :title="pi.name" :description="`${pi.role}, ${pi.department}`" />
+      <div class="cv-header-row">
+        <div class="cv-header-text">
+          <h1>
+            {{ pi.name }}
+            <span v-if="pi.nameKr" class="name-kr">({{ pi.nameKr }})</span>
+          </h1>
+          <p class="role">{{ pi.role }}</p>
+          <p class="dept">{{ pi.department }}</p>
+          <p class="inst">{{ pi.institution }}</p>
+          <a class="mail" :href="`mailto:${pi.email}`">{{ pi.email }}</a>
+        </div>
+
+        <div class="cv-photo">
+          <img v-if="pi.photo" :src="pi.photo" :alt="pi.name"
+            :style="{ objectPosition: `center ${pi.photoPosition ?? 50}%` }" />
+          <span v-else class="ph-label">Image</span>
+        </div>
+      </div>
+    </header>
 
     <section class="cv-content section">
       <div v-for="block in pi.cv" :key="block.section" class="cv-block">
@@ -18,7 +36,6 @@
 </template>
 
 <script setup lang="ts">
-import PageHeader from '../components/PageHeader.vue'
 import membersData from '../data/members.json'
 
 const { pi } = membersData

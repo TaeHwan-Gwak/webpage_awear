@@ -4,7 +4,7 @@ import { exec } from 'node:child_process'
 import type { Plugin, Connect } from 'vite'
 
 const ALLOWED_FILES = new Set(['members.json', 'news.json', 'publications.json', 'equipment.json', 'home.json', 'research.json'])
-const ALLOWED_IMAGE_FOLDERS = new Set(['publications', 'member', 'news', 'equipment', 'home', 'research'])
+const ALLOWED_IMAGE_FOLDERS = new Set(['publications', 'members', 'news', 'equipment', 'home', 'research'])
 
 function getClientIp(req: Connect.IncomingMessage): string {
   const forwarded = req.headers['x-forwarded-for']

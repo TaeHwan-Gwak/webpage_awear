@@ -170,12 +170,20 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 
+    @media (max-width: 1080px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
     @media (max-width: 860px) {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    @media (max-width: 480px) {
+    /* A 2-column grid stops having room to breathe once the card itself
+       (avatar + name + role + note) needs ~300px of height - below this,
+       cards end up tall and narrow at once. One column reads better. */
+    @media (max-width: 640px) {
       grid-template-columns: 1fr;
+      gap: 16px;
     }
   }
 }
@@ -188,10 +196,19 @@
 
 .card-slot {
   position: relative;
+  height: 100%;
   transition: opacity 0.15s ease;
 
   &.dragging {
     opacity: 0.4;
+  }
+
+  /* .card-slot is the grid item, so CSS Grid stretches it to match the
+     tallest card in the row - but that height doesn't reach .member-card
+     (a plain child) unless told to, which is why card borders were
+     drifting out of alignment whenever a neighbor's text ran longer. */
+  .member-card {
+    height: 100%;
   }
 
   .handle {
@@ -324,10 +341,11 @@
 
   .photo-preview {
     position: relative;
-    width: 72px;
-    height: 72px;
+    width: 160px;
+    height: 160px;
     margin-bottom: 10px;
-    border-radius: 8px;
+    /* Circular, matching the actual card, so the position slider below is a true preview. */
+    border-radius: 50%;
     overflow: hidden;
     border: 1px solid var(--border);
 
@@ -395,6 +413,23 @@
       inset: 0;
       opacity: 0;
       cursor: pointer;
+    }
+  }
+
+  .photo-position-field {
+    display: block;
+    margin-top: 10px;
+
+    span {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: var(--text-faint);
+    }
+
+    input[type='range'] {
+      width: 100%;
+      accent-color: var(--orange);
     }
   }
 }

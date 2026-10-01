@@ -1,19 +1,17 @@
-.cv-topbar {
-  position: relative;
-  max-width: 760px;
-  margin: 0 auto;
-  height: 0;
+.cv-header {
+  /* No custom max-width here - inherit the shared .section max-width
+     (var(--page-max)) so this lines up with the nav bar and every other
+     page instead of drifting to its own narrower column. */
 
   .back-link {
-    position: absolute;
-    top: 150px;
-    right: 32px;
-    display: inline-block;
+    display: block;
+    text-align: right;
+    margin-bottom: 20px;
     font-family: var(--font-mono);
     font-size: 15px;
 
     @media (max-width: 720px) {
-      top: 126px;
+      text-align: center;
       font-size: 12px;
     }
     color: var(--text-muted);
@@ -23,11 +21,101 @@
       color: var(--orange-deep);
     }
   }
+
+  .cv-header-row {
+    margin-top: 24px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 40px;
+
+    @media (max-width: 720px) {
+      flex-direction: column-reverse;
+      align-items: center;
+      text-align: center;
+      gap: 24px;
+    }
+  }
+
+  .cv-header-text {
+    h1 {
+      font-size: clamp(28px, 2.2vw + 18px, 40px);
+      color: var(--text);
+
+      .name-kr {
+        font-weight: 500;
+        font-size: 0.55em;
+        color: var(--text-muted);
+      }
+    }
+
+    .role {
+      margin-top: 16px;
+      font-size: 19px;
+
+      @media (max-width: 720px) {
+        font-size: 16px;
+      }
+      color: var(--text-muted);
+    }
+
+    .dept,
+    .inst {
+      margin-top: 6px;
+      font-size: 16px;
+
+      @media (max-width: 720px) {
+        font-size: 14px;
+      }
+      color: var(--text-muted);
+    }
+
+    .mail {
+      display: inline-block;
+      margin-top: 18px;
+      font-size: 15px;
+      color: var(--text);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color 0.18s ease;
+
+      &:hover {
+        color: var(--orange-deep);
+      }
+    }
+  }
+
+  .cv-photo {
+    flex-shrink: 0;
+    width: 220px;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+
+    @media (max-width: 720px) {
+      width: 180px;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ph-label {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--text-faint);
+    }
+  }
 }
 
 .cv-content {
-  max-width: 760px;
-
   .cv-block {
     margin-top: 36px;
     padding-top: 24px;

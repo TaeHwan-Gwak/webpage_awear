@@ -8,10 +8,27 @@
       <div class="card">
         <div v-if="editingPI" class="edit-form">
           <label class="field"><span>Name</span><input v-model="piDraft.name" /></label>
+          <label class="field"><span>Name (Korean)</span><input v-model="piDraft.nameKr" /></label>
           <label class="field"><span>Role</span><input v-model="piDraft.role" /></label>
           <label class="field"><span>Department</span><input v-model="piDraft.department" /></label>
           <label class="field"><span>Institution</span><input v-model="piDraft.institution" /></label>
           <label class="field"><span>Email</span><input v-model="piDraft.email" /></label>
+          <div class="field">
+            <span>Photo (shown on the CV page)</span>
+            <div v-if="piDraft.photo && !piPreviewBroken" class="photo-preview">
+              <img :src="piDraft.photo" alt="" :style="{ objectPosition: `center ${piDraft.photoPosition}%` }"
+                @error="piPreviewBroken = true" />
+              <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removePIPhoto">✕</button>
+            </div>
+            <label class="upload-btn">
+              {{ uploadingPIPhoto ? 'Uploading…' : '+ Upload photo' }}
+              <input type="file" accept="image/*" :disabled="uploadingPIPhoto" @change="onPIPhotoSelected" />
+            </label>
+            <label v-if="piDraft.photo" class="photo-position-field">
+              <span>Visible part of photo ({{ piDraft.photoPosition }}%, top → bottom)</span>
+              <input type="range" min="0" max="100" v-model.number="piDraft.photoPosition" />
+            </label>
+          </div>
           <p v-if="piFormError" class="form-error">{{ piFormError }}</p>
           <div class="edit-actions">
             <button type="button" class="save-btn" @click="savePI">Save</button>
@@ -61,7 +78,7 @@
           @drop="memberDrag.onDrop(i)" @dragend="memberDrag.onDragEnd">
           <DragHandle class="handle" />
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
-            :interests="member.interests" :photo="member.photo" />
+            :interests="member.interests" :photo="member.photo" :photo-position="member.photoPosition" />
           <AdminEditControls v-if="isAdmin" @edit="startEdit('members', member)" @delete="deleteMember('members', member)" />
           <button v-if="isAdmin" type="button" class="graduate-btn" @click="confirmGraduate(member)">
             Graduate →
@@ -80,7 +97,7 @@
           @drop="internDrag.onDrop(i)" @dragend="internDrag.onDragEnd">
           <DragHandle class="handle" />
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
-            :interests="member.interests" :photo="member.photo" />
+            :interests="member.interests" :photo="member.photo" :photo-position="member.photoPosition" />
           <AdminEditControls v-if="isAdmin" @edit="startEdit('interns', member)" @delete="deleteMember('interns', member)" />
         </div>
       </div>
@@ -115,12 +132,17 @@
         <div v-if="editingGroup !== 'alumni'" class="field">
           <span>Photo</span>
           <div v-if="draft.photo && !memberPreviewBroken" class="photo-preview">
-            <img :src="draft.photo" alt="" @error="memberPreviewBroken = true" />
+            <img :src="draft.photo" alt="" :style="{ objectPosition: `center ${draft.photoPosition}%` }"
+              @error="memberPreviewBroken = true" />
             <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removeMemberPhoto">✕</button>
           </div>
           <label class="upload-btn">
             {{ uploadingPhoto ? 'Uploading…' : '+ Upload photo' }}
             <input type="file" accept="image/*" :disabled="uploadingPhoto" @change="onMemberPhotoSelected" />
+          </label>
+          <label v-if="draft.photo" class="photo-position-field">
+            <span>Visible part of photo ({{ draft.photoPosition }}%, top → bottom)</span>
+            <input type="range" min="0" max="100" v-model.number="draft.photoPosition" />
           </label>
         </div>
         <p v-if="formError" class="form-error">{{ formError }}</p>
@@ -174,6 +196,7 @@ interface Member {
   email?: string
   interests?: string
   photo?: string
+  photoPosition?: number
 }
 
 const { isAdmin } = useAdminMode()
@@ -217,7 +240,7 @@ const editingId = ref<string | null>(null)
 const isNewMember = ref(false)
 const uploadingPhoto = ref(false)
 const formError = ref<string | null>(null)
-const draft = reactive({ name: '', role: '', note: '', email: '', interests: '', photo: '' })
+const draft = reactive({ name: '', role: '', note: '', email: '', interests: '', photo: '', photoPosition: 50 })
 const memberPreviewBroken = ref(false)
 
 watch(
@@ -238,6 +261,7 @@ function startEdit(group: GroupKey, member: Member) {
   draft.email = member.email ?? ''
   draft.interests = member.interests ?? ''
   draft.photo = member.photo ?? ''
+  draft.photoPosition = member.photoPosition ?? 50
 }
 
 function startAdd(group: GroupKey) {
@@ -253,6 +277,7 @@ function startAdd(group: GroupKey) {
   draft.email = ''
   draft.interests = ''
   draft.photo = ''
+  draft.photoPosition = 50
 }
 
 function cancelEdit() {
@@ -270,7 +295,7 @@ async function onMemberPhotoSelected(e: Event) {
   const oldPhoto = draft.photo
   uploadingPhoto.value = true
   const ext = file.name.split('.').pop() || 'jpg'
-  const path = await uploadImage('member', `${editingId.value}.${ext}`, file)
+  const path = await uploadImage('members', `${editingId.value}.${ext}`, file)
   uploadingPhoto.value = false
 
   if (path) {
@@ -312,6 +337,7 @@ async function saveMember() {
       email: draft.email,
       interests: draft.interests,
       photo: draft.photo,
+      photoPosition: draft.photoPosition,
     })
   } else {
     const target = list.find((m) => m.id === editingId.value)
@@ -322,6 +348,7 @@ async function saveMember() {
       target.email = draft.email
       target.interests = draft.interests
       target.photo = draft.photo
+      target.photoPosition = draft.photoPosition
     }
   }
 
@@ -377,6 +404,7 @@ async function ungraduateMember(alum: Member) {
     email: '',
     interests: '',
     photo: '',
+    photoPosition: 50,
   })
 
   await saveJsonFile('members.json', form)
@@ -400,21 +428,64 @@ async function doGraduate() {
 
 const editingPI = ref(false)
 const piFormError = ref<string | null>(null)
-const piDraft = reactive({ name: '', role: '', department: '', institution: '', email: '' })
+const uploadingPIPhoto = ref(false)
+const piPreviewBroken = ref(false)
+const piDraft = reactive({
+  name: '',
+  nameKr: '',
+  role: '',
+  department: '',
+  institution: '',
+  email: '',
+  photo: '',
+  photoPosition: 50,
+})
 
 function startEditPI() {
   piDraft.name = form.pi.name
+  piDraft.nameKr = form.pi.nameKr ?? ''
   piDraft.role = form.pi.role
   piDraft.department = form.pi.department
   piDraft.institution = form.pi.institution
   piDraft.email = form.pi.email
+  piDraft.photo = form.pi.photo ?? ''
+  piDraft.photoPosition = form.pi.photoPosition ?? 50
   piFormError.value = null
+  piPreviewBroken.value = false
   editingPI.value = true
 }
 
 function cancelEditPI() {
   editingPI.value = false
   piFormError.value = null
+}
+
+async function onPIPhotoSelected(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file) return
+
+  const oldPhoto = piDraft.photo
+  uploadingPIPhoto.value = true
+  const ext = file.name.split('.').pop() || 'jpg'
+  const path = await uploadImage('members', `pi.${ext}`, file)
+  uploadingPIPhoto.value = false
+
+  if (path) {
+    piDraft.photo = path
+    piPreviewBroken.value = false
+    if (oldPhoto && !oldPhoto.startsWith('blob:') && oldPhoto.split('?')[0] !== path.split('?')[0]) {
+      await deleteImage(oldPhoto)
+    }
+  } else {
+    alert('Image upload failed. Is the local dev server running?')
+  }
+}
+
+async function removePIPhoto() {
+  if (piDraft.photo) await deleteImage(piDraft.photo)
+  piDraft.photo = ''
 }
 
 async function savePI() {
@@ -429,10 +500,13 @@ async function savePI() {
   }
 
   form.pi.name = piDraft.name
+  form.pi.nameKr = piDraft.nameKr
   form.pi.role = piDraft.role
   form.pi.department = piDraft.department
   form.pi.institution = piDraft.institution
   form.pi.email = piDraft.email
+  form.pi.photo = piDraft.photo
+  form.pi.photoPosition = piDraft.photoPosition
   editingPI.value = false
   await saveJsonFile('members.json', form)
 }

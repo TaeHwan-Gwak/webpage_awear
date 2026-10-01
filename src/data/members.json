@@ -1,6 +1,7 @@
 {
   "pi": {
     "name": "Jiyeon Kang",
+    "nameKr": "강지연",
     "role": "Associate Professor",
     "department": "Department of AI",
     "institution": "Gwangju Institute of Science and Technology (GIST)",
@@ -26,7 +27,8 @@
         ]
       }
     ],
-    "photo": ""
+    "photo": "",
+    "photoPosition": 50
   },
   "postdocs": [
     {
@@ -36,7 +38,8 @@
       "note": "InnoCORE fellow",
       "email": "deredeji@gm.gist.ac.kr",
       "interests": "",
-      "photo": ""
+      "photo": "/members/Dere%20Mustapha%20Deji_p1.webp",
+      "photoPosition": 50
     }
   ],
   "groupTitle": "Graduate Students",
@@ -48,7 +51,8 @@
       "note": "Brain–computer interface (BCI)",
       "email": "kihyunkim@gm.gist.ac.kr",
       "interests": "",
-      "photo": ""
+      "photo": "/members/Kihyun%20Kim_g2.webp",
+      "photoPosition": 50
     },
     {
       "id": "g4",
@@ -57,7 +61,8 @@
       "note": "Cable-driven robotic prosthesis",
       "email": "ingyunahn@gm.gist.ac.kr",
       "interests": "",
-      "photo": ""
+      "photo": "/members/Ingyun%20Ahn_g4.webp",
+      "photoPosition": 50
     },
     {
       "id": "g6",
@@ -66,7 +71,8 @@
       "note": "Brain stimulation and neurofeedback",
       "email": "youngkeekim@gm.gist.ac.kr",
       "interests": "",
-      "photo": ""
+      "photo": "",
+      "photoPosition": 50
     },
     {
       "id": "g8",
@@ -75,7 +81,8 @@
       "note": "Robot-driven neuromodulation",
       "email": "kyungminkwon@gm.gist.ac.kr",
       "interests": "",
-      "photo": ""
+      "photo": "",
+      "photoPosition": 50
     },
     {
       "id": "g12",
@@ -84,7 +91,8 @@
       "note": "Neural Interface and simulation",
       "email": "hyunwonnam@gm.gist.ac.kr",
       "interests": "",
-      "photo": ""
+      "photo": "/members/Hyunwon%20Nam_g12.webp",
+      "photoPosition": 50
     },
     {
       "id": "g3",
@@ -93,7 +101,8 @@
       "note": "Pilates-based rehabilitation robot",
       "email": "seonghunjeong@gm.gist.ac.kr",
       "interests": "",
-      "photo": ""
+      "photo": "/members/Seong-Hun%20Jeong_g3.webp",
+      "photoPosition": 50
     },
     {
       "id": "g5",
@@ -102,7 +111,8 @@
       "note": "3D animal pose estimation and behavior analysis",
       "email": "daekim@gm.gist.ac.kr",
       "interests": "",
-      "photo": ""
+      "photo": "/members/Dae%20Yeon%20Kim_g5.webp",
+      "photoPosition": 50
     },
     {
       "id": "g7",
@@ -111,7 +121,8 @@
       "note": "Animal EEG and closed-loop brain stimulation",
       "email": "seoheejang@gm.gist.ac.kr",
       "interests": "",
-      "photo": ""
+      "photo": "",
+      "photoPosition": 50
     },
     {
       "id": "g9",
@@ -120,7 +131,8 @@
       "note": "LLM-assisted dysarthric speech recognition",
       "email": "jiyesohn@gm.gist.ac.kr",
       "interests": "",
-      "photo": ""
+      "photo": "",
+      "photoPosition": 50
     },
     {
       "id": "g10",
@@ -129,7 +141,8 @@
       "note": "3D human pose estimation and health monitoring",
       "email": "junghoonyang@gm.gist.ac.kr",
       "interests": "",
-      "photo": ""
+      "photo": "",
+      "photoPosition": 50
     },
     {
       "id": "g11",
@@ -138,7 +151,8 @@
       "note": "Pilates-based rehabilitation robot",
       "email": "taehwangwak@gm.gist.ac.kr",
       "interests": "",
-      "photo": ""
+      "photo": "/members/Taehwan%20Gwak_g11.webp",
+      "photoPosition": 50
     }
   ],
   "internsTitle": "Undergraduate Interns",
@@ -150,7 +164,8 @@
       "note": "",
       "email": "",
       "interests": "",
-      "photo": ""
+      "photo": "",
+      "photoPosition": 50
     },
     {
       "id": "i2",
@@ -159,7 +174,8 @@
       "note": "",
       "email": "",
       "interests": "",
-      "photo": ""
+      "photo": "",
+      "photoPosition": 50
     },
     {
       "id": "i3",
@@ -168,7 +184,8 @@
       "note": "",
       "email": "",
       "interests": "",
-      "photo": ""
+      "photo": "",
+      "photoPosition": 50
     },
     {
       "id": "i4",
@@ -177,7 +194,8 @@
       "note": "",
       "email": "",
       "interests": "",
-      "photo": ""
+      "photo": "",
+      "photoPosition": 50
     },
     {
       "id": "i5",
@@ -186,7 +204,8 @@
       "note": "",
       "email": "",
       "interests": "",
-      "photo": ""
+      "photo": "",
+      "photoPosition": 50
     }
   ],
   "alumniTitle": "Alumni",

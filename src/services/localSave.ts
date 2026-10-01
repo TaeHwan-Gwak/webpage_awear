@@ -1,5 +1,5 @@
 export type SavableFile = 'members.json' | 'news.json' | 'publications.json' | 'equipment.json' | 'home.json' | 'research.json'
-export type ImageFolder = 'publications' | 'member' | 'news' | 'equipment' | 'home' | 'research'
+export type ImageFolder = 'publications' | 'members' | 'news' | 'equipment' | 'home' | 'research'
 
 // 로컬 dev든(Vite 플러그인) 배포 환경이든(Vercel Function + GitHub API) 이 헤더로 인증합니다.
 // 배포 환경에서는 서버가 같은 값(VITE_ADMIN_PASSWORD)과 비교해서 확인합니다.

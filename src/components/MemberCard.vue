@@ -1,16 +1,23 @@
 <template>
   <article class="member-card" :class="{ 'admin-mode': isAdmin }" @mouseenter="onEnter" @mouseleave="onLeave">
-    <div class="avatar" aria-hidden="true">
-      <img v-if="photo" :src="photo" :alt="name" class="avatar-photo" />
-      <span v-else class="ph-label">Image</span>
+    <div class="avatar-wrap">
+      <div class="avatar" aria-hidden="true">
+        <img v-if="photo" :src="photo" :alt="name" class="avatar-photo"
+          :style="{ objectPosition: `center ${photoPosition ?? 50}%` }" />
+        <span v-else class="ph-label">Image</span>
+      </div>
     </div>
-    <h3>{{ name }}</h3>
-    <p class="role">{{ role }}</p>
-    <p class="note">{{ note }}</p>
+
+    <div class="text-block">
+      <h3>{{ name }}</h3>
+      <p class="role">{{ role }}</p>
+      <p class="note">{{ note }}</p>
+    </div>
 
     <div v-if="showSpinner" class="hover-spinner" aria-hidden="true" />
 
     <div class="info-panel" :class="{ visible: showInfo }">
+      <p class="info-role">{{ role }}</p>
       <p v-if="email" class="info-email">{{ email }}</p>
       <p v-if="interests" class="info-interests">{{ interests }}</p>
     </div>
@@ -28,6 +35,8 @@ defineProps<{
   email?: string
   interests?: string
   photo?: string
+  /** Vertical crop anchor for the photo, 0 (top) - 100 (bottom); defaults to centered. */
+  photoPosition?: number
 }>()
 
 const { isAdmin } = useAdminMode()
