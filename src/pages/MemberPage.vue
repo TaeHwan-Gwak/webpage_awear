@@ -59,7 +59,10 @@
           @drop="postdocDrag.onDrop(i)" @dragend="postdocDrag.onDragEnd">
           <DragHandle v-if="isAdmin" class="handle" />
           <div class="info">
-            <p class="name">{{ member.name }}</p>
+            <p class="name">
+              {{ member.name }}
+              <router-link class="inline-link" :to="`/member/cv/${member.id}`">[Link]</router-link>
+            </p>
             <p class="role">{{ member.role }}</p>
           </div>
           <p class="note">{{ member.note }}</p>

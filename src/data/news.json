@@ -1,9 +1,44 @@
 [
   {
+    "id": "n0a",
+    "date": "2020.12",
+    "tag": "General",
+    "desc": "Dr. Jiyeon Kang was invited to give a talk on Intelligent wheelchair for children with special needs for WNY STEM activities for high school students working on Open Wheel Chair Project.",
+    "link": ""
+  },
+  {
+    "id": "n0b",
+    "date": "2020.12",
+    "tag": "General",
+    "desc": "2020 IEEE/EMB BioRob (International Conference for Biomedical Robotics and Biomechatronics) ended successfully with over 1500 attendees. Dr. Jiyeon Kang served as an organizing committee and workshop chair of BioRob 2020. Nikhil Kantu and Saeb Lamooki presented in BioRob 2020.",
+    "link": ""
+  },
+  {
+    "id": "n0c",
+    "date": "2021",
+    "tag": "General",
+    "desc": "Dr. Jiyeon Kang served as an associate editor of 2021 IEEE International Conference on Robotics and Automation (ICRA).",
+    "link": ""
+  },
+  {
+    "id": "n0d",
+    "date": "2022",
+    "tag": "Grant",
+    "desc": "AWEAR lab received a grant from the NSF DARE, for our work on \"A holistic human-in-the-loop framework for optimizing a personalized prosthetic arm\".",
+    "link": ""
+  },
+  {
+    "id": "n0e",
+    "date": "2022",
+    "tag": "General",
+    "desc": "2022 IEEE/EMB BioRob (International Conference for Biomedical Robotics and Biomechatronics) ended successfully. Dr. Jiyeon Kang served as an organizing committee and workshop co-chair of BioRob 2022.",
+    "link": ""
+  },
+  {
     "id": "n1",
     "date": "2023.01",
     "tag": "General",
-    "desc": "AWEAR Lab이 미국 SUNY Buffalo에서 광주과기원으로 이전하여 새롭게 시작하였습니다.",
+    "desc": "AWEAR Lab이 미국 SUNY Buffalo에서 광주과기원으로 이전하여 새롭게 시작하였습니다. Our lab has relocated to Gwangju Institute of Science and Technology (GIST)!",
     "link": ""
   },
   {
@@ -12,6 +47,13 @@
     "tag": "Grant",
     "desc": "AWEAR Lab이 로봇 의수 에뮬레이터에 대한 한국연구재단 과제를 수주하여 연구를 수행합니다.",
     "link": ""
+  },
+  {
+    "id": "n2a",
+    "date": "2023.06",
+    "tag": "Press",
+    "desc": "강지연 교수의 연구 칼럼('로봇을 이용한 뇌성마비 환자의 재활 연구')이 기계·로봇 연구정보센터에 업로드되었습니다.",
+    "link": "https://www.materic.or.kr/v2/rt/content.asp?idx=185587&page=1&board_idx=1034&s_kinds=&s_word="
   },
   {
     "id": "n3",
@@ -26,6 +68,13 @@
     "tag": "Grant",
     "desc": "AWEAR Lab이 국가과학기술연구회로부터 선행융합연구사업 과제를 수주하여 공동으로 연구를 수행합니다.",
     "link": ""
+  },
+  {
+    "id": "n2b",
+    "date": "2023.12",
+    "tag": "Press",
+    "desc": "강지연 교수가 메릭(Merric) 주최 웨비나에서 「Functional Robotic Intervention for Individuals with Special Needs」를 주제로 발표하였습니다.",
+    "link": "https://youtu.be/4RT5d4eKEhA?si=dbHqDSUqhUg4E-0e&t=726"
   },
   {
     "id": "n5",
@@ -49,6 +98,20 @@
     "link": "http://www.itdaily.kr/news/articleView.html?idxno=223206"
   },
   {
+    "id": "n6a",
+    "date": "2024.07",
+    "tag": "General",
+    "desc": "조재범학생, 김기현학생, 윤의서 학생이 ICROS 2024에서 발표했습니다.",
+    "link": ""
+  },
+  {
+    "id": "n6b",
+    "date": "2024.12",
+    "tag": "Award",
+    "desc": "윤의서 학생이 한국재활로봇학회 추계학술대회에서 장려상을 수상했습니다.",
+    "link": ""
+  },
+  {
     "id": "n8",
     "date": "2025.04",
     "tag": "Press",
@@ -66,7 +129,7 @@
     "id": "n10",
     "date": "2025.06",
     "tag": "Award",
-    "desc": "강지연 교수는 IEEE TNSRE 저널의(JCR 상위 2%) Associate Editor로 참여하게 되었습니다.",
+    "desc": "강지연 교수는 IEEE TNSRE 저널의 (JCR 상위 2%) Associate Editor로 참여하게 되었습니다.",
     "link": ""
   },
   {
@@ -110,7 +173,7 @@
     "id": "n16",
     "date": "2026.03",
     "tag": "Publication",
-    "desc": "AI 기반 일상동작 근감소증(sarcopenia) 모니터링 기술에 대한 논문이 J. NeuroEng. Rehabil.(JCR 상위 2%)에 게재되었습니다.",
+    "desc": "AI 기반 일상동작 근감소증 (sarcopenia) 모니터링 기술에 대한 논문이 J. NeuroEng. Rehabil. (JCR 상위 2%)에 게재되었습니다.",
     "link": ""
   },
   {
@@ -135,14 +198,6 @@
     "link": "https://n.news.naver.com/article/030/0003435675?sid=102"
   },
   {
-    "id": "n20",
-    "date": "2026.01",
-    "tag": "test",
-    "desc": "test",
-    "link": "",
-    "image": ""
-  },
-  {
     "id": "n21",
     "date": "2026.07",
     "tag": "General",
@@ -154,6 +209,20 @@
     "date": "2026.09",
     "tag": "Grant",
     "desc": "AWEAR Lab이 과학기술정보통신부의 2026년도 AI 최고급 신진연구자 지원사업(AI 스타펠로우십)에 선정되어 연구를 수행합니다.",
+    "link": ""
+  },
+  {
+    "id": "n22a",
+    "date": "2026.09",
+    "tag": "General",
+    "desc": "이진우 석사생이 IROS 2026에서 'Assist–resist-as-needed robotic control for cable-driven bedside training'라는 주제로 발표했습니다.",
+    "link": ""
+  },
+  {
+    "id": "n22b",
+    "date": "2026.10",
+    "tag": "General",
+    "desc": "권경민 학생, 양정훈 학생, 장서희 학생, 최유진 학생이 ICNR 2026에서 발표했습니다.",
     "link": ""
   }
 ]

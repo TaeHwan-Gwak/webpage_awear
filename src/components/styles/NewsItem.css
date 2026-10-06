@@ -22,22 +22,6 @@
     color: var(--text-faint);
   }
 
-  .tag {
-    display: inline-block;
-    width: fit-content;
-    padding: 3px 9px;
-    border-radius: 999px;
-    background: rgba(255, 90, 31, 0.1);
-    color: var(--orange-deep);
-    font-family: var(--font-mono);
-    font-size: 15px;
-
-    @media (max-width: 720px) {
-      font-size: 12px;
-    }
-    letter-spacing: 0.03em;
-  }
-
   .date {
     font-family: var(--font-mono);
     font-size: 16px;

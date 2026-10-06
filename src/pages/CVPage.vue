@@ -7,28 +7,38 @@
       <div class="cv-header-row">
         <div class="cv-header-text">
           <h1>
-            {{ pi.name }}
-            <span v-if="pi.nameKr" class="name-kr">({{ pi.nameKr }})</span>
+            {{ subject.name }}
+            <span v-if="subject.nameKr" class="name-kr">({{ subject.nameKr }})</span>
           </h1>
-          <p class="role">{{ pi.role }}</p>
-          <p class="dept">{{ pi.department }}</p>
-          <p class="inst">{{ pi.institution }}</p>
-          <a class="mail" :href="`mailto:${pi.email}`">{{ pi.email }}</a>
+          <p class="role">{{ subject.role }}</p>
+          <p v-if="subject.badge" class="badge">{{ subject.badge }}</p>
+          <p v-if="subject.department" class="dept">{{ subject.department }}</p>
+          <p class="inst">{{ subject.institution }}</p>
+          <a class="mail" :href="`mailto:${subject.email}`">{{ subject.email }}</a>
         </div>
 
         <div class="cv-photo">
-          <img v-if="pi.photo" :src="pi.photo" :alt="pi.name"
-            :style="{ objectPosition: `center ${pi.photoPosition ?? 50}%` }" />
+          <img v-if="subject.photo" :src="subject.photo" :alt="subject.name"
+            :style="{ objectPosition: `center ${subject.photoPosition ?? 50}%` }" />
           <span v-else class="ph-label">Image</span>
         </div>
       </div>
     </header>
 
-    <section class="cv-content section">
-      <div v-for="block in pi.cv" :key="block.section" class="cv-block">
+    <section v-if="subject.cv?.length" class="cv-content section">
+      <div v-for="block in subject.cv" :key="block.section" class="cv-block">
         <h2>{{ block.section }}</h2>
         <ul>
-          <li v-for="(item, i) in block.items" :key="i">{{ item }}</li>
+          <li v-for="(item, i) in block.items" :key="i">
+            <template v-if="typeof item === 'string'">{{ item }}</template>
+            <div v-else class="cv-entry">
+              <span class="cv-year">{{ item.year }}</span>
+              <span class="cv-entry-text">
+                <span class="cv-entry-title">{{ item.title }}</span>
+                <span v-if="item.subtitle" class="cv-entry-subtitle">{{ item.subtitle }}</span>
+              </span>
+            </div>
+          </li>
         </ul>
       </div>
     </section>
@@ -36,9 +46,62 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import membersData from '../data/members.json'
 
-const { pi } = membersData
+type CvEntry = string | { year: string; title: string; subtitle?: string }
+interface CvBlock {
+  section: string
+  items: CvEntry[]
+}
+interface CvSubject {
+  name: string
+  nameKr?: string
+  role: string
+  badge?: string
+  department?: string
+  institution: string
+  email: string
+  photo?: string
+  photoPosition?: number
+  cv?: CvBlock[]
+}
+
+const route = useRoute()
+
+const subject = computed<CvSubject>(() => {
+  const id = route.params.id as string | undefined
+  if (id && id !== 'pi') {
+    const postdoc = membersData.postdocs?.find((p) => p.id === id) as
+      | (typeof membersData.postdocs[number] & { institution?: string; cv?: CvBlock[] })
+      | undefined
+    if (postdoc) {
+      return {
+        name: postdoc.name,
+        role: postdoc.role,
+        badge: postdoc.note || undefined,
+        institution: postdoc.institution ?? '',
+        email: postdoc.email,
+        photo: postdoc.photo,
+        photoPosition: postdoc.photoPosition,
+        cv: postdoc.cv,
+      }
+    }
+  }
+  const pi = membersData.pi
+  return {
+    name: pi.name,
+    nameKr: pi.nameKr,
+    role: pi.role,
+    department: pi.department,
+    institution: pi.institution,
+    email: pi.email,
+    photo: pi.photo,
+    photoPosition: pi.photoPosition,
+    cv: pi.cv,
+  }
+})
 </script>
 
 <style src="./styles/CVPage.css" scoped></style>

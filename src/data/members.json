@@ -36,10 +36,32 @@
       "name": "Dere Mustapha Deji",
       "role": "Postdoctoral Researcher",
       "note": "InnoCORE fellow",
-      "email": "deredeji@gm.gist.ac.kr",
+      "email": "deremustapha@gm.gist.ac.kr",
       "interests": "",
       "photo": "/members/Dere%20Mustapha%20Deji_p1.webp",
-      "photoPosition": 50
+      "photoPosition": 50,
+      "institution": "Gwangju Institute of Science and Technology",
+      "cv": [
+        {
+          "section": "Honors & Awards",
+          "items": [
+            { "year": "2026", "title": "Excellence in Research Award", "subtitle": "Korean Brain Research Institute" },
+            { "year": "2026", "title": "GIST Top Scholar", "subtitle": "Gwangju Institute of Science and Technology" },
+            { "year": "2025", "title": "BMSE Best Research Award", "subtitle": "Department of Biomedical Science and Engineering, GIST" },
+            { "year": "2023", "title": "BMSE Best Research Award", "subtitle": "Department of Biomedical Science and Engineering, GIST" },
+            { "year": "2022", "title": "IOMP Best Presentation Award", "subtitle": "IUPESM World Congress on Medical Physics and Biomedical Engineering" },
+            { "year": "2020", "title": "BMSE Best Poster Presentation Award", "subtitle": "Department of Biomedical Science and Engineering, GIST" }
+          ]
+        },
+        {
+          "section": "Education",
+          "items": [
+            { "year": "2026", "title": "Ph.D. Biomedical Science and Engineering, GIST", "subtitle": "Dissertation: Neurorehabilitation System with Wearable Biosensing and Edge Deep Learning" },
+            { "year": "2019", "title": "M.S. Biomedical Engineering, University of Ibadan", "subtitle": "Thesis: Wearable Device for Timely Prediction of Asthmatic Attack" },
+            { "year": "2014", "title": "B.Eng. Electrical and Electronic Engineering, Federal University of Technology Minna" }
+          ]
+        }
+      ]
     }
   ],
   "groupTitle": "Graduate Students",
@@ -79,9 +101,9 @@
       "name": "Kyungmin Kwon",
       "role": "Integrated M.S.–Ph.D.",
       "note": "Robot-driven neuromodulation",
-      "email": "kyungminkwon@gm.gist.ac.kr",
+      "email": "ekfrnd8904@gm.gist.ac.kr",
       "interests": "",
-      "photo": "",
+      "photo": "/members/Kyungmin%20Kwon_g8.webp",
       "photoPosition": 50
     },
     {
@@ -119,9 +141,9 @@
       "name": "Seohee Jang",
       "role": "M.S. Student",
       "note": "Animal EEG and closed-loop brain stimulation",
-      "email": "seoheejang@gm.gist.ac.kr",
+      "email": "seoheej32@gm.gist.ac.kr",
       "interests": "",
-      "photo": "",
+      "photo": "/members/Seohee%20Jang_g7.webp",
       "photoPosition": 50
     },
     {
@@ -141,7 +163,7 @@
       "note": "3D human pose estimation and health monitoring",
       "email": "junghoonyang@gm.gist.ac.kr",
       "interests": "",
-      "photo": "",
+      "photo": "/members/Junghoon%20Yang_g10.webp",
       "photoPosition": 50
     },
     {
@@ -149,7 +171,7 @@
       "name": "Taehwan Gwak",
       "role": "M.S. Student",
       "note": "Pilates-based rehabilitation robot",
-      "email": "taehwangwak@gm.gist.ac.kr",
+      "email": "taehw0617@gm.gist.ac.kr",
       "interests": "",
       "photo": "/members/Taehwan%20Gwak_g11.webp",
       "photoPosition": 50

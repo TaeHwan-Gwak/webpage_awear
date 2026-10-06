@@ -43,12 +43,12 @@ const routes = [
     },
   },
   {
-    path: '/member/cv',
+    path: '/member/cv/:id?',
     name: 'member-cv',
     component: () => import('../pages/CVPage.vue'),
     meta: {
       title: `Curriculum Vitae | ${SITE_NAME}`,
-      description: 'Curriculum vitae of the principal investigator of AWEAR Lab at GIST.',
+      description: 'Curriculum vitae of a member of AWEAR Lab at GIST.',
     },
   },
   { path: '/internship', redirect: '/contact#internship' },

@@ -2,7 +2,6 @@
   <li class="news-item">
     <div class="meta">
       <span v-if="index" class="idx">No.{{ index }}</span>
-      <span v-if="tag" class="tag">{{ tag }}</span>
       <time class="date">{{ date }}</time>
     </div>
     <div class="body">

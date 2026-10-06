@@ -1,3 +1,16 @@
+.inline-link {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--orange-deep);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: var(--orange);
+  }
+}
+
 .pi-feature {
   .card {
     position: relative;
@@ -33,18 +46,6 @@
     color: var(--text);
   }
 
-  .inline-link {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--orange-deep);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-
-    &:hover {
-      color: var(--orange);
-    }
-  }
 
   .role {
     margin-top: 14px;

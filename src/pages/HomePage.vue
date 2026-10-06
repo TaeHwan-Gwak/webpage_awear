@@ -184,7 +184,7 @@
         </template>
         <template v-else>
           <li v-for="item in displayNews" :key="item.id ?? item.date" class="news-row">
-            <NewsItem :date="item.date" :desc="item.desc" :tag="item.tag">
+            <NewsItem :date="item.date" :desc="item.desc">
               <a v-if="item.link" class="read-more" :href="item.link" target="_blank" rel="noopener">Read more →</a>
             </NewsItem>
           </li>
@@ -662,11 +662,11 @@ const fallbackNews: NewsItemType[] = [
   { id: 'seed-3', date: 'Date', desc: 'News content', tag: 'Tag' },
 ]
 
-// 로컬 news.json 최신순(날짜 desc) — 관리자 편집은 News 페이지의 news.json에 반영되므로
-// 홈에서도 같은 파일을 읽어 최신 소식이 자동으로 보이게 합니다.
-const localLatestNews = [...(newsDataRaw as NewsItemType[])].sort((a, b) =>
-  a.date < b.date ? 1 : a.date > b.date ? -1 : 0
-)
+// 로컬 news.json은 오래된 순으로 저장되어 있고(News 페이지와 동일한 규칙), 날짜 문자열이
+// "Mar. 2026"처럼 자유 형식이라 문자열 비교로는 정렬할 수 없습니다 - 그냥 배열을 뒤집어
+// 최신순으로 봅니다. 관리자 편집은 News 페이지의 news.json에 반영되므로 홈에서도 같은
+// 파일을 읽어 최신 소식이 자동으로 보이게 합니다.
+const localLatestNews = [...(newsDataRaw as NewsItemType[])].reverse()
 
 const { news, loading: newsLoading, error: newsError } = useNews(3)
 const displayNews = computed(() => {
