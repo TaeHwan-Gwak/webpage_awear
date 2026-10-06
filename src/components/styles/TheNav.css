@@ -10,6 +10,18 @@
   }
 }
 
+/* 메뉴 패널의 .drop 트랜지션과 같은 타이밍(0.18s ease)으로 맞춰서,
+   배경 어둡기와 메뉴 패널이 따로 노는 2단계처럼 보이지 않고 함께 사라지도록 합니다. */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.18s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .nav {
   position: fixed;
   inset: 0 0 auto 0;
@@ -236,7 +248,13 @@
 
     .mobile-row {
       display: flex;
-      align-items: stretch;
+      align-items: center;
+      /* Research is the only item with a .mobile-expand-btn child - its chevron
+         (22px, line-height:1) is naturally taller than a plain link's text,
+         and align-items: stretch was letting that one row grow taller than
+         the rest. A shared min-height keeps every row the same regardless
+         of which children it has. */
+      min-height: 48px;
       border-bottom: 1px solid var(--border-soft);
     }
 

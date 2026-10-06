@@ -1,5 +1,7 @@
 <template>
-  <div v-if="open" class="mobile-nav-backdrop" @click="toggleMobileMenu" />
+  <transition name="fade">
+    <div v-if="open" class="mobile-nav-backdrop" @click="toggleMobileMenu" />
+  </transition>
   <header class="nav">
     <div class="nav-inner">
       <router-link to="/" class="brand" @click="onBrandClick">
