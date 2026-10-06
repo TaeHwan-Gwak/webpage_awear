@@ -118,22 +118,22 @@
     },
     {
       "id": "g3",
-      "name": "Seong-Hun Jeong",
+      "name": "Seonghun Jeong",
       "role": "M.S. Student",
       "note": "Pilates-based rehabilitation robot",
       "email": "seonghunjeong@gm.gist.ac.kr",
       "interests": "",
-      "photo": "/members/Seong-Hun%20Jeong_g3.webp",
+      "photo": "/members/Seonghun%20Jeong_g3.webp",
       "photoPosition": 50
     },
     {
       "id": "g5",
-      "name": "Dae Yeon Kim",
+      "name": "Daeyeon Kim",
       "role": "M.S. Student",
       "note": "3D animal pose estimation and behavior analysis",
       "email": "daekim@gm.gist.ac.kr",
       "interests": "",
-      "photo": "/members/Dae%20Yeon%20Kim_g5.webp",
+      "photo": "/members/Daeyeon%20Kim_g5.webp",
       "photoPosition": 50
     },
     {
@@ -240,7 +240,7 @@
     },
     {
       "id": "a20",
-      "name": "Na Gyeong Ham",
+      "name": "Nagyeong Ham",
       "role": "M.S., Dept. of AI Convergence, GIST",
       "note": ""
     },
@@ -252,7 +252,7 @@
     },
     {
       "id": "a18",
-      "name": "Jin-Woo Lee",
+      "name": "Jinwoo Lee",
       "role": "M.S., Dept. of AI Convergence, GIST",
       "note": "currently at Samsung Electronics"
     },
