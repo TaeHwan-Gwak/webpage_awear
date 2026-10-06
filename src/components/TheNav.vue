@@ -1,4 +1,5 @@
 <template>
+  <div v-if="open" class="mobile-nav-backdrop" @click="toggleMobileMenu" />
   <header class="nav">
     <div class="nav-inner">
       <router-link to="/" class="brand" @click="onBrandClick">
@@ -68,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAdminMode } from '../composables/useAdminMode'
 import { logoutAdmin } from '../composables/useAdminAuth'
@@ -136,6 +137,15 @@ function onMobileLinkClick() {
   open.value = false
   mobileExpanded.value = null
 }
+
+// 모바일 메뉴가 열려 있는 동안 뒤 화면이 스크롤/탭되지 않도록 막습니다.
+watch(open, (isOpen) => {
+  document.body.style.overflow = isOpen ? 'hidden' : ''
+})
+
+onUnmounted(() => {
+  document.body.style.overflow = ''
+})
 
 const activeDropdown = ref<string | null>(null)
 
