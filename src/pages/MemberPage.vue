@@ -81,7 +81,8 @@
           @drop="memberDrag.onDrop(i)" @dragend="memberDrag.onDragEnd">
           <DragHandle class="handle" />
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
-            :interests="member.interests" :photo="member.photo" :photo-position="member.photoPosition" />
+            :interests="member.interests" :photo="member.photo" :photo-position="member.photoPosition"
+            :priority="i === 0" />
           <AdminEditControls v-if="isAdmin" @edit="startEdit('members', member)" @delete="deleteMember('members', member)" />
           <button v-if="isAdmin" type="button" class="graduate-btn" @click="confirmGraduate(member)">
             Graduate →

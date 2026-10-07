@@ -8,6 +8,7 @@
       class="slide"
       :class="{ active: i === current }"
       :alt="`AWEAR Lab photo ${i + 1}`"
+      :fetchpriority="i === 0 ? 'high' : 'auto'"
       @error="onError(i)"
     />
 

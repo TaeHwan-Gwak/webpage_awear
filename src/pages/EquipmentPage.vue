@@ -15,8 +15,9 @@
           <DragHandle class="handle" />
           <figure class="equipment-card">
             <div class="thumb">
-              <LayeredImage v-if="item.layers?.length" :layers="item.layers" :alt="item.name" />
-              <img v-else-if="item.image && !brokenIds.has(item.id)" :src="item.image" :alt="item.name" loading="lazy"
+              <LayeredImage v-if="item.layers?.length" :layers="item.layers" :alt="item.name" :priority="i === 0" />
+              <img v-else-if="item.image && !brokenIds.has(item.id)" :src="item.image" :alt="item.name"
+                :fetchpriority="i === 0 ? 'high' : 'auto'"
                 @error="brokenIds.add(item.id)" />
               <span v-else class="ph-label">Image</span>
             </div>

@@ -18,7 +18,7 @@
         </div>
 
         <div class="cv-photo">
-          <img v-if="subject.photo" :src="subject.photo" :alt="subject.name"
+          <img v-if="subject.photo" :src="subject.photo" :alt="subject.name" fetchpriority="high"
             :style="{ objectPosition: `center ${subject.photoPosition ?? 50}%` }" />
           <span v-else class="ph-label">Image</span>
         </div>

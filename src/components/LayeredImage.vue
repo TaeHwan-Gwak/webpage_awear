@@ -1,6 +1,7 @@
 <template>
   <div class="layered-image">
-    <img v-for="(layer, i) in layers" :key="i" :src="layer.src" :alt="alt" loading="lazy" :style="{
+    <img v-for="(layer, i) in layers" :key="i" :src="layer.src" :alt="alt"
+      :fetchpriority="priority ? 'high' : 'auto'" :style="{
       left: `${layer.x * 100}%`,
       top: `${layer.y * 100}%`,
       width: `${layer.width * 100}%`,
@@ -21,6 +22,8 @@ export interface ImageLayer {
 defineProps<{
   layers: ImageLayer[]
   alt?: string
+  /** Marks these layers' images as fetchpriority="high" - use for the first item in a grid only. */
+  priority?: boolean
 }>()
 </script>
 

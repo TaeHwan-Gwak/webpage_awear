@@ -3,6 +3,7 @@
     <div class="avatar-wrap">
       <div class="avatar" aria-hidden="true">
         <img v-if="photo" :src="photo" :alt="name" class="avatar-photo"
+          :fetchpriority="priority ? 'high' : 'auto'"
           :style="{ objectPosition: `center ${photoPosition ?? 50}%` }" />
         <span v-else class="ph-label">Image</span>
       </div>
@@ -37,6 +38,8 @@ defineProps<{
   photo?: string
   /** Vertical crop anchor for the photo, 0 (top) - 100 (bottom); defaults to centered. */
   photoPosition?: number
+  /** Marks this card's photo as fetchpriority="high" - use for the first card in a grid only. */
+  priority?: boolean
 }>()
 
 const { isAdmin } = useAdminMode()

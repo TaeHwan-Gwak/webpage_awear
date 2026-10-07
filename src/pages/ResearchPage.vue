@@ -34,6 +34,7 @@
           <div class="figure-gallery" :class="`count-${Math.min(topic.images.length, 4)}`">
             <div v-for="(img, idx) in topic.images" :key="idx" class="figure-tile">
               <img v-if="img && !brokenKeys.has(`${topic.id}:${idx}`)" :src="img" alt=""
+                :fetchpriority="i === 0 ? 'high' : 'auto'"
                 @error="brokenKeys.add(`${topic.id}:${idx}`)" />
               <span v-else class="ph-label">Image</span>
 
