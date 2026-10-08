@@ -29,7 +29,7 @@
 
       <AdminAddButton v-if="isEditable" label="Add news item" @add="startAdd" />
 
-      <ol class="timeline">
+      <ol ref="timelineRef" class="timeline" :style="minTimelineHeight ? { minHeight: `${minTimelineHeight}px` } : undefined">
         <template v-if="loading">
           <li v-for="n in 6" :key="n" class="skeleton-entry">
             <SkeletonLoader width="70px" height="14px" />
@@ -110,7 +110,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive, watch, onMounted, onUnmounted } from 'vue'
+import { computed, ref, reactive, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import NewsItem from '../components/NewsItem.vue'
@@ -307,10 +307,13 @@ onMounted(() => {
     pageSize.value = 5
   }
   window.addEventListener('click', handleClickOutside)
+  window.addEventListener('resize', measureTimelineHeight)
+  measureTimelineHeight()
 })
 
 onUnmounted(() => {
   window.removeEventListener('click', handleClickOutside)
+  window.removeEventListener('resize', measureTimelineHeight)
 })
 
 const totalPages = computed(() => Math.max(1, Math.ceil(displayNews.value.length / pageSize.value)))
@@ -323,6 +326,46 @@ const pagedNews = computed(() => {
 watch([pageSize, displayNews], () => {
   currentPage.value = 1
 })
+
+// Different pages can land on a different mix of entries (some with images,
+// some without), so unlike a simple "tallest filter" there's no single page
+// that's guaranteed to be the tallest. Instead we keep a running max of
+// whatever height we've actually seen and never let the list shrink below
+// it, so clicking Prev/Next repeatedly never yanks the scroll position (or
+// the pagination buttons themselves) around.
+const timelineRef = ref<HTMLElement | null>(null)
+const minTimelineHeight = ref(0)
+
+async function measureTimelineHeight() {
+  await nextTick()
+  const el = timelineRef.value
+  if (!el) return
+  if (el.offsetHeight > minTimelineHeight.value) minTimelineHeight.value = el.offsetHeight
+
+  // A couple of entries carry images that are still loading at this point,
+  // which grow the list's real height after we've already measured it - if
+  // we don't wait for them, a deep scroll position can get clamped once
+  // those images settle in and the earlier (too-short) measurement turns
+  // out to have under-reserved the space.
+  const pendingImages = Array.from(el.querySelectorAll('img')).filter((img) => !img.complete)
+  if (!pendingImages.length) return
+  await Promise.all(
+    pendingImages.map(
+      (img) => new Promise<void>((resolve) => {
+        img.addEventListener('load', () => resolve(), { once: true })
+        img.addEventListener('error', () => resolve(), { once: true })
+      })
+    )
+  )
+  if (el.offsetHeight > minTimelineHeight.value) minTimelineHeight.value = el.offsetHeight
+}
+
+// `loading` is watched too - the template swaps from the skeleton placeholder
+// to the real pagedNews items once it flips to false, but pagedNews' own
+// *value* doesn't change at that moment (localNews is already loaded
+// synchronously), so a watcher on pagedNews alone would miss that swap and
+// stay pinned to the skeleton's (much shorter) height forever.
+watch([pagedNews, loading], measureTimelineHeight)
 
 useEscapeKey(() => {
   if (editingId.value) cancelEdit()

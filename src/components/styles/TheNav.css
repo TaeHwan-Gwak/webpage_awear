@@ -1,27 +1,3 @@
-.mobile-nav-backdrop {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 49;
-  background: rgba(20, 14, 8, 0.35);
-
-  @media (max-width: 860px) {
-    display: block;
-  }
-}
-
-/* 메뉴 패널의 .drop 트랜지션과 같은 타이밍(0.18s ease)으로 맞춰서,
-   배경 어둡기와 메뉴 패널이 따로 노는 2단계처럼 보이지 않고 함께 사라지도록 합니다. */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.18s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
 .nav {
   position: fixed;
   inset: 0 0 auto 0;
@@ -238,12 +214,26 @@
     display: none;
 
     @media (max-width: 860px) {
+      /* Full-screen takeover instead of a dropdown panel with a dimmed
+         backdrop behind it. The old approach showed the new page through
+         the fading backdrop the instant a link was tapped (navigation is
+         synchronous, the close transition isn't), which read as two
+         separate flickers layered on top of each other. An opaque panel
+         that covers the rest of the viewport hides that entirely - the
+         route swaps underneath while fully covered, and only becomes
+         visible once the fade-out finishes revealing the already-correct
+         page. `top` is set inline from the nav bar's measured height. */
       display: flex;
       flex-direction: column;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 50;
       gap: 2px;
       padding: 8px 20px 20px;
       background: var(--bg);
-      border-bottom: 1px solid var(--border);
+      overflow-y: auto;
     }
 
     .mobile-row {

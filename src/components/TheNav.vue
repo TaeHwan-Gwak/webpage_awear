@@ -1,9 +1,6 @@
 <template>
-  <transition name="fade">
-    <div v-if="open" class="mobile-nav-backdrop" @click="toggleMobileMenu" />
-  </transition>
   <header class="nav">
-    <div class="nav-inner">
+    <div class="nav-inner" ref="navInnerRef">
       <router-link to="/" class="brand" @click="onBrandClick">
         <img src="/logo.webp" alt="AWEAR Lab - AI-based WEArable Robotics Lab" class="logo" />
       </router-link>
@@ -36,7 +33,8 @@
     </div>
 
     <transition name="drop">
-      <nav v-if="open" class="mobile-links" aria-label="Main menu (mobile)">
+      <nav v-if="open" class="mobile-links" aria-label="Main menu (mobile)" :style="{ top: `${navInnerHeight}px` }"
+        @click.self="toggleMobileMenu">
         <template v-for="item in items" :key="item.to">
           <div class="mobile-row">
             <router-link :to="item.to" class="mobile-link" @click="onMobileLinkClick">{{ item.label }}</router-link>
@@ -71,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onUnmounted } from 'vue'
+import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAdminMode } from '../composables/useAdminMode'
 import { logoutAdmin } from '../composables/useAdminAuth'
@@ -147,6 +145,22 @@ watch(open, (isOpen) => {
 
 onUnmounted(() => {
   document.body.style.overflow = ''
+  window.removeEventListener('resize', measureNavHeight)
+})
+
+// 모바일 메뉴 패널이 nav bar 바로 아래부터 화면 끝까지 꽉 채우도록 nav bar의
+// 실제 렌더링 높이를 재서 씁니다. --nav-height(100px)는 데스크톱 기준값이라
+// 모바일 nav-inner 실제 높이(약 70px)와 달라서 하드코딩하면 틈이나 겹침이 생깁니다.
+const navInnerRef = ref<HTMLElement | null>(null)
+const navInnerHeight = ref(0)
+
+function measureNavHeight() {
+  navInnerHeight.value = navInnerRef.value?.getBoundingClientRect().height ?? 0
+}
+
+onMounted(() => {
+  measureNavHeight()
+  window.addEventListener('resize', measureNavHeight)
 })
 
 const activeDropdown = ref<string | null>(null)

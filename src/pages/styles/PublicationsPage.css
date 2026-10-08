@@ -110,10 +110,14 @@
     display: none;
   }
 
-  /* 모바일 필터 바 표시 */
+  /* 모바일 필터 바 표시 - 데스크톱 사이드바처럼 sticky를 줘서, 리스트를 한참
+     내려가서 보다가 필터를 또 바꾸고 싶을 때 매번 맨 위로 스크롤해서 올라오지
+     않아도 되게 합니다. */
   .mobile-filter-wrapper {
     display: block;
-    position: relative;
+    position: sticky;
+    top: 78px;
+    z-index: 10;
     margin-bottom: 24px;
   }
 

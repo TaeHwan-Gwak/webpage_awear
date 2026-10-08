@@ -39,7 +39,8 @@
       </aside>
 
       <!-- 3. 논문 리스트 본문 영역 -->
-      <section class="list-section">
+      <section ref="listSectionRef" class="list-section"
+        :style="minListHeight ? { minHeight: `${minListHeight}px` } : undefined">
         <AdminAddButton v-if="isAdmin" label="Add publication" @add="startAdd" />
 
         <ul v-if="filteredPublications.length">
@@ -92,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, reactive, ref, watchEffect } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch, watchEffect } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import PublicationItem from '../components/PublicationItem.vue'
 import SignalDivider from '../components/SignalDivider.vue'
@@ -159,6 +160,28 @@ const selectYear = (y: string) => {
   selectedYear.value = y
   isMobileMenuOpen.value = false
 }
+
+// "All" is always the tallest list, so once we've measured it we pin the list
+// section to that height. That way switching to a shorter year never shrinks
+// the page and yanks the scroll position around - it just leaves blank space
+// below the shorter list instead.
+const listSectionRef = ref<HTMLElement | null>(null)
+const minListHeight = ref(0)
+
+async function measureListHeight() {
+  if (selectedYear.value !== 'all') return
+  await nextTick()
+  const h = listSectionRef.value?.offsetHeight ?? 0
+  if (h > minListHeight.value) minListHeight.value = h
+}
+
+onMounted(() => {
+  measureListHeight()
+  window.addEventListener('resize', measureListHeight)
+})
+onBeforeUnmount(() => window.removeEventListener('resize', measureListHeight))
+watch(selectedYear, measureListHeight)
+watch(() => localPubs.length, measureListHeight)
 
 const editingId = ref<string | null>(null)
 const isNew = ref(false)
