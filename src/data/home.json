@@ -13,35 +13,78 @@
       "id": "m1",
       "title": "Physics-informed AI를 통한 노인의 근감소증 추적 기술 JCR 상위 2% JNER에 게재",
       "link": "https://n.news.naver.com/article/030/0003435675?sid=102",
-      "image": ""
+      "image": "/home/media-sarcopenia.webp"
     },
     {
       "id": "m2",
       "title": "뇌성마비환자 보행 개선 로봇 재활기술 개발, JCR 상위 2% 이내 IEEE TNSRE 게재",
       "link": "https://www.irobotnews.com/news/articleView.html?idxno=45239",
-      "image": ""
+      "image": "/home/media-cp-gait.webp"
     },
     {
       "id": "m3",
       "title": "로봇, '맞춤형 의수 설계' 맡는다…손목 동작 정밀 구현 Robotics Automation Letter 게재",
       "link": "https://v.daum.net/v/Q8SX1H6bWK?f=p",
-      "image": ""
+      "image": "/home/media-prosthetic-wrist.webp"
     }
   ],
   "gallery": [
-    { "id": "gl1", "image": "" },
-    { "id": "gl2", "image": "" },
-    { "id": "gl3", "image": "" },
-    { "id": "gl4", "image": "" },
-    { "id": "gl5", "image": "" }
+    {
+      "id": "gl1",
+      "image": "/home/gallery-1.webp"
+    },
+    {
+      "id": "gl2",
+      "image": "/home/gallery-2.webp"
+    },
+    {
+      "id": "gl3",
+      "image": "/home/gallery-3.webp"
+    },
+    {
+      "id": "gl4",
+      "image": "/home/gallery-4.webp"
+    },
+    {
+      "id": "gl5",
+      "image": "/home/gallery-5.webp"
+    }
   ],
   "ongoingProjects": [
-    { "id": "p1", "title": "AI 최고급 신진연구자 지원사업 (AI 스타펠로우십)\nMIND 의료 파운데이션 모델 개발", "image": "" },
-    { "id": "p2", "title": "침상환자 재활을 위한 필라테스봇, 국립재활원", "image": "" },
-    { "id": "p3", "title": "BrainJoystick: 로봇 제어 BCI, 우수신진과제, 연구재단", "image": "" },
-    { "id": "p4", "title": "파킨슨병환자를 위한 로봇-뉴럴인터페이스, 연구재단 뇌선도", "image": "" },
-    { "id": "p5", "title": "GIST InnoCore 극한환경 피지컬AI - Polar AI", "image": "" },
-    { "id": "p6", "title": "GIST InnoCore 알츠하이머뇌 리포그래밍 REMAP", "image": "" },
-    { "id": "p7", "title": "일상재활 자립을 위한 보조기기 개발, 보건복지부", "image": "" }
+    {
+      "id": "p1",
+      "title": "AI 최고급 신진연구자 지원사업 (AI 스타펠로우십)\nMIND 의료 파운데이션 모델 개발",
+      "image": "/home/project-starfellowship.webp"
+    },
+    {
+      "id": "p2",
+      "title": "침상환자 재활을 위한 필라테스봇, 국립재활원",
+      "image": "/home/project-pilates-bot.webp"
+    },
+    {
+      "id": "p3",
+      "title": "BrainJoystick: 로봇 제어 BCI, 우수신진과제, 연구재단",
+      "image": "/home/project-brainjoystick.webp"
+    },
+    {
+      "id": "p4",
+      "title": "파킨슨병환자를 위한 로봇-뉴럴인터페이스, 연구재단 뇌선도",
+      "image": "/home/project-neural-interface.webp"
+    },
+    {
+      "id": "p5",
+      "title": "GIST InnoCore 극한환경 피지컬AI - Polar AI",
+      "image": "/home/project-polarai.webp"
+    },
+    {
+      "id": "p6",
+      "title": "GIST InnoCore 알츠하이머뇌 리포그래밍 REMAP",
+      "image": ""
+    },
+    {
+      "id": "p7",
+      "title": "일상재활 자립을 위한 보조기기 개발, 보건복지부",
+      "image": "/home/project-assistive-device.webp"
+    }
   ]
 }

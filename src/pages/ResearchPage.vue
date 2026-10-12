@@ -31,26 +31,20 @@
             <AdminEditControls v-if="isAdmin" @edit="startTopicEdit(topic)" @delete="deleteTopic(topic)" />
           </div>
 
-          <div class="figure-gallery" :class="`count-${Math.min(topic.images.length, 4)}`">
-            <div v-for="(img, idx) in topic.images" :key="idx" class="figure-tile">
-              <img v-if="img && !brokenKeys.has(`${topic.id}:${idx}`)" :src="img" alt=""
-                :fetchpriority="i === 0 ? 'high' : 'auto'"
-                @error="brokenKeys.add(`${topic.id}:${idx}`)" />
-              <span v-else class="ph-label">Image</span>
+          <div class="topic-figure" :class="{ empty: !topic.image || brokenKeys.has(topic.id) }">
+            <img v-if="topic.image && !brokenKeys.has(topic.id)" :src="topic.image" alt=""
+              :fetchpriority="i === 0 ? 'high' : 'auto'"
+              @error="brokenKeys.add(topic.id)" />
+            <span v-else class="ph-label">Image</span>
 
-              <template v-if="isAdmin">
-                <label class="tile-upload-btn">
-                  {{ uploadingKey === `${topic.id}:${idx}` ? 'Uploading…' : img ? 'Replace' : '+ Upload' }}
-                  <input type="file" accept="image/*" @change="onTopicImageSelected(topic.id, idx, $event)" />
-                </label>
-                <button type="button" class="tile-remove-btn" aria-label="Remove image slot"
-                  @click="removeTopicImageSlot(topic.id, idx)">✕</button>
-              </template>
-            </div>
-
-            <button v-if="isAdmin" type="button" class="figure-tile add-slot" @click="addTopicImageSlot(topic.id)">
-              + Add image
-            </button>
+            <template v-if="isAdmin">
+              <label class="tile-upload-btn">
+                {{ uploadingKey === topic.id ? 'Uploading…' : topic.image ? 'Replace' : '+ Upload' }}
+                <input type="file" accept="image/*" @change="onTopicImageSelected(topic.id, $event)" />
+              </label>
+              <button v-if="topic.image" type="button" class="tile-remove-btn" aria-label="Remove image"
+                @click="removeTopicImage(topic.id)">✕</button>
+            </template>
           </div>
 
           <p class="desc">{{ topic.desc }}</p>
@@ -90,7 +84,7 @@ interface Topic {
   short: string
   title: string
   desc: string
-  images: string[]
+  image: string
 }
 
 const { isAdmin } = useAdminMode()
@@ -153,7 +147,7 @@ async function saveTopicEdit() {
       short: topicDraft.short,
       title: topicDraft.title,
       desc: topicDraft.desc,
-      images: ['', '', ''],
+      image: '',
     })
   } else {
     const target = topics.find((t) => t.id === topicEditingId.value)
@@ -171,16 +165,14 @@ async function saveTopicEdit() {
 async function deleteTopic(topic: Topic) {
   const idx = topics.findIndex((t) => t.id === topic.id)
   if (idx !== -1) topics.splice(idx, 1)
-  for (const img of topic.images) {
-    if (img) await deleteImage(img)
-  }
+  if (topic.image) await deleteImage(topic.image)
   await persist()
 }
 
 const uploadingKey = ref<string | null>(null)
 const brokenKeys = reactive(new Set<string>())
 
-async function onTopicImageSelected(topicId: string, idx: number, e: Event) {
+async function onTopicImageSelected(topicId: string, e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   input.value = ''
@@ -189,16 +181,15 @@ async function onTopicImageSelected(topicId: string, idx: number, e: Event) {
   const topic = topics.find((t) => t.id === topicId)
   if (!topic) return
 
-  const key = `${topicId}:${idx}`
-  const oldImage = topic.images[idx]
-  uploadingKey.value = key
+  const oldImage = topic.image
+  uploadingKey.value = topicId
   const ext = file.name.split('.').pop() || 'jpg'
-  const path = await uploadImage('research', `${topicId}-${idx}-${Date.now()}.${ext}`, file)
+  const path = await uploadImage('research', `${topicId}-${Date.now()}.${ext}`, file)
   uploadingKey.value = null
 
   if (path) {
-    topic.images[idx] = path
-    brokenKeys.delete(key)
+    topic.image = path
+    brokenKeys.delete(topicId)
     if (oldImage) await deleteImage(oldImage)
     await persist()
   } else {
@@ -206,18 +197,11 @@ async function onTopicImageSelected(topicId: string, idx: number, e: Event) {
   }
 }
 
-async function addTopicImageSlot(topicId: string) {
+async function removeTopicImage(topicId: string) {
   const topic = topics.find((t) => t.id === topicId)
   if (!topic) return
-  topic.images.push('')
-  await persist()
-}
-
-async function removeTopicImageSlot(topicId: string, idx: number) {
-  const topic = topics.find((t) => t.id === topicId)
-  if (!topic) return
-  const [removed] = topic.images.splice(idx, 1)
-  if (removed) await deleteImage(removed)
+  if (topic.image) await deleteImage(topic.image)
+  topic.image = ''
   await persist()
 }
 

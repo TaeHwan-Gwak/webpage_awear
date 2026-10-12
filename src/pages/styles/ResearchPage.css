@@ -110,53 +110,35 @@
     }
   }
 
-  .figure-gallery {
+  /* 라이브 사이트와 동일하게 토픽당 이미지 1장 - 실제 이미지들이 전부 가로로
+     긴 파이프라인/플로우 다이어그램 합성본(대략 3.5~5:1)이라, 정사각형에 가까운
+     타일 그리드에 넣으면 cover로 옆이 심하게 잘립니다. 그래서 고정 aspect-ratio로
+     자르지 않고 원본 비율 그대로(height:auto) 폭에 맞춰 보여줍니다. 이미지가 아직
+     없을 때만 placeholder 박스 높이를 위해 21:9 비율을 씁니다. */
+  .topic-figure {
     order: 1;
     margin-top: 24px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
 
     @media (max-width: 720px) {
       order: 2;
     }
 
-    &.count-1 {
-      grid-template-columns: 1fr;
-
-      .figure-tile {
-        aspect-ratio: 21 / 9;
-      }
-    }
-
-    &.count-2 {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (max-width: 640px) {
-      grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    @media (max-width: 460px) {
-      grid-template-columns: 1fr !important;
-    }
-  }
-
-  .figure-tile {
-    position: relative;
-    aspect-ratio: 4 / 3;
-    border: 1px dashed var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-
     img {
+      display: block;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+    }
+
+    &.empty {
+      aspect-ratio: 21 / 9;
+      border: 1px dashed var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .ph-label {
@@ -167,21 +149,6 @@
         font-size: 12px;
       }
       color: var(--text-faint);
-    }
-
-    &.add-slot {
-      border: 1px dashed var(--border);
-      background: transparent;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      font-size: 13px;
-      cursor: pointer;
-      transition: border-color 0.18s ease, color 0.18s ease;
-
-      &:hover {
-        border-color: var(--orange);
-        color: var(--orange-deep);
-      }
     }
   }
 
