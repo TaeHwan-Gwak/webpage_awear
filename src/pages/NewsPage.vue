@@ -333,14 +333,21 @@ watch([pageSize, displayNews], () => {
 // whatever height we've actually seen and never let the list shrink below
 // it, so clicking Prev/Next repeatedly never yanks the scroll position (or
 // the pagination buttons themselves) around.
+//
+// That max is tracked per pageSize (keyed by the 5/10/20 value), not as one
+// shared number - a 20-per-page height is nowhere near what a 5-per-page
+// list needs, so reusing it there just left a tall empty gap above the
+// pagination buttons after switching "Per page" down.
 const timelineRef = ref<HTMLElement | null>(null)
-const minTimelineHeight = ref(0)
+const minTimelineHeights = reactive<Record<number, number>>({})
+const minTimelineHeight = computed(() => minTimelineHeights[pageSize.value] ?? 0)
 
 async function measureTimelineHeight() {
   await nextTick()
   const el = timelineRef.value
   if (!el) return
-  if (el.offsetHeight > minTimelineHeight.value) minTimelineHeight.value = el.offsetHeight
+  const size = pageSize.value
+  if (el.offsetHeight > (minTimelineHeights[size] ?? 0)) minTimelineHeights[size] = el.offsetHeight
 
   // A couple of entries carry images that are still loading at this point,
   // which grow the list's real height after we've already measured it - if
@@ -357,7 +364,7 @@ async function measureTimelineHeight() {
       })
     )
   )
-  if (el.offsetHeight > minTimelineHeight.value) minTimelineHeight.value = el.offsetHeight
+  if (el.offsetHeight > (minTimelineHeights[size] ?? 0)) minTimelineHeights[size] = el.offsetHeight
 }
 
 // `loading` is watched too - the template swaps from the skeleton placeholder

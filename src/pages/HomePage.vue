@@ -255,7 +255,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, reactive, ref } from 'vue'
+import { computed, nextTick, onUnmounted, reactive, ref, watch } from 'vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import NewsItem from '../components/NewsItem.vue'
@@ -601,6 +601,7 @@ const otherProjects = computed(() =>
 
 async function selectProject(i: number) {
   featuredProject.value = i
+  startOngoingAuto()
   await nextTick()
   const el = document.querySelector('#ongoing .project-main')
   if (!el) return
@@ -621,6 +622,28 @@ if (typeof window !== 'undefined') {
   updateOngoingLayout()
   window.addEventListener('resize', updateOngoingLayout)
 }
+
+// 모바일에서는 몇 초마다 자동으로 다음 프로젝트로 넘어갑니다. 너무 짧으면 읽기도
+// 전에 넘어가버려서 8초로 넉넉하게 잡았습니다. 수동으로 골랐을 때(selectProject)는
+// 타이머를 리셋해서, 고르자마자 바로 다음 걸로 넘어가버리지 않게 합니다.
+const ONGOING_AUTO_MS = 8000
+let ongoingTimer: ReturnType<typeof setInterval> | undefined
+
+function stopOngoingAuto() {
+  if (ongoingTimer) clearInterval(ongoingTimer)
+  ongoingTimer = undefined
+}
+
+function startOngoingAuto() {
+  stopOngoingAuto()
+  if (!isMobileOngoing.value || form.ongoingProjects.length < 2) return
+  ongoingTimer = setInterval(() => {
+    featuredProject.value = (featuredProject.value + 1) % form.ongoingProjects.length
+  }, ONGOING_AUTO_MS)
+}
+
+watch(isMobileOngoing, startOngoingAuto, { immediate: true })
+onUnmounted(stopOngoingAuto)
 
 /* ---------------- Gallery slider ---------------- */
 

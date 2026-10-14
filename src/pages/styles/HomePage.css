@@ -1,10 +1,14 @@
 .thumb {
   overflow: hidden;
 
+  /* Every .thumb on this page holds a wide diagram/article image (Recent
+     Media, On-going Projects), not a candid photo - cover was cropping
+     their edges off (labels, captions) since real diagrams run much wider
+     than the 16:10 / 4:3 boxes. contain keeps the whole image legible. */
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 }
 
@@ -405,7 +409,11 @@
       aspect-ratio: 16 / 10;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      background: var(--surface);
+      /* These diagrams are almost always rendered on a white background, so
+         contain's letterboxing (object-fit: contain, since cover was
+         cropping their labels off) showed a visible seam against the
+         --surface cream tone. White blends the gap in instead. */
+      background: var(--bg);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -450,7 +458,7 @@
       aspect-ratio: 16 / 10;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      background: var(--surface);
+      background: var(--bg);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -501,14 +509,14 @@
       width: 52px;
       height: 52px;
       border-radius: var(--radius-sm);
-      background: var(--surface);
+      background: var(--bg);
       border: 1px solid var(--border);
       overflow: hidden;
 
       img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
       }
     }
 
@@ -534,7 +542,7 @@
   .thumb {
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    background: var(--surface);
+    background: var(--bg);
     display: flex;
     align-items: center;
     justify-content: center;
