@@ -59,11 +59,17 @@
   }
 
   .body {
+    .photos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
     .photo {
       display: block;
       max-width: 220px;
       height: auto;
-      margin-bottom: 10px;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
     }

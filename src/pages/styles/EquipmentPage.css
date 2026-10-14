@@ -35,7 +35,9 @@
       justify-content: center;
       border: 1px solid var(--border-soft);
       border-radius: var(--radius-sm);
-      background: var(--surface);
+      /* Product photos here are all on a white background like the live
+         site's cards - the cream --surface tone showed as a seam around them. */
+      background: var(--bg);
       overflow: hidden;
 
       img {

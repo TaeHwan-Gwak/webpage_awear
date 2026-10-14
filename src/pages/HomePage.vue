@@ -88,8 +88,8 @@
         <button type="button" class="slide-btn prev" aria-label="Previous" :disabled="galleryIndex === 0"
           @click="galleryPrev">‹</button>
 
-        <div class="gallery-track-wrap">
-          <div class="gallery-track" :style="{ transform: `translateX(calc(-${galleryIndex * (100 / galleryVisible)}% - ${galleryIndex * (GALLERY_GAP_PX / galleryVisible)}px))` }">
+        <div class="gallery-track-wrap" ref="galleryTrackWrapRef">
+          <div class="gallery-track" :style="{ transform: `translateX(-${galleryIndex * (galleryItemWidth + GALLERY_GAP_PX)}px)` }">
             <div v-for="(item, i) in form.gallery" :key="item.id" class="gallery-item"
               :class="{ dragging: galleryDrag.draggedIndex.value === i }" :draggable="isAdmin"
               @dragstart="galleryDrag.onDragStart(i)" @dragover="galleryDrag.onDragOver(i, $event)"
@@ -255,7 +255,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onUnmounted, reactive, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import NewsItem from '../components/NewsItem.vue'
@@ -647,27 +647,48 @@ onUnmounted(stopOngoingAuto)
 
 /* ---------------- Gallery slider ---------------- */
 
-// Must match .gallery-track { gap: ... } in HomePage.css - the percentage-based
-// translateX alone doesn't account for the gap between slides, so without this
-// offset each "next" step falls a few pixels short and drifts further off with
-// every click (worst on mobile, where 1 slide = 100% and the gap is the only miss).
+// Must match .gallery-track { gap: ... } in HomePage.css.
 const GALLERY_GAP_PX = 12
 
 const galleryVisible = ref(4)
 const galleryIndex = ref(0)
 
-const galleryMaxIndex = computed(() => Math.max(0, form.gallery.length - galleryVisible.value))
+// In admin mode the track has one extra slide: the "+ Add image" button
+// rendered after the last photo. Without counting it here, maxIndex capped
+// at the last *photo* and Next disabled itself before you could ever
+// scroll far enough to reach the add-slot button.
+const galleryTrackLength = computed(() => form.gallery.length + (isAdmin.value ? 1 : 0))
+const galleryMaxIndex = computed(() => Math.max(0, galleryTrackLength.value - galleryVisible.value))
+
+// Each slide's real rendered width, measured straight from the DOM. A
+// percentage-based translateX here depends on what the *track's own* width
+// resolves to once its flex children overflow it (not the wrap's width),
+// which isn't something you can reliably predict from CSS alone - it was
+// landing short and leaving the admin add-slot button partly cut off past
+// the wrap's right edge. Pixels sidestep that entirely.
+const galleryTrackWrapRef = ref<HTMLElement | null>(null)
+const galleryItemWidth = ref(0)
+
+function measureGalleryItemWidth() {
+  const wrapWidth = galleryTrackWrapRef.value?.getBoundingClientRect().width
+  if (!wrapWidth) return
+  galleryItemWidth.value = (wrapWidth - (galleryVisible.value - 1) * GALLERY_GAP_PX) / galleryVisible.value
+}
 
 function updateGalleryVisible() {
   const w = window.innerWidth
   galleryVisible.value = w <= 560 ? 1 : w <= 860 ? 2 : w <= 1100 ? 3 : 4
   galleryIndex.value = Math.min(galleryIndex.value, galleryMaxIndex.value)
+  measureGalleryItemWidth()
 }
 
 if (typeof window !== 'undefined') {
   updateGalleryVisible()
   window.addEventListener('resize', updateGalleryVisible)
 }
+
+onMounted(measureGalleryItemWidth)
+watch(galleryTrackLength, measureGalleryItemWidth)
 
 function galleryPrev() {
   galleryIndex.value = Math.max(0, galleryIndex.value - 1)

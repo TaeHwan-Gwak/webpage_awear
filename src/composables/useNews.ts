@@ -7,7 +7,7 @@ export interface NewsItem {
   desc: string
   tag?: string
   link?: string
-  image?: string
+  images?: string[]
 }
 
 export function useNews(max = 5) {

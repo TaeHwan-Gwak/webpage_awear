@@ -1,19 +1,67 @@
 [
-  { "id": "eq1", "name": "Delsys Surface Electromyography", "image": "/equipment/delsys-emg.webp" },
+  {
+    "id": "eq6",
+    "name": "OptiTrack Motion Capture",
+    "image": "/equipment/optitrack-motion-capture.webp"
+  },
+  {
+    "id": "eq1",
+    "name": "Delsys Surface Electromyography",
+    "image": "/equipment/delsys-emg.webp"
+  },
   {
     "id": "eq2",
     "name": "BrainProduct LiveAmp EEG",
     "layers": [
-      { "src": "/equipment/liveamp-eeg-1.webp", "x": 0, "y": 0, "width": 0.5, "height": 1 },
-      { "src": "/equipment/liveamp-eeg-2.webp", "x": 0.5, "y": 0, "width": 0.5, "height": 1 }
+      {
+        "src": "/equipment/liveamp-eeg-1.webp",
+        "x": 0,
+        "y": 0,
+        "width": 0.5,
+        "height": 1
+      },
+      {
+        "src": "/equipment/liveamp-eeg-2.webp",
+        "x": 0.5,
+        "y": 0,
+        "width": 0.5,
+        "height": 1
+      }
     ]
   },
-  { "id": "eq3", "name": "BambuLab 3D Printer (PLA)", "image": "/equipment/bambulab-3d-printer.webp" },
-  { "id": "eq4", "name": "Pinnacle Mouse EEG", "image": "/equipment/pinnacle-mouse-eeg.webp" },
-  { "id": "eq5", "name": "6-Axis Force/Torque Sensor", "image": "/equipment/force-torque-sensor.webp" },
-  { "id": "eq6", "name": "OptiTrack Motion Capture", "image": "/equipment/optitrack-motion-capture.webp" },
-  { "id": "eq7", "name": "AMTI Force Plates", "image": "/equipment/amti-force-plates.webp" },
-  { "id": "eq8", "name": "Photon Mono (Resin 3D Printer)", "image": "/equipment/photon-mono.webp" },
-  { "id": "eq9", "name": "Rotarod (Harvard PanLab)", "image": "/equipment/rotarod.webp" },
-  { "id": "eq10", "name": "CompactRIO & myRIO", "image": "/equipment/compactrio-myrio.webp" }
+  {
+    "id": "eq5",
+    "name": "6-Axis Force/Torque Sensor",
+    "image": "/equipment/force-torque-sensor.webp"
+  },
+  {
+    "id": "eq10",
+    "name": "CompactRIO & myRIO",
+    "image": "/equipment/compactrio-myrio.webp"
+  },
+  {
+    "id": "eq7",
+    "name": "AMTI Force Plates",
+    "image": "/equipment/amti-force-plates.webp"
+  },
+  {
+    "id": "eq3",
+    "name": "BambuLab 3D Printer (PLA)",
+    "image": "/equipment/bambulab-3d-printer.webp"
+  },
+  {
+    "id": "eq8",
+    "name": "Photon Mono (Resin 3D Printer)",
+    "image": "/equipment/photon-mono.webp"
+  },
+  {
+    "id": "eq4",
+    "name": "Pinnacle Mouse EEG",
+    "image": "/equipment/pinnacle-mouse-eeg.webp"
+  },
+  {
+    "id": "eq9",
+    "name": "Rotarod (Harvard PanLab)",
+    "image": "/equipment/rotarod.webp"
+  }
 ]

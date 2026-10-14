@@ -105,8 +105,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(to, _from, savedPosition) {
-    if (to.hash) return { el: to.hash, top: 122, behavior: 'smooth' }
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      // In-page sidebar nav (Research's "On this page" links etc.) - same
+      // route, only the hash changes - stays smooth so you can see where
+      // you're going. Arriving at a hash from a *different* page should
+      // land instantly like every other cross-page navigation; otherwise
+      // the page swaps in and then visibly scrolls itself from the top.
+      const behavior = from.path === to.path ? 'smooth' : 'instant'
+      return { el: to.hash, top: 122, behavior }
+    }
     // Back/forward: restore where the user was. Everything else (clicking a
     // link to a new page): snap to top instantly. Note `behavior: 'auto'`
     // does NOT mean instant - per spec it means "do whatever the element's

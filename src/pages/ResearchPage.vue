@@ -24,8 +24,12 @@
       <div class="topics">
         <AdminAddButton v-if="isAdmin" label="Add research topic" @add="startTopicAdd" />
 
-        <article v-for="(topic, i) in topics" :id="topic.id" :key="topic.id" class="topic" :data-topic="topic.id">
+        <article v-for="(topic, i) in topics" :id="topic.id" :key="topic.id" class="topic"
+          :class="{ dragging: topicsDrag.draggedIndex.value === i }" :draggable="isAdmin" :data-topic="topic.id"
+          @dragstart="topicsDrag.onDragStart(i)" @dragover="topicsDrag.onDragOver(i, $event)"
+          @drop="topicsDrag.onDrop(i)" @dragend="topicsDrag.onDragEnd">
           <div class="topic-head">
+            <DragHandle class="handle" />
             <span class="topic-num">{{ String(i + 1).padStart(2, '0') }}</span>
             <h2>{{ topic.title }}</h2>
             <AdminEditControls v-if="isAdmin" @edit="startTopicEdit(topic)" @delete="deleteTopic(topic)" />
@@ -73,7 +77,9 @@ import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import AdminEditControls from '../components/AdminEditControls.vue'
 import AdminAddButton from '../components/AdminAddButton.vue'
+import DragHandle from '../components/DragHandle.vue'
 import { useAdminMode } from '../composables/useAdminMode'
+import { useDragReorder } from '../composables/useDragReorder'
 import { useEscapeKey } from '../composables/useEscapeKey'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { checkRequired } from '../utils/validate'
@@ -94,6 +100,8 @@ const topics = reactive<Topic[]>(JSON.parse(JSON.stringify(researchDataRaw.topic
 function persist() {
   return saveJsonFile('research.json', { topics })
 }
+
+const topicsDrag = useDragReorder(topics, persist)
 
 function nextTopicId(): string {
   let max = 0

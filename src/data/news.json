@@ -5,7 +5,9 @@
     "tag": "General",
     "desc": "Dr. Jiyeon Kang was invited to give a talk on Intelligent wheelchair for children with special needs for WNY STEM activities for high school students working on Open Wheel Chair Project.",
     "link": "",
-    "image": "/news/n0a-wny-stem.webp"
+    "images": [
+      "/news/n0a-wny-stem.webp"
+    ]
   },
   {
     "id": "n0b",
@@ -13,7 +15,9 @@
     "tag": "General",
     "desc": "2020 IEEE/EMB BioRob (International Conference for Biomedical Robotics and Biomechatronics) ended successfully with over 1500 attendees. Dr. Jiyeon Kang served as an organizing committee and workshop chair of BioRob 2020. Nikhil Kantu and Saeb Lamooki presented in BioRob 2020.",
     "link": "",
-    "image": "/news/n0b-biorob-2020.webp"
+    "images": [
+      "/news/n0b-biorob-2020.webp"
+    ]
   },
   {
     "id": "n0c",
@@ -35,7 +39,9 @@
     "tag": "General",
     "desc": "2022 IEEE/EMB BioRob (International Conference for Biomedical Robotics and Biomechatronics) ended successfully. Dr. Jiyeon Kang served as an organizing committee and workshop co-chair of BioRob 2022.",
     "link": "",
-    "image": "/news/n0e-biorob-2022.webp"
+    "images": [
+      "/news/n0e-biorob-2022.webp"
+    ]
   },
   {
     "id": "n1",
@@ -106,7 +112,10 @@
     "tag": "General",
     "desc": "조재범학생, 김기현학생, 윤의서 학생이 ICROS 2024에서 발표했습니다.",
     "link": "",
-    "image": "/news/n6a-icros-2024.webp"
+    "images": [
+      "/news/n6a-icros-2024.webp",
+      "/news/n6a-icros-2024-dinner.webp"
+    ]
   },
   {
     "id": "n6b",
@@ -142,7 +151,9 @@
     "tag": "General",
     "desc": "김기현학생이 IROS 2025에서 'Subject-independent sEMG-based prosthetic control using MAMBA2 with domain adaptation'라는 주제로 발표했습니다.",
     "link": "",
-    "image": "/news/n11-iros-2025.webp"
+    "images": [
+      "/news/n11-iros-2025.webp"
+    ]
   },
   {
     "id": "n12",
@@ -150,7 +161,9 @@
     "tag": "General",
     "desc": "정성훈학생, 안인균학생, 최유진학생이 2026 로봇학회에서 발표했습니다.",
     "link": "",
-    "image": "/news/n12-kroc-2026.webp"
+    "images": [
+      "/news/n12-kroc-2026.webp"
+    ]
   },
   {
     "id": "n13",
@@ -193,7 +206,10 @@
     "tag": "General",
     "desc": "Souvik Poddar가 SUNY Buffalo에서 박사 학위 논문 심사를 성공적으로 통과했습니다. 축하합니다!",
     "link": "",
-    "image": "/news/n18-souvik-graduation.webp"
+    "images": [
+      "/news/n18-souvik-defense.webp",
+      "/news/n18-souvik-graduation.webp"
+    ]
   },
   {
     "id": "n19",

@@ -251,7 +251,7 @@
     aspect-ratio: 4 / 3;
     border: 1px dashed var(--border);
     border-radius: var(--radius-sm);
-    background: var(--surface);
+    background: var(--bg);
     display: flex;
     align-items: center;
     justify-content: center;

@@ -43,9 +43,12 @@
             <textarea v-model="draft.desc" rows="3" placeholder="Description"></textarea>
             <input v-model="draft.link" placeholder="Link (optional)" />
             <div class="image-field">
-              <div v-if="draft.image && !previewBroken" class="photo-preview">
-                <img :src="draft.image" alt="" @error="previewBroken = true" />
-                <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeNewsImage">✕</button>
+              <div class="image-list">
+                <div v-for="src in draft.images" :key="src" class="image-thumb">
+                  <img v-if="!brokenPreviews.has(src)" :src="src" alt="" @error="brokenPreviews.add(src)" />
+                  <span v-else class="ph-label">✕</span>
+                  <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeNewsImage(src)">✕</button>
+                </div>
               </div>
               <label class="upload-btn">
                 {{ uploadingImage ? 'Uploading…' : '+ Upload image' }}
@@ -66,9 +69,12 @@
               <textarea v-model="draft.desc" rows="3" placeholder="Description"></textarea>
               <input v-model="draft.link" placeholder="Link (optional)" />
               <div class="image-field">
-                <div v-if="draft.image && !previewBroken" class="photo-preview">
-                  <img :src="draft.image" alt="" @error="previewBroken = true" />
-                  <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeNewsImage">✕</button>
+                <div class="image-list">
+                  <div v-for="src in draft.images" :key="src" class="image-thumb">
+                    <img v-if="!brokenPreviews.has(src)" :src="src" alt="" @error="brokenPreviews.add(src)" />
+                    <span v-else class="ph-label">✕</span>
+                    <button type="button" class="remove-image-btn" aria-label="Remove image" @click="removeNewsImage(src)">✕</button>
+                  </div>
                 </div>
                 <label class="upload-btn">
                   {{ uploadingImage ? 'Uploading…' : '+ Upload image' }}
@@ -86,7 +92,7 @@
               @dragend="newsOnDragEnd">
               <DragHandle class="handle" />
               <NewsItem class="news-row-content" :index="displayNews.length - ((currentPage - 1) * pageSize + i)"
-                :date="item.date" :desc="item.desc" :tag="item.tag" :link="item.link" :image="item.image" />
+                :date="item.date" :desc="item.desc" :tag="item.tag" :link="item.link" :images="item.images" />
               <AdminEditControls v-if="isEditable" @edit="startEdit(item)" @delete="deleteItem(item)" />
             </li>
           </template>
@@ -144,15 +150,8 @@ const editingId = ref<string | null>(null)
 const isNewItem = ref(false)
 const uploadingImage = ref(false)
 const formError = ref<string | null>(null)
-const draft = reactive({ date: '', tag: '', desc: '', link: '', image: '' })
-const previewBroken = ref(false)
-
-watch(
-  () => draft.image,
-  () => {
-    previewBroken.value = false
-  }
-)
+const draft = reactive({ date: '', tag: '', desc: '', link: '', images: [] as string[] })
+const brokenPreviews = reactive(new Set<string>())
 
 function startEdit(item: NewsItemType) {
   editingId.value = item.id ?? null
@@ -162,7 +161,7 @@ function startEdit(item: NewsItemType) {
   draft.tag = item.tag ?? ''
   draft.desc = item.desc
   draft.link = item.link ?? ''
-  draft.image = item.image ?? ''
+  draft.images = [...(item.images ?? [])]
 }
 
 function startAdd() {
@@ -174,7 +173,7 @@ function startAdd() {
   draft.tag = ''
   draft.desc = ''
   draft.link = ''
-  draft.image = ''
+  draft.images = []
 }
 
 function cancelEdit() {
@@ -189,25 +188,20 @@ async function onImageSelected(e: Event) {
   input.value = ''
   if (!file || !editingId.value) return
 
-  const oldImage = draft.image
   uploadingImage.value = true
   const ext = file.name.split('.').pop() || 'jpg'
-  const path = await uploadImage('news', `${editingId.value}.${ext}`, file)
+  const filename = `${editingId.value}-${draft.images.length + 1}.${ext}`
+  const path = await uploadImage('news', filename, file)
   uploadingImage.value = false
 
-  if (path) {
-    draft.image = path
-    if (oldImage && !oldImage.startsWith('blob:') && oldImage.split('?')[0] !== path.split('?')[0]) {
-      await deleteImage(oldImage)
-    }
-  } else {
-    alert('Image upload failed. Is the local dev server running?')
-  }
+  if (path) draft.images.push(path)
+  else alert('Image upload failed. Is the local dev server running?')
 }
 
-async function removeNewsImage() {
-  if (draft.image) await deleteImage(draft.image)
-  draft.image = ''
+async function removeNewsImage(src: string) {
+  draft.images = draft.images.filter((s) => s !== src)
+  brokenPreviews.delete(src)
+  await deleteImage(src)
 }
 
 async function saveEdit() {
@@ -226,7 +220,7 @@ async function saveEdit() {
       tag: draft.tag,
       desc: draft.desc,
       link: draft.link,
-      image: draft.image,
+      images: draft.images,
     })
   } else {
     const target = localNews.value.find((n) => n.id === editingId.value)
@@ -235,7 +229,7 @@ async function saveEdit() {
       target.tag = draft.tag
       target.desc = draft.desc
       target.link = draft.link
-      target.image = draft.image
+      target.images = draft.images
     }
   }
   cancelEdit()
@@ -244,7 +238,7 @@ async function saveEdit() {
 
 async function deleteItem(item: NewsItemType) {
   localNews.value = localNews.value.filter((n) => n.id !== item.id)
-  if (item.image) await deleteImage(item.image)
+  await Promise.all((item.images ?? []).map((src) => deleteImage(src)))
   await saveJsonFile('news.json', localNews.value)
 }
 
