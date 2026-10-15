@@ -81,6 +81,43 @@ const routes = [
   },
 
   {
+    path: '/proto/intro-gate',
+    name: 'proto-intro-gate',
+    component: () => import('../pages/proto/IntroGateProto.vue'),
+    meta: { title: `[Proto] Intro Gate | ${SITE_NAME}`, robots: 'noindex, nofollow' },
+  },
+  {
+    path: '/proto/home-video',
+    name: 'proto-home-video',
+    component: () => import('../pages/proto/HomeVideoSectionProto.vue'),
+    meta: { title: `[Proto] Home Video Section | ${SITE_NAME}`, robots: 'noindex, nofollow' },
+  },
+  {
+    path: '/proto/equipment-video',
+    name: 'proto-equipment-video',
+    component: () => import('../pages/proto/EquipmentVideoProto.vue'),
+    meta: { title: `[Proto] Equipment Video | ${SITE_NAME}`, robots: 'noindex, nofollow' },
+  },
+  {
+    path: '/proto/research-video',
+    name: 'proto-research-video',
+    component: () => import('../pages/proto/ResearchVideoProto.vue'),
+    meta: { title: `[Proto] Research Video | ${SITE_NAME}`, robots: 'noindex, nofollow' },
+  },
+  {
+    path: '/proto/media-page',
+    name: 'proto-media-page',
+    component: () => import('../pages/proto/MediaPageProto.vue'),
+    meta: { title: `[Proto] Media Page | ${SITE_NAME}`, robots: 'noindex, nofollow' },
+  },
+  {
+    path: '/proto/checkerboard-grid',
+    name: 'proto-checkerboard-grid',
+    component: () => import('../pages/proto/CheckerboardGridProto.vue'),
+    meta: { title: `[Proto] Checkerboard Grid | ${SITE_NAME}`, robots: 'noindex, nofollow' },
+  },
+
+  {
     path: '/admin',
     redirect: '/admin/login',
   },
