@@ -16,7 +16,7 @@
           <div class="field">
             <span>Photo (shown on the CV page)</span>
             <div v-if="piDraft.photo && !piPreviewBroken" class="photo-preview">
-              <img :src="piDraft.photo" alt="" :style="{ objectPosition: `center ${piDraft.photoPosition}%` }"
+              <img :src="piDraft.photo" alt="" :style="imagePositionStyle(piDraft.imagePosition)"
                 @error="piPreviewBroken = true" />
               <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removePIPhoto">✕</button>
             </div>
@@ -24,10 +24,9 @@
               {{ uploadingPIPhoto ? 'Uploading…' : '+ Upload photo' }}
               <input type="file" accept="image/*" :disabled="uploadingPIPhoto" @change="onPIPhotoSelected" />
             </label>
-            <label v-if="piDraft.photo" class="photo-position-field">
-              <span>Visible part of photo ({{ piDraft.photoPosition }}%, top → bottom)</span>
-              <input type="range" min="0" max="100" v-model.number="piDraft.photoPosition" />
-            </label>
+            <button v-if="piDraft.photo" type="button" class="adjust-position-btn" @click="positionEditingTarget = 'pi'">
+              Adjust position / zoom
+            </button>
           </div>
           <p v-if="piFormError" class="form-error">{{ piFormError }}</p>
           <div class="edit-actions">
@@ -81,7 +80,7 @@
           @drop="memberDrag.onDrop(i)" @dragend="memberDrag.onDragEnd">
           <DragHandle class="handle" />
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
-            :interests="member.interests" :photo="member.photo" :photo-position="member.photoPosition"
+            :interests="member.interests" :photo="member.photo" :image-position="member.imagePosition"
             :priority="i === 0" />
           <AdminEditControls v-if="isAdmin" @edit="startEdit('members', member)" @delete="deleteMember('members', member)" />
           <button v-if="isAdmin" type="button" class="graduate-btn" @click="confirmGraduate(member)">
@@ -101,7 +100,7 @@
           @drop="internDrag.onDrop(i)" @dragend="internDrag.onDragEnd">
           <DragHandle class="handle" />
           <MemberCard :name="member.name" :role="member.role" :note="member.note" :email="member.email"
-            :interests="member.interests" :photo="member.photo" :photo-position="member.photoPosition" />
+            :interests="member.interests" :photo="member.photo" :image-position="member.imagePosition" />
           <AdminEditControls v-if="isAdmin" @edit="startEdit('interns', member)" @delete="deleteMember('interns', member)" />
         </div>
       </div>
@@ -136,7 +135,7 @@
         <div v-if="editingGroup !== 'alumni'" class="field">
           <span>Photo</span>
           <div v-if="draft.photo && !memberPreviewBroken" class="photo-preview">
-            <img :src="draft.photo" alt="" :style="{ objectPosition: `center ${draft.photoPosition}%` }"
+            <img :src="draft.photo" alt="" :style="imagePositionStyle(draft.imagePosition)"
               @error="memberPreviewBroken = true" />
             <button type="button" class="remove-image-btn" aria-label="Remove photo" @click="removeMemberPhoto">✕</button>
           </div>
@@ -144,10 +143,9 @@
             {{ uploadingPhoto ? 'Uploading…' : '+ Upload photo' }}
             <input type="file" accept="image/*" :disabled="uploadingPhoto" @change="onMemberPhotoSelected" />
           </label>
-          <label v-if="draft.photo" class="photo-position-field">
-            <span>Visible part of photo ({{ draft.photoPosition }}%, top → bottom)</span>
-            <input type="range" min="0" max="100" v-model.number="draft.photoPosition" />
-          </label>
+          <button v-if="draft.photo" type="button" class="adjust-position-btn" @click="positionEditingTarget = 'member'">
+            Adjust position / zoom
+          </button>
         </div>
         <p v-if="formError" class="form-error">{{ formError }}</p>
         <div class="edit-actions">
@@ -171,11 +169,15 @@
         </div>
       </div>
     </div>
+
+    <ImagePositionEditor :open="positionEditingTarget !== null" :src="positionEditingSrc"
+      :aspect-ratio="positionEditingAspect" :round="positionEditingAspect === 1"
+      :initial="positionEditingInitial" @save="savePositionEdit" @cancel="positionEditingTarget = null" />
   </main>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, reactive, ref, watch, watchEffect } from 'vue'
+import { computed, onBeforeUnmount, reactive, ref, watch, watchEffect } from 'vue'
 import PageHeader from '../components/PageHeader.vue'
 import SignalDivider from '../components/SignalDivider.vue'
 import MemberCard from '../components/MemberCard.vue'
@@ -190,6 +192,8 @@ import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { checkRequired, isValidEmail } from '../utils/validate'
 import { setStructuredData, removeStructuredData } from '../utils/structuredData'
+import { imagePositionStyle, type ImagePosition } from '../utils/imagePosition'
+import ImagePositionEditor from '../components/ImagePositionEditor.vue'
 import membersDataRaw from '../data/members.json'
 
 interface Member {
@@ -200,12 +204,23 @@ interface Member {
   email?: string
   interests?: string
   photo?: string
-  photoPosition?: number
+  imagePosition?: ImagePosition
 }
 
 const { isAdmin } = useAdminMode()
 
-const form = reactive(JSON.parse(JSON.stringify(membersDataRaw)) as typeof membersDataRaw)
+// 원본 JSON에는 아직 imagePosition이 없는 항목이 대부분이라(선택 필드), 추론된
+// 타입에 그 필드를 더해서 캐스팅합니다 - 실제 값은 런타임에 없어도(undefined)
+// 문제없고, 저장할 때부터 생기기 시작합니다.
+type WithImagePosition<T> = T & { imagePosition?: ImagePosition }
+type MembersData = Omit<typeof membersDataRaw, 'pi' | 'postdocs' | 'members' | 'interns'> & {
+  pi: WithImagePosition<typeof membersDataRaw.pi>
+  postdocs: WithImagePosition<(typeof membersDataRaw.postdocs)[number]>[]
+  members: WithImagePosition<(typeof membersDataRaw.members)[number]>[]
+  interns: WithImagePosition<(typeof membersDataRaw.interns)[number]>[]
+}
+
+const form = reactive(JSON.parse(JSON.stringify(membersDataRaw)) as MembersData)
 
 watchEffect(() => {
   setStructuredData({
@@ -244,7 +259,15 @@ const editingId = ref<string | null>(null)
 const isNewMember = ref(false)
 const uploadingPhoto = ref(false)
 const formError = ref<string | null>(null)
-const draft = reactive({ name: '', role: '', note: '', email: '', interests: '', photo: '', photoPosition: 50 })
+const draft = reactive({
+  name: '',
+  role: '',
+  note: '',
+  email: '',
+  interests: '',
+  photo: '',
+  imagePosition: undefined as ImagePosition | undefined,
+})
 const memberPreviewBroken = ref(false)
 
 watch(
@@ -265,7 +288,7 @@ function startEdit(group: GroupKey, member: Member) {
   draft.email = member.email ?? ''
   draft.interests = member.interests ?? ''
   draft.photo = member.photo ?? ''
-  draft.photoPosition = member.photoPosition ?? 50
+  draft.imagePosition = member.imagePosition
 }
 
 function startAdd(group: GroupKey) {
@@ -281,7 +304,7 @@ function startAdd(group: GroupKey) {
   draft.email = ''
   draft.interests = ''
   draft.photo = ''
-  draft.photoPosition = 50
+  draft.imagePosition = undefined
 }
 
 function cancelEdit() {
@@ -315,6 +338,7 @@ async function onMemberPhotoSelected(e: Event) {
 async function removeMemberPhoto() {
   if (draft.photo) await deleteImage(draft.photo)
   draft.photo = ''
+  draft.imagePosition = undefined
 }
 
 async function saveMember() {
@@ -341,7 +365,7 @@ async function saveMember() {
       email: draft.email,
       interests: draft.interests,
       photo: draft.photo,
-      photoPosition: draft.photoPosition,
+      imagePosition: draft.imagePosition,
     })
   } else {
     const target = list.find((m) => m.id === editingId.value)
@@ -352,7 +376,7 @@ async function saveMember() {
       target.email = draft.email
       target.interests = draft.interests
       target.photo = draft.photo
-      target.photoPosition = draft.photoPosition
+      target.imagePosition = draft.imagePosition
     }
   }
 
@@ -408,7 +432,6 @@ async function ungraduateMember(alum: Member) {
     email: '',
     interests: '',
     photo: '',
-    photoPosition: 50,
   })
 
   await saveJsonFile('members.json', form)
@@ -442,7 +465,7 @@ const piDraft = reactive({
   institution: '',
   email: '',
   photo: '',
-  photoPosition: 50,
+  imagePosition: undefined as ImagePosition | undefined,
 })
 
 function startEditPI() {
@@ -453,7 +476,7 @@ function startEditPI() {
   piDraft.institution = form.pi.institution
   piDraft.email = form.pi.email
   piDraft.photo = form.pi.photo ?? ''
-  piDraft.photoPosition = form.pi.photoPosition ?? 50
+  piDraft.imagePosition = form.pi.imagePosition
   piFormError.value = null
   piPreviewBroken.value = false
   editingPI.value = true
@@ -490,6 +513,7 @@ async function onPIPhotoSelected(e: Event) {
 async function removePIPhoto() {
   if (piDraft.photo) await deleteImage(piDraft.photo)
   piDraft.photo = ''
+  piDraft.imagePosition = undefined
 }
 
 async function savePI() {
@@ -510,13 +534,39 @@ async function savePI() {
   form.pi.institution = piDraft.institution
   form.pi.email = piDraft.email
   form.pi.photo = piDraft.photo
-  form.pi.photoPosition = piDraft.photoPosition
+  form.pi.imagePosition = piDraft.imagePosition
   editingPI.value = false
   await saveJsonFile('members.json', form)
 }
 
+/* ---------------- Photo position/zoom editor (shared by PI + member forms) ---------------- */
+
+const positionEditingTarget = ref<'pi' | 'member' | null>(null)
+
+// PI and postdocs only ever show their photo on the CV page (a 4:5 rounded-rect
+// box) - everyone else shows up as a circular avatar on this page (1:1). The
+// editor's preview frame needs to match whichever one will actually render,
+// or the crop picked here won't be the crop you actually get.
+const positionEditingAspect = computed(() => {
+  if (positionEditingTarget.value === 'pi') return 4 / 5
+  if (positionEditingTarget.value === 'member' && editingGroup.value === 'postdocs') return 4 / 5
+  return 1
+})
+
+const positionEditingSrc = computed(() => (positionEditingTarget.value === 'pi' ? piDraft.photo : draft.photo))
+const positionEditingInitial = computed(() =>
+  positionEditingTarget.value === 'pi' ? piDraft.imagePosition : draft.imagePosition
+)
+
+function savePositionEdit(pos: ImagePosition) {
+  if (positionEditingTarget.value === 'pi') piDraft.imagePosition = pos
+  else if (positionEditingTarget.value === 'member') draft.imagePosition = pos
+  positionEditingTarget.value = null
+}
+
 useEscapeKey(() => {
-  if (graduateTarget.value) cancelGraduate()
+  if (positionEditingTarget.value) positionEditingTarget.value = null
+  else if (graduateTarget.value) cancelGraduate()
   else if (editingGroup.value) cancelEdit()
   else if (editingPI.value) cancelEditPI()
 })

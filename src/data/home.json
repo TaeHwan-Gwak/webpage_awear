@@ -31,7 +31,12 @@
   "gallery": [
     {
       "id": "gl1",
-      "image": "/home/gallery-1.webp"
+      "image": "/home/gallery-1.webp",
+      "imagePosition": {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      }
     },
     {
       "id": "gl2",

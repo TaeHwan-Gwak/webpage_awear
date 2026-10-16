@@ -37,5 +37,9 @@ defineProps<{
 
 .layered-image img {
   position: absolute;
+  /* Layer boxes rarely match the source photo's own aspect ratio (e.g. two
+     square product shots split into portrait halves) - without this they'd
+     get stretched to fill the box exactly instead of keeping their shape. */
+  object-fit: contain;
 }
 </style>

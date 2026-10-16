@@ -27,8 +27,7 @@
         ]
       }
     ],
-    "photo": "/members/Jiyeon%20Kang_pi.webp",
-    "photoPosition": 50
+    "photo": "/members/Jiyeon%20Kang_pi.webp"
   },
   "postdocs": [
     {
@@ -39,29 +38,68 @@
       "email": "deremustapha@gm.gist.ac.kr",
       "interests": "",
       "photo": "/members/Dere%20Mustapha%20Deji_p1.webp",
-      "photoPosition": 50,
       "institution": "Gwangju Institute of Science and Technology",
       "cv": [
         {
           "section": "Honors & Awards",
           "items": [
-            { "year": "2026", "title": "Excellence in Research Award", "subtitle": "Korean Brain Research Institute" },
-            { "year": "2026", "title": "GIST Top Scholar", "subtitle": "Gwangju Institute of Science and Technology" },
-            { "year": "2025", "title": "BMSE Best Research Award", "subtitle": "Department of Biomedical Science and Engineering, GIST" },
-            { "year": "2023", "title": "BMSE Best Research Award", "subtitle": "Department of Biomedical Science and Engineering, GIST" },
-            { "year": "2022", "title": "IOMP Best Presentation Award", "subtitle": "IUPESM World Congress on Medical Physics and Biomedical Engineering" },
-            { "year": "2020", "title": "BMSE Best Poster Presentation Award", "subtitle": "Department of Biomedical Science and Engineering, GIST" }
+            {
+              "year": "2026",
+              "title": "Excellence in Research Award",
+              "subtitle": "Korean Brain Research Institute"
+            },
+            {
+              "year": "2026",
+              "title": "GIST Top Scholar",
+              "subtitle": "Gwangju Institute of Science and Technology"
+            },
+            {
+              "year": "2025",
+              "title": "BMSE Best Research Award",
+              "subtitle": "Department of Biomedical Science and Engineering, GIST"
+            },
+            {
+              "year": "2023",
+              "title": "BMSE Best Research Award",
+              "subtitle": "Department of Biomedical Science and Engineering, GIST"
+            },
+            {
+              "year": "2022",
+              "title": "IOMP Best Presentation Award",
+              "subtitle": "IUPESM World Congress on Medical Physics and Biomedical Engineering"
+            },
+            {
+              "year": "2020",
+              "title": "BMSE Best Poster Presentation Award",
+              "subtitle": "Department of Biomedical Science and Engineering, GIST"
+            }
           ]
         },
         {
           "section": "Education",
           "items": [
-            { "year": "2026", "title": "Ph.D. Biomedical Science and Engineering, GIST", "subtitle": "Dissertation: Neurorehabilitation System with Wearable Biosensing and Edge Deep Learning" },
-            { "year": "2019", "title": "M.S. Biomedical Engineering, University of Ibadan", "subtitle": "Thesis: Wearable Device for Timely Prediction of Asthmatic Attack" },
-            { "year": "2014", "title": "B.Eng. Electrical and Electronic Engineering, Federal University of Technology Minna" }
+            {
+              "year": "2026",
+              "title": "Ph.D. Biomedical Science and Engineering, GIST",
+              "subtitle": "Dissertation: Neurorehabilitation System with Wearable Biosensing and Edge Deep Learning"
+            },
+            {
+              "year": "2019",
+              "title": "M.S. Biomedical Engineering, University of Ibadan",
+              "subtitle": "Thesis: Wearable Device for Timely Prediction of Asthmatic Attack"
+            },
+            {
+              "year": "2014",
+              "title": "B.Eng. Electrical and Electronic Engineering, Federal University of Technology Minna"
+            }
           ]
         }
-      ]
+      ],
+      "imagePosition": {
+        "x": 50,
+        "y": 0,
+        "zoom": 1.3
+      }
     }
   ],
   "groupTitle": "Graduate Students",
@@ -74,7 +112,11 @@
       "email": "kihyun.kim@gm.gist.ac.kr",
       "interests": "",
       "photo": "/members/Kihyun%20Kim_g2.webp",
-      "photoPosition": 50
+      "imagePosition": {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      }
     },
     {
       "id": "g4",
@@ -84,7 +126,11 @@
       "email": "ingyunahn@gm.gist.ac.kr",
       "interests": "",
       "photo": "/members/Ingyun%20Ahn_g4.webp",
-      "photoPosition": 50
+      "imagePosition": {
+        "x": 50,
+        "y": 0,
+        "zoom": 1
+      }
     },
     {
       "id": "g6",
@@ -93,8 +139,7 @@
       "note": "Brain stimulation and neurofeedback",
       "email": "youngkeekim@gm.gist.ac.kr",
       "interests": "",
-      "photo": "/members/Youngkee%20Kim_g6.webp",
-      "photoPosition": 50
+      "photo": "/members/Youngkee%20Kim_g6.webp"
     },
     {
       "id": "g8",
@@ -103,8 +148,7 @@
       "note": "Robot-driven neuromodulation",
       "email": "ekfrnd8904@gm.gist.ac.kr",
       "interests": "",
-      "photo": "/members/Kyungmin%20Kwon_g8.webp",
-      "photoPosition": 50
+      "photo": "/members/Kyungmin%20Kwon_g8.webp"
     },
     {
       "id": "g12",
@@ -114,7 +158,11 @@
       "email": "hyunwonnam@gm.gist.ac.kr",
       "interests": "",
       "photo": "/members/Hyunwon%20Nam_g12.webp",
-      "photoPosition": 50
+      "imagePosition": {
+        "x": 50,
+        "y": 0,
+        "zoom": 1
+      }
     },
     {
       "id": "g3",
@@ -123,8 +171,7 @@
       "note": "Pilates-based rehabilitation robot",
       "email": "seonghunjeong@gm.gist.ac.kr",
       "interests": "",
-      "photo": "/members/Seonghun%20Jeong_g3.webp",
-      "photoPosition": 50
+      "photo": "/members/Seonghun%20Jeong_g3.webp"
     },
     {
       "id": "g5",
@@ -133,8 +180,7 @@
       "note": "3D animal pose estimation and behavior analysis",
       "email": "daekim@gm.gist.ac.kr",
       "interests": "",
-      "photo": "/members/Daeyeon%20Kim_g5.webp",
-      "photoPosition": 50
+      "photo": "/members/Daeyeon%20Kim_g5.webp"
     },
     {
       "id": "g7",
@@ -143,8 +189,7 @@
       "note": "Animal EEG and closed-loop brain stimulation",
       "email": "seoheej32@gm.gist.ac.kr",
       "interests": "",
-      "photo": "/members/Seohee%20Jang_g7.webp",
-      "photoPosition": 50
+      "photo": "/members/Seohee%20Jang_g7.webp"
     },
     {
       "id": "g9",
@@ -154,7 +199,11 @@
       "email": "jiyesohn@gm.gist.ac.kr",
       "interests": "",
       "photo": "/members/Jiye%20Sohn_g9.webp",
-      "photoPosition": 50
+      "imagePosition": {
+        "x": 50,
+        "y": 0,
+        "zoom": 1
+      }
     },
     {
       "id": "g10",
@@ -163,8 +212,7 @@
       "note": "3D human pose estimation and health monitoring",
       "email": "junghoonyang@gm.gist.ac.kr",
       "interests": "",
-      "photo": "/members/Junghoon%20Yang_g10.webp",
-      "photoPosition": 50
+      "photo": "/members/Junghoon%20Yang_g10.webp"
     },
     {
       "id": "g11",
@@ -173,8 +221,7 @@
       "note": "Pilates-based rehabilitation robot",
       "email": "taehw0617@gm.gist.ac.kr",
       "interests": "",
-      "photo": "/members/Taehwan%20Gwak_g11.webp",
-      "photoPosition": 50
+      "photo": "/members/Taehwan%20Gwak_g11.webp"
     }
   ],
   "internsTitle": "Undergraduate Interns",
@@ -186,8 +233,7 @@
       "note": "",
       "email": "",
       "interests": "",
-      "photo": "/members/Yujin%20Choi_i1.webp",
-      "photoPosition": 50
+      "photo": "/members/Yujin%20Choi_i1.webp"
     },
     {
       "id": "i2",
@@ -196,8 +242,7 @@
       "note": "",
       "email": "",
       "interests": "",
-      "photo": "",
-      "photoPosition": 50
+      "photo": ""
     },
     {
       "id": "i3",
@@ -206,8 +251,7 @@
       "note": "",
       "email": "",
       "interests": "",
-      "photo": "",
-      "photoPosition": 50
+      "photo": ""
     },
     {
       "id": "i4",
@@ -216,8 +260,7 @@
       "note": "",
       "email": "minsu030308@gm.gist.ac.kr",
       "interests": "",
-      "photo": "/members/Minsu%20Park_i4.webp",
-      "photoPosition": 50
+      "photo": "/members/Minsu%20Park_i4.webp"
     },
     {
       "id": "i5",
@@ -226,8 +269,7 @@
       "note": "",
       "email": "",
       "interests": "",
-      "photo": "",
-      "photoPosition": 50
+      "photo": ""
     }
   ],
   "alumniTitle": "Alumni",

@@ -19,7 +19,7 @@
 
         <div class="cv-photo">
           <img v-if="subject.photo" :src="subject.photo" :alt="subject.name" fetchpriority="high"
-            :style="{ objectPosition: `center ${subject.photoPosition ?? 50}%` }" />
+            :style="imagePositionStyle(subject.imagePosition)" />
           <span v-else class="ph-label">Image</span>
         </div>
       </div>
@@ -48,6 +48,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { imagePositionStyle, type ImagePosition } from '../utils/imagePosition'
 import membersData from '../data/members.json'
 
 type CvEntry = string | { year: string; title: string; subtitle?: string }
@@ -64,7 +65,7 @@ interface CvSubject {
   institution: string
   email: string
   photo?: string
-  photoPosition?: number
+  imagePosition?: ImagePosition
   cv?: CvBlock[]
 }
 
@@ -74,7 +75,7 @@ const subject = computed<CvSubject>(() => {
   const id = route.params.id as string | undefined
   if (id && id !== 'pi') {
     const postdoc = membersData.postdocs?.find((p) => p.id === id) as
-      | (typeof membersData.postdocs[number] & { institution?: string; cv?: CvBlock[] })
+      | (typeof membersData.postdocs[number] & { institution?: string; cv?: CvBlock[]; imagePosition?: ImagePosition })
       | undefined
     if (postdoc) {
       return {
@@ -84,12 +85,12 @@ const subject = computed<CvSubject>(() => {
         institution: postdoc.institution ?? '',
         email: postdoc.email,
         photo: postdoc.photo,
-        photoPosition: postdoc.photoPosition,
+        imagePosition: postdoc.imagePosition,
         cv: postdoc.cv,
       }
     }
   }
-  const pi = membersData.pi
+  const pi = membersData.pi as typeof membersData.pi & { imagePosition?: ImagePosition }
   return {
     name: pi.name,
     nameKr: pi.nameKr,
@@ -98,7 +99,7 @@ const subject = computed<CvSubject>(() => {
     institution: pi.institution,
     email: pi.email,
     photo: pi.photo,
-    photoPosition: pi.photoPosition,
+    imagePosition: pi.imagePosition,
     cv: pi.cv,
   }
 })

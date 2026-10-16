@@ -167,6 +167,17 @@ function removeActiveLayer() {
   draw()
 }
 
+// Mirrors LayeredImage.vue's CSS (object-fit: contain) - the live site never
+// stretches a layer to fill its box, so neither should this preview.
+function drawContain(ctx: CanvasRenderingContext2D, layer: Layer) {
+  const scale = Math.min(layer.width / layer.img.width, layer.height / layer.img.height)
+  const w = layer.img.width * scale
+  const h = layer.img.height * scale
+  const x = layer.x + (layer.width - w) / 2
+  const y = layer.y + (layer.height - h) / 2
+  ctx.drawImage(layer.img, x, y, w, h)
+}
+
 function draw(showChrome = true) {
   const canvas = canvasEl.value
   if (!canvas) return
@@ -178,7 +189,7 @@ function draw(showChrome = true) {
   ctx.fillRect(0, 0, outputWidth, outputHeight)
 
   layers.value.forEach((layer, i) => {
-    ctx.drawImage(layer.img, layer.x, layer.y, layer.width, layer.height)
+    drawContain(ctx, layer)
     if (showChrome && i === activeIndex.value) {
       ctx.strokeStyle = '#ff5a1f'
       ctx.lineWidth = 3

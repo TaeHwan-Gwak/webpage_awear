@@ -4,7 +4,7 @@
       <div class="avatar" aria-hidden="true">
         <img v-if="photo" :src="photo" :alt="name" class="avatar-photo"
           :fetchpriority="priority ? 'high' : 'auto'"
-          :style="{ objectPosition: `center ${photoPosition ?? 50}%` }" />
+          :style="imagePositionStyle(imagePosition)" />
         <span v-else class="ph-label">Image</span>
       </div>
     </div>
@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue'
 import { useAdminMode } from '../composables/useAdminMode'
+import { imagePositionStyle, type ImagePosition } from '../utils/imagePosition'
 
 defineProps<{
   name: string
@@ -36,8 +37,8 @@ defineProps<{
   email?: string
   interests?: string
   photo?: string
-  /** Vertical crop anchor for the photo, 0 (top) - 100 (bottom); defaults to centered. */
-  photoPosition?: number
+  /** Pan/zoom crop for the photo; defaults to centered, no zoom. */
+  imagePosition?: ImagePosition
   /** Marks this card's photo as fetchpriority="high" - use for the first card in a grid only. */
   priority?: boolean
 }>()

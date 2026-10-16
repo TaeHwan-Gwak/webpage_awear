@@ -94,7 +94,7 @@
               :class="{ dragging: galleryDrag.draggedIndex.value === i }" :draggable="isAdmin"
               @dragstart="galleryDrag.onDragStart(i)" @dragover="galleryDrag.onDragOver(i, $event)"
               @drop="galleryDrag.onDrop(i)" @dragend="galleryDrag.onDragEnd">
-              <img v-if="item.image" :src="item.image" alt="" />
+              <img v-if="item.image" :src="item.image" alt="" :style="imagePositionStyle(item.imagePosition)" />
               <span v-else class="ph-label">Image</span>
 
               <template v-if="isAdmin">
@@ -102,6 +102,8 @@
                   {{ galleryUploadingId === item.id ? 'Uploading…' : item.image ? 'Replace' : '+ Upload' }}
                   <input type="file" accept="image/*" @change="onGalleryImageSelected(item.id, $event)" />
                 </label>
+                <button v-if="item.image" type="button" class="tile-position-btn" aria-label="Adjust position"
+                  @click="positionEditingGalleryId = item.id">⤢</button>
                 <button type="button" class="tile-remove-btn" aria-label="Remove image"
                   @click="removeGalleryItem(item)">✕</button>
               </template>
@@ -251,6 +253,10 @@
         </div>
       </div>
     </div>
+
+    <ImagePositionEditor :open="positionEditingGalleryId !== null" :src="positionEditingGallerySrc"
+      :aspect-ratio="4 / 3" :initial="positionEditingGalleryInitial" @save="saveGalleryPosition"
+      @cancel="positionEditingGalleryId = null" />
   </main>
 </template>
 
@@ -270,6 +276,8 @@ import { useEscapeKey } from '../composables/useEscapeKey'
 import { saveJsonFile, uploadImage, deleteImage } from '../services/localSave'
 import { nextSequentialId } from '../utils/nextId'
 import { checkRequired } from '../utils/validate'
+import { imagePositionStyle, type ImagePosition } from '../utils/imagePosition'
+import ImagePositionEditor from '../components/ImagePositionEditor.vue'
 import newsDataRaw from '../data/news.json'
 import homeDataRaw from '../data/home.json'
 
@@ -289,6 +297,7 @@ interface ProjectItem {
 interface GalleryItem {
   id: string
   image?: string
+  imagePosition?: ImagePosition
 }
 
 interface HomeData {
@@ -478,6 +487,7 @@ async function onGalleryImageSelected(id: string, e: Event) {
 
   if (path) {
     item.image = path
+    item.imagePosition = undefined
     if (oldImage) await deleteImage(oldImage)
     await persist()
   } else {
@@ -495,6 +505,21 @@ async function removeGalleryItem(item: GalleryItem) {
   const idx = form.gallery.findIndex((g) => g.id === item.id)
   if (idx !== -1) form.gallery.splice(idx, 1)
   if (item.image) await deleteImage(item.image)
+  await persist()
+}
+
+const positionEditingGalleryId = ref<string | null>(null)
+const positionEditingGallerySrc = computed(
+  () => form.gallery.find((g) => g.id === positionEditingGalleryId.value)?.image ?? ''
+)
+const positionEditingGalleryInitial = computed(
+  () => form.gallery.find((g) => g.id === positionEditingGalleryId.value)?.imagePosition
+)
+
+async function saveGalleryPosition(pos: ImagePosition) {
+  const item = form.gallery.find((g) => g.id === positionEditingGalleryId.value)
+  if (item) item.imagePosition = pos
+  positionEditingGalleryId.value = null
   await persist()
 }
 
@@ -587,6 +612,7 @@ async function deleteProject(item: ProjectItem) {
 }
 
 useEscapeKey(() => {
+  if (positionEditingGalleryId.value) positionEditingGalleryId.value = null
   if (heroEditing.value) cancelHeroEdit()
   if (mediaEditingId.value) cancelMediaEdit()
   if (projectEditingId.value) cancelProjectEdit()

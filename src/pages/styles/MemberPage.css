@@ -417,20 +417,20 @@
     }
   }
 
-  .photo-position-field {
+  .adjust-position-btn {
     display: block;
     margin-top: 10px;
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg);
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: border-color 0.18s ease, color 0.18s ease;
 
-    span {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 12px;
-      color: var(--text-faint);
-    }
-
-    input[type='range'] {
-      width: 100%;
-      accent-color: var(--orange);
+    &:hover {
+      border-color: var(--orange);
+      color: var(--orange-deep);
     }
   }
 }
